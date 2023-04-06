@@ -68,7 +68,47 @@ function Register() {
           onFocus={() => setUserFocus(true)}
           onBlur={() => setUserFocus(false)}
         />
+
+        <label htmlFor="password">Password:</label>
+        <input
+          type="password"
+          id="password"
+          onChange={(e) => setPwd(e.target.value)}
+          value={pwd}
+          required
+          aria-invalid={validPwd ? "false" : "true"}
+          aria-describedby="pwdnote"
+          onFocus={() => setPwdFocus(true)}
+          onBlur={() => setPwdFocus(false)}
+        />
+
+        <label htmlFor="confirm_pwd">Confirm Password:</label>
+        <input
+          type="password"
+          id="confirm_pwd"
+          onChange={(e) => setMatchPwd(e.target.value)}
+          value={matchPwd}
+          required
+          aria-invalid={validMatch ? "false" : "true"}
+          aria-describedby="confirmnote"
+          onFocus={() => setMatchFocus(true)}
+          onBlur={() => setMatchFocus(false)}
+        />
+
+        <button
+          disabled={!validName || !validPwd || !validMatch ? true : false}
+        >
+          Sign Up
+        </button>
       </form>
+      <p>
+        Already registered?
+        <br />
+        <span className="line">
+          {/*put router link here*/}
+          <a href="#">Sign In</a>
+        </span>
+      </p>
     </section>
   );
 }
