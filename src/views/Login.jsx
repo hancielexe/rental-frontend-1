@@ -2,7 +2,9 @@ import React from "react";
 import { useRef, useState, useEffect } from "react";
 import useAuth from "../hooks/useAuth";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import useInput from "../hooks/useInput";
 import axios from "../api/axios";
+import useToggle from "../hooks/useToggle";
 
 const LOGIN_URL = "/auth";
 
@@ -16,9 +18,10 @@ function Login() {
   const userRef = useRef();
   const errRef = useRef();
 
-  const [user, setUser] = useState("");
+  const [user, resetUser, userAttributes] = useInput("user", "");
   const [pwd, setPwd] = useState("");
   const [errMsg, setErrMsg] = useState("");
+  const [check, toggleCheck] = useToggle("persist", false);
 
   useEffect(() => {
     userRef.current.focus();
@@ -41,11 +44,10 @@ function Login() {
         }
       );
       console.log(JSON.stringify(response?.data));
-      console.log(JSON.stringify(response));
       const accessToken = response?.data?.accessToken;
       const roles = response?.data?.roles;
       setAuth({ user, pwd, roles, accessToken });
-      setUser("");
+      resetUser(); //setUser("");
       setPwd("");
       navigate(from, { replace: true });
     } catch (err) {
@@ -61,6 +63,14 @@ function Login() {
       errRef.current.focus();
     }
   };
+
+  /* const togglePersist = () => {
+    setPersist((prev) => !prev);
+  };
+
+  useEffect(() => {
+    localStorage.setItem("persist", persist);
+  }, [persist]); */
 
   return (
     <div className="body-bg min-h-screen pt-1 md:pt-1 pb-6 px-2 md:px-0">
@@ -92,8 +102,7 @@ function Login() {
                 class="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
                 ref={userRef}
                 autoComplete="off"
-                onChange={(e) => setUser(e.target.value)}
-                value={user}
+                {...userAttributes}
                 required
               />
             </div>
@@ -113,7 +122,17 @@ function Login() {
                 required
               />
             </div>
-            <div class="flex justify-end">
+            <div class="flex justify-between">
+              <div class="text-sm text-purple-600">
+                <input
+                  type="checkbox"
+                  id="persist"
+                  onChange={toggleCheck}
+                  checked={check}
+                  class="mr-2"
+                />
+                <label htmlFor="persist">Trust this device</label>
+              </div>
               <a
                 href="#"
                 class="text-sm text-purple-600 hover:text-purple-700 hover:underline mb-6"

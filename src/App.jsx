@@ -4,11 +4,11 @@ import { Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
 import Landing from "./components/Landing";
 import RequireAuth from "./components/RequireAuth";
+import PersistLogin from "./components/PersistLogin";
 import Login from "./views/Login";
 import Register from "./views/Register";
 import Inquiry from "./views/Inquiry";
 import Admin from "./views/Admin";
-import Adminlogin from "./views/Adminlogin";
 import Tenant from "./views/Tenant";
 import Unauthorized from "./views/Unauthorized";
 
@@ -18,7 +18,6 @@ const ROLES = {
 };
 
 function App() {
-  //https://www.youtube.com/watch?v=brcHK3P6ChQ
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
@@ -26,18 +25,20 @@ function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/inquire" element={<Inquiry />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/adminlogin" element={<Adminlogin />} />
 
         {/*protected routes*/}
-        <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
-          <Route path="/admin" element={<Admin />} />
-          <Route path="/register" element={<Register />} />
+        <Route element={<PersistLogin />}>
+          <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
+            <Route path="/admin" element={<Admin />} />
+            <Route path="/register" element={<Register />} />
+          </Route>
+
+          <Route element={<RequireAuth allowedRoles={[ROLES.Tenant]} />}>
+            <Route path="/tenant" element={<Tenant />} />
+          </Route>
         </Route>
 
-        <Route element={<RequireAuth allowedRoles={[ROLES.Tenant]} />}>
-          <Route path="/tenant" element={<Tenant />} />
-        </Route>
-
+        {/*catch all*/}
         <Route path="*" element={<Unauthorized />} />
       </Route>
     </Routes>
