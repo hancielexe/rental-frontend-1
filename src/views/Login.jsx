@@ -13,7 +13,7 @@ function Login() {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location?.state?.from?.pathname || "/tenant";
+  const from = location?.state?.from?.pathname || "/user";
 
   const userRef = useRef();
   const errRef = useRef();
@@ -76,7 +76,7 @@ function Login() {
     <div className="body-bg min-h-screen pt-1 md:pt-1 pb-6 px-2 md:px-0">
       <main class="bg-white max-w-lg mx-auto p-8 md:p-12 my-10 rounded-lg shadow-2xl">
         <section>
-          <h3 class="font-bold text-2xl">Welcome to Startup</h3>
+          <h3 class="font-bold text-2xl text-gray-700">Login</h3>
           <p class="text-gray-600 pt-2">Sign in to your account.</p>
         </section>
 
@@ -89,9 +89,9 @@ function Login() {
             {errMsg}
           </p>
           <form class="flex flex-col" onSubmit={handleSubmit}>
-            <div class="mb-6 pt-3 rounded bg-gray-200">
+            <div class="mb-6 rounded">
               <label
-                class="block text-gray-700 text-sm font-bold mb-2 ml-3"
+                class="block text-gray-700 text-sm font-bold mb-2 ml-1"
                 htmlFor="username"
               >
                 Username
@@ -99,16 +99,16 @@ function Login() {
               <input
                 type="text"
                 id="username"
-                class="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
+                class="bg-gray-200 rounded w-full text-gray-700  focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
                 ref={userRef}
                 autoComplete="off"
                 {...userAttributes}
                 required
               />
             </div>
-            <div class="mb-6 pt-3 rounded bg-gray-200">
+            <div class="mb-6 pb-6 rounded">
               <label
-                class="block text-gray-700 text-sm font-bold mb-2 ml-3"
+                class="block text-gray-700 text-sm font-bold mb-2 ml-1"
                 htmlFor="password"
               >
                 Password
@@ -149,26 +149,6 @@ function Login() {
           </form>
         </section>
       </main>
-
-      <div class="max-w-lg mx-auto text-center mt-12 mb-6">
-        <p class="text-white">
-          Don't have an account?{" "}
-          <Link to="/register" class="font-bold hover:underline">
-            Sign up
-          </Link>
-          .
-        </p>
-      </div>
-
-      <footer class="max-w-lg mx-auto flex justify-center text-white">
-        <a href="#" class="hover:underline">
-          Contact
-        </a>
-        <span class="mx-3">•</span>
-        <a href="#" class="hover:underline">
-          Privacy
-        </a>
-      </footer>
     </div>
   );
 }
