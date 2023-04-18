@@ -9,31 +9,31 @@ function Header() {
                     <nav aria-label="Site Nav" class="hidden md:block">
                         <ul class="flex items-center gap-6 text-sm">
                             <li>
-                                <a class="text-black transition hover:text-black/75" href="/">
+                                <a class="text-gray-700 transition hover:text-black/50 font-semibold" href="/">
                                     Home
                                 </a>
                             </li>
 
                             <li>
-                                <a class="text-black transition hover:text-black/75" href="/">
+                                <a class="text-gray-700 transition hover:text-black/50 font-semibold" href="/">
                                     Units
                                 </a>
                             </li>
 
                             <li>
-                                <a class="text-black transition hover:text-black/75" href="/">
+                                <a class="text-gray-700 transition hover:text-black/50 font-semibold" href="/">
                                     Contact
                                 </a>
                             </li>
 
                             <li>
-                                <a class="text-black transition hover:text-black/75" href="/">
+                                <a class="text-gray-700 transition hover:text-black/50 font-semibold" href="/">
                                     About
                                 </a>
                             </li>
 
                             <li>
-                                <a class="text-black transition hover:text-black/75" href="/">
+                                <a class="text-gray-700 transition hover:text-black/50 font-semibold" href="/">
                                     Help
                                 </a>
                             </li>

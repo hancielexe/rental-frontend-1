@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import useAuth from '../hooks/useAuth';
 
 import UserSidebar from '../partials/UserSidebar';
 import UserHeader from '../partials/UserHeader';
@@ -8,7 +9,11 @@ import UserCard01 from '../partials/userdashboard/UserCard01';
 
 function UserDashboard() {
 
+    const { auth } = useAuth();
+
     const [sidebarOpen, setSidebarOpen] = useState(false);
+
+    console.log(auth?.userId);
 
     return ( 
         <div className="flex h-screen overflow-hidden">

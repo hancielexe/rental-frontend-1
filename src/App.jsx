@@ -39,7 +39,7 @@ function App() {
         <Route path="/inquire" element={<Inquiry />} />
         <Route path="/login" element={<Login />} />
         <Route exact path="/listings" element={<Listings />} />
-        <Route exact path="/unit" element={<Unit />} />
+        <Route exact path="/unit/:id" element={<Unit />} />
 
         {/*protected routes*/}
         <Route element={<PersistLogin />}>

@@ -1,17 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
+import useAuth from '../hooks/useAuth';
 
 import SidebarLinkGroup from './SidebarLinkGroup';
 
 function UserSidebar({ sidebarOpen, setSidebarOpen }) {
     const location = useLocation();
     const { pathname } = location;
+    const { auth } = useAuth();
 
     const trigger = useRef(null);
     const sidebar = useRef(null);
 
     const storedSidebarExpanded = localStorage.getItem('sidebar-expanded');
     const [sidebarExpanded, setSidebarExpanded] = useState(storedSidebarExpanded === null ? false : storedSidebarExpanded === 'true');
+
+    const name = auth?.user;
+    const upper = name.toUpperCase()
 
     // close on click outside
     useEffect(() => {
@@ -105,7 +110,7 @@ function UserSidebar({ sidebarOpen, setSidebarOpen }) {
                         </svg>
                     </NavLink>
                     <div>
-                        <p className='px-4 text-white font-extrabold'>HANCIEL</p><span className="px-4  font-semibold text-sm text-slate-500">Tenant</span>
+                        <p className='px-4 text-white font-extrabold'>{ upper }</p><span className="px-4  font-semibold text-sm text-slate-500">Tenant</span>
                     </div>
                 </div>
 

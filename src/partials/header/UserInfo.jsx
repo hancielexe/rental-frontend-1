@@ -1,12 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Transition from '../../utils/Transition';
+import useAuth from '../../hooks/useAuth';
 
 import UserAvatar from '../../images/user-avatar-32.png';
 
 function UserInfo() {
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const { auth } = useAuth();
+  const name = auth?.user;
+  const upper = name.toUpperCase()
 
   const trigger = useRef(null);
   const dropdown = useRef(null);
@@ -42,7 +46,7 @@ function UserInfo() {
       >
         <img className="w-8 h-8 rounded-full" src={UserAvatar} width="32" height="32" alt="User" />
         <div className="flex items-center truncate">
-          <span className="truncate ml-2 text-sm font-medium group-hover:text-slate-800">Hanciel</span>
+          <span className="truncate ml-2 text-sm font-medium group-hover:text-slate-800">{upper}</span>
           <svg className="w-3 h-3 shrink-0 ml-1 fill-current text-slate-400" viewBox="0 0 12 12">
             <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
           </svg>
@@ -65,7 +69,7 @@ function UserInfo() {
           onBlur={() => setDropdownOpen(false)}
         >
           <div className="pt-0.5 pb-2 px-3 mb-1 border-b border-slate-200">
-            <div className="font-medium text-slate-800">Hanciel</div>
+            <div className="font-medium text-slate-800">{auth?.user}</div>
             <div className="text-xs text-slate-500 italic">TENANT</div>
           </div>
           <ul>
