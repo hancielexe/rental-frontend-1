@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import useAuth from '../hooks/useAuth';
 
 import UserSidebar from '../partials/UserSidebar';
 import UserHeader from '../partials/UserHeader';
@@ -9,11 +8,7 @@ import UserCard01 from '../partials/userdashboard/UserCard01';
 
 function UserDashboard() {
 
-    const { auth } = useAuth();
-
     const [sidebarOpen, setSidebarOpen] = useState(false);
-
-    console.log(auth?.userId);
 
     return ( 
         <div className="flex h-screen overflow-hidden">
@@ -22,13 +17,13 @@ function UserDashboard() {
             <UserSidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
             {/* Content area */}
-            <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
+            <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden bg-gray-100">
 
                 {/*  Site header */}
                 <UserHeader sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
                 <main>
-                    <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
+                    <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto bg-gray-100">
 
                         {/* Welcome banner */}
                         <UserBanner />

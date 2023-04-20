@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, Link } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 
 import SidebarLinkGroup from './SidebarLinkGroup';
@@ -126,18 +126,15 @@ function UserSidebar({ sidebarOpen, setSidebarOpen }) {
                         </h3>
                         <ul className="mt-3">
                             {/* Dashboard */}
-                            <SidebarLinkGroup activecondition={pathname === '/' || pathname.includes('dashboard')}>
+                            <SidebarLinkGroup activecondition={pathname === '/' || pathname.includes('user')}>
                                 {(handleClick, open) => {
                                     return (
                                         <React.Fragment>
-                                            <a
-                                                href="#0"
-                                                className={`block text-slate-200 truncate transition duration-150 ${pathname === '/' || pathname.includes('dashboard') ? 'hover:text-slate-200' : 'hover:text-white'
+                                             <NavLink
+                                                end
+                                                to="/user"
+                                                className={`block text-slate-200 truncate transition duration-150 ${pathname.includes('user') ? 'hover:text-slate-200' : 'hover:text-white'
                                                     }`}
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    sidebarExpanded ? handleClick() : setSidebarExpanded(true);
-                                                }}
                                             >
                                                 <div className="flex items-center justify-between">
                                                     <div className="flex items-center">
@@ -163,7 +160,7 @@ function UserSidebar({ sidebarOpen, setSidebarOpen }) {
                                                         </span>
                                                     </div>
                                                 </div>
-                                            </a>
+                                            </NavLink>
                                         </React.Fragment>
                                     );
                                 }}
@@ -195,7 +192,7 @@ function UserSidebar({ sidebarOpen, setSidebarOpen }) {
                                                             />
                                                         </svg>
                                                         <span className="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 hover:text-indigo-300">
-                                                            User Management
+                                                            Profile
                                                         </span>
                                                     </div>
                                                 </div>
@@ -204,12 +201,13 @@ function UserSidebar({ sidebarOpen, setSidebarOpen }) {
                                     );
                                 }}
                             </SidebarLinkGroup>
-                            {/* E-Commerce */}
-                            <SidebarLinkGroup activecondition={pathname.includes('ecommerce')}>
+                            {/* APARTMENT */}
+                            <SidebarLinkGroup activecondition={pathname.includes('apartment')}>
                                 {(handleClick, open) => {
                                     return (
                                         <React.Fragment>
-                                            <a
+                                            {/*
+                                            <Link to="/apartment"><a
                                                 href="#0"
                                                 className={`block text-slate-200 truncate transition duration-150 ${pathname.includes('ecommerce') ? 'hover:text-slate-200' : 'hover:text-white'
                                                     }`}
@@ -218,19 +216,26 @@ function UserSidebar({ sidebarOpen, setSidebarOpen }) {
                                                     sidebarExpanded ? handleClick() : setSidebarExpanded(true);
                                                 }}
                                             >
+                                            */}
+                                            <NavLink
+                                                end
+                                                to="/apartment"
+                                                className={`block text-slate-200 truncate transition duration-150 ${pathname.includes('apartment') ? 'hover:text-slate-200' : 'hover:text-white'
+                                                    }`}
+                                            >
                                                 <div className="flex items-center justify-between ">
                                                     <div className="flex items-center">
                                                         <svg className="shrink-0 h-6 w-6" viewBox="0 0 24 24">
                                                             <path
-                                                                className={`fill-current ${pathname.includes('ecommerce') ? 'text-indigo-300' : 'text-slate-400'}`}
+                                                                className={`fill-current ${pathname.includes('apartment') ? 'text-indigo-300' : 'text-slate-400'}`}
                                                                 d="M13 15l11-7L11.504.136a1 1 0 00-1.019.007L0 7l13 8z"
                                                             />
                                                             <path
-                                                                className={`fill-current ${pathname.includes('ecommerce') ? 'text-indigo-600' : 'text-slate-700'}`}
+                                                                className={`fill-current ${pathname.includes('apartment') ? 'text-indigo-600' : 'text-slate-700'}`}
                                                                 d="M13 15L0 7v9c0 .355.189.685.496.864L13 24v-9z"
                                                             />
                                                             <path
-                                                                className={`fill-current ${pathname.includes('ecommerce') ? 'text-indigo-500' : 'text-slate-600'}`}
+                                                                className={`fill-current ${pathname.includes('apartment') ? 'text-indigo-500' : 'text-slate-600'}`}
                                                                 d="M13 15.047V24l10.573-7.181A.999.999 0 0024 16V8l-11 7.047z"
                                                             />
                                                         </svg>
@@ -239,7 +244,7 @@ function UserSidebar({ sidebarOpen, setSidebarOpen }) {
                                                         </span>
                                                     </div>
                                                 </div>
-                                            </a>
+                                            </NavLink>
                                         </React.Fragment>
                                     );
                                 }}

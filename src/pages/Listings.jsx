@@ -66,7 +66,7 @@ function Listings() {
           <select
             ref={trigger}
             aria-expanded={dropdownOpen}
-            className="inline-flex items-center px-4 py-3 border-white text-gray-500 bg-gray-100 rounded-md hover:bg-gray-200 hover:text-gray-60 hover:border-gray-700 "
+            className="inline-flex justify-start px-8 py-3 border-white text-gray-500 bg-gray-100 rounded-md hover:bg-gray-200 hover:text-gray-60 hover:border-gray-700 "
             aria-haspopup="true"
             onClick={() => setDropdownOpen(!dropdownOpen)}
             onFocus={() => setDropdownOpen(true)}
@@ -95,7 +95,7 @@ function Listings() {
           }).map(filteredUnit => (
             <div class="relative mx-auto w-full">
               <Link
-                to={`/unit/${filteredUnit._id}`}
+                to={`/unit?id=${filteredUnit._id}`}
                 class="relative inline-block duration-300 ease-in-out transition-transform transform hover:-translate-y-2 w-full"
               >
                 <div class="shadow p-4 rounded-lg bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out" >
