@@ -18,6 +18,10 @@ import Header from './components/Header';
 import UserDashboard from './pages/UserDashboard';
 import Notfound from './views/Notfound';
 import UserApartment from './views/UserApartment';
+import AdminRegister from './views/AdminRegister';
+import ChangePass from './views/ChangePass';
+import Maintenance from './views/Maintenance';
+import Complaint from './views/complaint';
 
 const ROLES = {
   Tenant: 2001,
@@ -50,12 +54,16 @@ function App() {
           <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
             <Route exact path="/admin" element={<Dashboard />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/adminregister" element={<AdminRegister />} />
+            <Route path="/complaint" element={<Complaint />} />
+            <Route path="/maintenance" element={<Maintenance />} />
           </Route>
 
           <Route element={<RequireAuth allowedRoles={[ROLES.Tenant]} />}>
             <Route path="/tenant" element={<Tenant />} />
             <Route exact path="/user" element={<UserDashboard />} />
             <Route exact path="/apartment" element={<UserApartment />} />
+            <Route exact path="/changepass" element={<ChangePass />} />
           </Route>
         </Route>
 
