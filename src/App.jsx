@@ -16,6 +16,8 @@ import Listings from './pages/Listings';
 import Unit from './pages/Unit';
 import Header from './components/Header';
 import UserDashboard from './pages/UserDashboard';
+import Notfound from './views/Notfound';
+import UserApartment from './views/UserApartment';
 
 const ROLES = {
   Tenant: 2001,
@@ -39,7 +41,9 @@ function App() {
         <Route path="/inquire" element={<Inquiry />} />
         <Route path="/login" element={<Login />} />
         <Route exact path="/listings" element={<Listings />} />
-        <Route exact path="/unit" element={<Unit />} />
+        <Route exact path="/unit" element={<Unit />} >
+          <Route path=":id" element={<Unit />} />
+        </Route>
 
         {/*protected routes*/}
         <Route element={<PersistLogin />}>
@@ -51,11 +55,12 @@ function App() {
           <Route element={<RequireAuth allowedRoles={[ROLES.Tenant]} />}>
             <Route path="/tenant" element={<Tenant />} />
             <Route exact path="/user" element={<UserDashboard />} />
+            <Route exact path="/apartment" element={<UserApartment />} />
           </Route>
         </Route>
 
         {/*catch all*/}
-        <Route path="*" element={<Unauthorized />} />
+        <Route path="*" element={<Notfound />} />
       </Route>
     </Routes>
   );

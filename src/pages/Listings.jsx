@@ -1,14 +1,13 @@
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import React, { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import Transition from '../utils/Transition';
 import useLogout from "../hooks/useLogout";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import UserAvatar from '../images/user-avatar-32.png';
 
 function Listings() {
   const [units, setUnits] = useState();
+  const [search, setSearch] = useState('');
   const axiosPrivate = useAxiosPrivate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -47,16 +46,6 @@ function Listings() {
     navigate("/");
   };
 
-  // close on click outside
-  useEffect(() => {
-    const clickHandler = ({ target }) => {
-      if (!dropdownOpen || dropdown.current.contains(target) || trigger.current.contains(target)) return;
-      setDropdownOpen(false);
-    };
-    document.addEventListener('click', clickHandler);
-    return () => document.removeEventListener('click', clickHandler);
-  });
-
   // close if the esc key is pressed
   useEffect(() => {
     const keyHandler = ({ keyCode }) => {
@@ -71,85 +60,50 @@ function Listings() {
     <div className="px-4 sm:px-6 lg:px-8 py-5 w-full max-w-9xl mx-auto">
       <div className="flex flex-1 items-center justify-end md:justify-between">
         <h2 className="mb-7 font-extrabold text-3xl text-gray-800 md:text-5xl">
-          Apartments in Quiapo
+          Marlyn's Apartments
         </h2>
         <div className="relative inline-flex">
-          <button
+          <select
             ref={trigger}
-            className="inline-flex items-center px-4 py-3 text-gray-500 bg-gray-100 rounded-md hover:bg-gray-200 hover:text-gray-600"
+            aria-expanded={dropdownOpen}
+            className="inline-flex justify-start px-8 py-3 border-white text-gray-500 bg-gray-100 rounded-md hover:bg-gray-200 hover:text-gray-60 hover:border-gray-700 "
             aria-haspopup="true"
             onClick={() => setDropdownOpen(!dropdownOpen)}
-            aria-expanded={dropdownOpen}
+            onFocus={() => setDropdownOpen(true)}
+            onBlur={() => setDropdownOpen(false)}
+            onChange={(e) => setSearch(e.target.value)}
           >
-            <div className="flex items-center truncate">
-              <span className="truncate ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-500">Change Location</span>
-              <svg className="w-3 h-3 shrink-0 ml-5 fill-current text-slate-400" viewBox="0 0 12 12">
-                <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
-              </svg>
-            </div>
-          </button>
-
-          <Transition
-            className="origin-top-right z-10 absolute top-full right-0 min-w-44 bg-white border border-slate-200 py-1.5 rounded shadow-lg overflow-hidden mt-1"
-            show={dropdownOpen}
-            enter="transition ease-out duration-200 transform"
-            enterStart="opacity-0 -translate-y-2"
-            enterEnd="opacity-100 translate-y-0"
-            leave="transition ease-out duration-200"
-            leaveStart="opacity-100"
-            leaveEnd="opacity-0"
-          >
-            <div
-              ref={dropdown}
-              onFocus={() => setDropdownOpen(true)}
-              onBlur={() => setDropdownOpen(false)}
-            >
-              <ul>
-                <li>
-                  <Link
-                    className="font-medium text-sm text-indigo-500 hover:text-indigo-600 flex items-center py-1 px-3"
-                    to="/"
-                    onClick={() => setDropdownOpen(!dropdownOpen)}
-                  >
-                    Quiapo
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="font-medium text-sm text-indigo-500 hover:text-indigo-600 flex items-center py-1 px-3"
-                    to="/"
-                    onClick={() => setDropdownOpen(!dropdownOpen)}
-                  >
-                    Taguig
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="font-medium text-sm text-indigo-500 hover:text-indigo-600 flex items-center py-1 px-3"
-                    to="/"
-                    onClick={signOut}
-                  >
-                    Sampaloc
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </Transition>
+            <option value="">
+              All
+            </option>
+            <option value="quiapo">
+              Quiapo
+            </option>
+            <option value="taguig">
+              Taguig
+            </option>
+            <option value="sampaloc">
+              Sampaloc
+            </option>
+          </select>
         </div>
       </div>
       {units?.length ? ( // <li key={i}>{user?.username}</li>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full">
-          {units.map((unit, i) => (
-
+          {units.filter((unit) => {
+            /* if(unit.unitAvailability === true) */ return search.toLowerCase() === '' ? unit : unit.unitLocation.toLowerCase().includes(search);
+          }).map(filteredUnit => (
             <div class="relative mx-auto w-full">
-              <a
-                href="#"
+              <Link
+                to={`/unit?id=${filteredUnit._id}`}
                 class="relative inline-block duration-300 ease-in-out transition-transform transform hover:-translate-y-2 w-full"
               >
-                <div class="shadow p-4 rounded-lg bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
+                <div class="shadow p-4 rounded-lg bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out" >
                   <div class="flex justify-center relative rounded-lg overflow-hidden h-52">
                     <div class="transition-transform duration-500 transform ease-in-out hover:scale-110 w-full">
-                      <div class="absolute inset-0 bg-black opacity-10"></div>
+                      <div class="absolute inset-0 bg-black">
+                        <img src={filteredUnit.imagePath} alt="unit" className="object-fill h-full"/>
+                      </div>
                     </div>
 
                     <div class="absolute flex justify-center bottom-0 mb-3">
@@ -178,7 +132,7 @@ function Listings() {
                           >
                             <path d="M8.235 1.559a.5.5 0 0 0-.47 0l-7.5 4a.5.5 0 0 0 0 .882L3.188 8 .264 9.559a.5.5 0 0 0 0 .882l7.5 4a.5.5 0 0 0 .47 0l7.5-4a.5.5 0 0 0 0-.882L12.813 8l2.922-1.559a.5.5 0 0 0 0-.882l-7.5-4zm3.515 7.008L14.438 10 8 13.433 1.562 10 4.25 8.567l3.515 1.874a.5.5 0 0 0 .47 0l3.515-1.874zM8 9.433 1.562 6 8 2.567 14.438 6 8 9.433z" />
                           </svg>
-                          {unit?.unitFloor}
+                          {filteredUnit?.unitFloor}
                         </p>
 
                         <p class="flex items-center font-medium text-gray-800">
@@ -193,10 +147,11 @@ function Listings() {
                         </p>
                       </div>
                     </div>
-
-                    <span class="absolute top-0 left-0 inline-flex mt-3 ml-3 px-3 py-2 rounded-lg z-10 bg-lime-500 text-sm font-medium text-white select-none">
-                    {unit?.unitAvailability}
-                    </span>
+                    {
+                      filteredUnit?.unitAvailability === true
+                        ? <span class="absolute top-0 left-0 inline-flex mt-3 ml-3 px-3 py-2 rounded-lg z-10 bg-lime-500 text-sm font-medium text-white select-none">Available</span>
+                        : <span class="absolute top-0 left-0 inline-flex mt-3 ml-3 px-3 py-2 rounded-lg z-10 bg-red-500 text-sm font-medium text-white select-none">Occupied</span>
+                    }
                   </div>
 
                   <div class="mt-4">
@@ -204,14 +159,13 @@ function Listings() {
                       class="font-extrabold text-3xl md:text-5xl text-gray-700 line-clamp-1"
                       title="New York"
                     >
-                      {unit?.unitnumber}
+                      {filteredUnit?.unitnumber}
                     </h2>
                     <p
                       class="mt-2 text-sm text-gray-800 line-clamp-1"
                       title="New York, NY 10004, United States"
-                      key={i}
                     >
-                      {unit?.unitLocation}
+                      {filteredUnit?.unitLocation}
                     </p>
                   </div>
 
@@ -245,18 +199,18 @@ function Listings() {
                       >
                         <path d="M399.959 170.585c-4.686 4.686-4.686 12.284 0 16.971L451.887 239H60.113l51.928-51.444c4.686-4.686 4.686-12.284 0-16.971l-7.071-7.07c-4.686-4.686-12.284-4.686-16.97 0l-84.485 84c-4.686 4.686-4.686 12.284 0 16.971l84.485 84c4.686 4.686 12.284 4.686 16.97 0l7.071-7.07c4.686-4.686 4.686-12.284 0-16.971L60.113 273h391.773l-51.928 51.444c-4.686 4.686-4.686 12.284 0 16.971l7.071 7.07c4.686 4.686 12.284 4.686 16.97 0l84.485-84c4.687-4.686 4.687-12.284 0-16.971l-84.485-84c-4.686-4.686-12.284-4.686-16.97 0l-7.07 7.071z"></path>
                       </svg>
-                      <span class="mt-2 xl:mt-0">{unit?.unitSqm} sq m</span>
+                      <span class="mt-2 xl:mt-0">{filteredUnit?.unitSqm} sq m</span>
                     </p>
                   </div>
 
                   <div class="flex justify-end">
                     <p class="inline-block font-semibold text-primary whitespace-nowrap leading-tight rounded-xl">
                       <span class="text-sm uppercase">₱</span>
-                      <span class="text-lg">{unit?.unitPrice}</span>/m
+                      <span class="text-lg">{filteredUnit?.unitPrice}</span>/m
                     </p>
                   </div>
                 </div>
-              </a>
+              </Link>
             </div>
 
           ))}

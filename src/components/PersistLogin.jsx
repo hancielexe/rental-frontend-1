@@ -31,6 +31,7 @@ const PersistLogin = () => {
     console.log(`isLoading: ${isLoading}`);
     console.log(`aT: ${JSON.stringify(auth?.accessToken)}`);
     console.log(`User type: ${auth?.roles}`);
+    console.log(`User ID: ${auth?.userId}`);
   }, [isLoading]);
 
   return (

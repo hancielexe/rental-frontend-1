@@ -44,9 +44,11 @@ function Login() {
         }
       );
       console.log(JSON.stringify(response?.data));
+      const userId = response?.data?.userId;
       const accessToken = response?.data?.accessToken;
       const roles = response?.data?.roles;
-      setAuth({ user, pwd, roles, accessToken });
+      console.log(userId);
+      setAuth({ user, pwd, userId, roles, accessToken });
       resetUser(); //setUser("");
       setPwd("");
       navigate(from, { replace: true });

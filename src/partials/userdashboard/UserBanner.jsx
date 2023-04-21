@@ -1,6 +1,10 @@
 import React from 'react';
+import useAuth from '../../hooks/useAuth';
 
 function UserBanner() {
+
+    const { auth } = useAuth();
+
     return ( 
         <div className="relative bg-indigo-200 p-4 sm:p-6 rounded-sm overflow-hidden mb-8">
         {/* Background illustration */}
@@ -71,7 +75,7 @@ function UserBanner() {
           <h1 className="mb-1 font-extrabold text-3xl text-slate-900 md:text-5xl">
             Welcome, <br className="block md:hidden" />
             <span className="inline-flex h-20 pt-2 overflow-x-hidden animate-type group-hover:animate-type-reverse whitespace-nowrap text-brand-accent will-change-transform">
-              Hanciel! 👋
+              {auth?.user} 👋
             </span>
             <span className="box-border inline-block w-1 h-10 ml-2 -mb-2 bg-white md:-mb-4 md:h-16 animate-cursor will-change-transform"></span>
           </h1>
