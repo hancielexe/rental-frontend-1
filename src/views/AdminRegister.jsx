@@ -213,5 +213,5 @@ function AdminRegister () {
   );
 }
 
-export default AdminRegistration;
+export default AdminRegister;
 

@@ -22,6 +22,7 @@ import AdminRegister from './views/AdminRegister';
 import ChangePass from './views/ChangePass';
 import Maintenance from './views/Maintenance';
 import Complaint from './views/complaint';
+import MainteAdmin from './views/MainteAdmin';
 
 const ROLES = {
   Tenant: 2001,
@@ -55,8 +56,7 @@ function App() {
             <Route exact path="/admin" element={<Dashboard />} />
             <Route path="/register" element={<Register />} />
             <Route path="/adminregister" element={<AdminRegister />} />
-            <Route path="/complaint" element={<Complaint />} />
-            <Route path="/maintenance" element={<Maintenance />} />
+            <Route path="/mainteadmin" element={<MainteAdmin />} />
           </Route>
 
           <Route element={<RequireAuth allowedRoles={[ROLES.Tenant]} />}>
@@ -64,6 +64,8 @@ function App() {
             <Route exact path="/user" element={<UserDashboard />} />
             <Route exact path="/apartment" element={<UserApartment />} />
             <Route exact path="/changepass" element={<ChangePass />} />
+            <Route path="/complaint" element={<Complaint />} />
+            <Route path="/maintenance" element={<Maintenance />} />
           </Route>
         </Route>
 
