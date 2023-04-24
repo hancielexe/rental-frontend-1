@@ -810,14 +810,14 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
               {/* Maintenance */}
               <li
                 className={`px-3 py-2 rounded-sm mb-0.5 last:mb-0 duration-200 ${
-                  pathname.includes("maintenance") && "bg-slate-900"
+                  pathname.includes("mainteadmin") && "bg-slate-900"
                 }`}
               >
                 <NavLink
                   end
-                  to="/maintenance"
+                  to="/mainteadmin"
                   className={`block text-slate-200 truncate transition duration-150 ${
-                    pathname.includes("maintenance")
+                    pathname.includes("mainteadmin")
                       ? "hover:text-slate-200"
                       : "hover:text-white"
                   }`}
@@ -826,7 +826,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                     <svg className="shrink-0 h-6 w-6" viewBox="0 0 24 24">
                       <path
                         className={`fill-current ${
-                          pathname.includes("maintenance")
+                          pathname.includes("mainteadmin")
                             ? "text-indigo-500"
                             : "text-slate-600"
                         }`}
@@ -834,7 +834,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                       />
                       <path
                         className={`fill-current ${
-                          pathname.includes("maintenance")
+                          pathname.includes("mainteadmin")
                             ? "text-indigo-300"
                             : "text-slate-400"
                         }`}

@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from "react";
-import useAuth from "../hooks/useAuth";
 import UserSidebar from "../partials/UserSidebar";
 import UserHeader from "../partials/UserHeader";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
-import { useSearchParams } from "react-router-dom";
 
 function Maintenance() {
   const axiosPrivate = useAxiosPrivate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [units, setUnits] = useState();
-  const [searchParams, setSearchParams] = useSearchParams();
   const id = localStorage.getItem("userid");
 
   useEffect(() => {
