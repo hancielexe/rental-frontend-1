@@ -13,7 +13,7 @@ function Login() {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location?.state?.from?.pathname || "/user";
+  let from = location?.state?.from?.pathname || "/user";
 
   const userRef = useRef();
   const errRef = useRef();
@@ -47,10 +47,15 @@ function Login() {
       const userId = response?.data?.userId;
       const accessToken = response?.data?.accessToken;
       const roles = response?.data?.roles;
-      console.log(userId);
-      setAuth({ user, pwd, userId, roles, accessToken });
+      const unit = response?.data?.unit;
+
+      if (roles.includes(5150)) from = "/admin";
+
+      setAuth({ user, pwd, userId, roles, accessToken, unit });
+      localStorage.setItem("userid", userId);
       resetUser(); //setUser("");
       setPwd("");
+
       navigate(from, { replace: true });
     } catch (err) {
       if (!err?.response) {

@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import './css/style.css';
+import React, { useEffect } from "react";
+import "./css/style.css";
 import { Routes, Route, useLocation } from "react-router-dom";
 import Layout from "./components/Layout";
 import Landing from "./components/Landing";
@@ -11,17 +11,17 @@ import Inquiry from "./views/Inquiry";
 import Admin from "./views/Admin";
 import Tenant from "./views/Tenant";
 import Unauthorized from "./views/Unauthorized";
-import Dashboard from './pages/Dashboard';
-import Listings from './pages/Listings';
-import Unit from './pages/Unit';
-import Header from './components/Header';
-import UserDashboard from './pages/UserDashboard';
-import Notfound from './views/Notfound';
-import UserApartment from './views/UserApartment';
-import AdminRegister from './views/AdminRegister';
-import ChangePass from './views/ChangePass';
-import Maintenance from './views/Maintenance';
-import Complaint from './views/complaint';
+import Dashboard from "./pages/Dashboard";
+import Listings from "./pages/Listings";
+import Unit from "./pages/Unit";
+import Header from "./components/Header";
+import UserDashboard from "./pages/UserDashboard";
+import Notfound from "./views/Notfound";
+import UserApartment from "./views/UserApartment";
+import AdminRegister from "./views/AdminRegister";
+import ChangePass from "./views/ChangePass";
+import Maintenance from "./views/Maintenance";
+import Complaint from "./views/Complaint";
 
 const ROLES = {
   Tenant: 2001,
@@ -32,9 +32,9 @@ function App() {
   const location = useLocation();
 
   useEffect(() => {
-    document.querySelector('html').style.scrollBehavior = 'auto'
-    window.scroll({ top: 0 })
-    document.querySelector('html').style.scrollBehavior = ''
+    document.querySelector("html").style.scrollBehavior = "auto";
+    window.scroll({ top: 0 });
+    document.querySelector("html").style.scrollBehavior = "";
   }, [location.pathname]); // triggered on route change
 
   return (
@@ -45,7 +45,7 @@ function App() {
         <Route path="/inquire" element={<Inquiry />} />
         <Route path="/login" element={<Login />} />
         <Route exact path="/listings" element={<Listings />} />
-        <Route exact path="/unit" element={<Unit />} >
+        <Route exact path="/unit" element={<Unit />}>
           <Route path=":id" element={<Unit />} />
         </Route>
 
@@ -55,8 +55,6 @@ function App() {
             <Route exact path="/admin" element={<Dashboard />} />
             <Route path="/register" element={<Register />} />
             <Route path="/adminregister" element={<AdminRegister />} />
-            <Route path="/complaint" element={<Complaint />} />
-            <Route path="/maintenance" element={<Maintenance />} />
           </Route>
 
           <Route element={<RequireAuth allowedRoles={[ROLES.Tenant]} />}>
@@ -64,6 +62,8 @@ function App() {
             <Route exact path="/user" element={<UserDashboard />} />
             <Route exact path="/apartment" element={<UserApartment />} />
             <Route exact path="/changepass" element={<ChangePass />} />
+            <Route path="/maintenance" element={<Maintenance />} />
+            <Route path="/complaint" element={<Complaint />} />
           </Route>
         </Route>
 
