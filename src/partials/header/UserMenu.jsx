@@ -10,7 +10,6 @@ import UserAvatar from "../../images/user-avatar-32.png";
 function UserMenu() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const { auth } = useAuth();
-  const name = auth?.user;
 
   const trigger = useRef(null);
   const dropdown = useRef(null);
@@ -66,7 +65,7 @@ function UserMenu() {
         />
         <div className="flex items-center truncate">
           <span className="truncate ml-2 text-sm font-medium group-hover:text-slate-800">
-            {name}
+            {localStorage.getItem("user").replace(/"/g, "")}
           </span>
           <svg
             className="w-3 h-3 shrink-0 ml-1 fill-current text-slate-400"
@@ -93,7 +92,9 @@ function UserMenu() {
           onBlur={() => setDropdownOpen(false)}
         >
           <div className="pt-0.5 pb-2 px-3 mb-1 border-b border-slate-200">
-            <div className="font-medium text-slate-800">{auth?.user}</div>
+            <div className="font-medium text-slate-800">
+              {localStorage.getItem("user").replace(/"/g, "").toUpperCase()}
+            </div>
             <div className="text-xs text-slate-500 italic">Administrator</div>
           </div>
           <ul>
