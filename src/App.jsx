@@ -23,6 +23,8 @@ import ChangePass from "./views/ChangePass";
 import Maintenance from "./views/Maintenance";
 import Complaint from "./views/complaint";
 import MainteAdmin from "./views/MainteAdmin";
+import Sales from "./views/Sales";
+import SalesDetails from "./views/SalesDetails";
 
 const ROLES = {
   Tenant: 2001,
@@ -53,10 +55,12 @@ function App() {
         {/*protected routes*/}
         <Route element={<PersistLogin />}>
           <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
-            <Route exact path="/admin" element={<Dashboard />} />
+            <Route exact path="/dashboard" element={<Dashboard />} />
             <Route path="/register" element={<Register />} />
             <Route path="/adminregister" element={<AdminRegister />} />
             <Route path="/mainteadmin" element={<MainteAdmin />} />
+            <Route path="/finance/sales" element={<Sales />} />
+            <Route path="/finance/sales/details" element={<SalesDetails />} />
           </Route>
 
           <Route element={<RequireAuth allowedRoles={[ROLES.Tenant]} />}>

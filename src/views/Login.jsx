@@ -49,7 +49,7 @@ function Login() {
       const roles = response?.data?.roles;
       const unit = response?.data?.unit;
 
-      if (roles.includes(5150)) from = "/admin";
+      if (roles.includes(5150)) from = "/dashboard";
 
       setAuth({ user, pwd, userId, roles, accessToken, unit });
       localStorage.setItem("userid", userId);
