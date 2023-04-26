@@ -1,192 +1,261 @@
 import React from "react";
+import { useRef, useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import axios from "../api/axios";
+
+const INQ_URL = "/inquiry";
 
 function Inquiry() {
+  const purposeRef = useRef();
+  const nameRef = useRef();
+  const phonenoRef = useRef();
+  const emailRef = useRef();
+  const contactRef = useRef();
+  const contactTimeRef = useRef();
+  const questionsRef = useRef();
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  let from = location?.state?.from?.pathname || "/";
+
+  const [purpose, setPurpose] = useState("");
+  const [purposeFocus, setPurposeFocus] = useState(false);
+
+  const [name, setName] = useState("");
+  const [nameFocus, setNameFocus] = useState(false);
+
+  const [phoneno, setPhoneno] = useState("");
+  const [phonenoFocus, setPhonenoFocus] = useState(false);
+
+  const [email, setEmail] = useState("");
+  const [emailFocus, setEmailFocus] = useState(false);
+
+  const [contact, setContact] = useState("");
+  const [contactFocus, setContactFocus] = useState(false);
+
+  const [contactTime, setContactTime] = useState("");
+  const [contactTimeFocus, setContactTimeFocus] = useState(false);
+
+  const [questions, setQuestions] = useState("");
+  const [questionsFocus, setQuestionsFocus] = useState(false);
+
+  const [errMsg, setErrMsg] = useState("");
+  const [success, setSuccess] = useState(false);
+
+  useEffect(() => {
+    setErrMsg("");
+  }, [purpose, name, phoneno, email, contact, contactTime, questions]);
+
+  const errRef = useRef();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post(
+        INQ_URL,
+        JSON.stringify({
+          purpose,
+          name,
+          phoneno,
+          email,
+          contact,
+          contactTime,
+          questions,
+        }),
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      );
+      console.log("pogi");
+      console.log(response?.data);
+      console.log(JSON.stringify(response));
+      setSuccess(true);
+      //clear state and controlled inputs
+      //need value attrib on inputs for this
+      navigate(from, { replace: true });
+    } catch (err) {
+      if (!err?.response) {
+        setErrMsg("No Server Response");
+      } else if (err.response?.status === 409) {
+        setErrMsg("Username Taken");
+      } else {
+        setErrMsg("Please fill in all the required fields!");
+      }
+      errRef.current.focus();
+    }
+  };
+
   return (
-    <div>
-      <section class="">
-        <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
-          <div class="grid grid-cols-1 gap-x-16 gap-y-8">
-            <div class="rounded-lg bg-powderblue p-8 shadow-lg lg:col-span-3 lg:p-12">
-              <form action="" class="space-y-4">
-                <h2 class="text-3xl font-extrabold sm:text-4xl">
-                  Inquiry Form
-                </h2>
-                <p>We will get in touch with you shortly!</p>
-                <div>
-                  <label class="sr-only" for="name">
-                    Full Name
-                  </label>
-                  <input
-                    class="w-full rounded-lg border border-gray-200 p-3 text-sm"
-                    placeholder="Full Name"
-                    type="text"
-                    id="name"
-                  />
-                </div>
+    <div className="body-bg min-h-screen pt-1 md:pt-1 pb-6 px-2 md:px-0">
+      <main class="bg-white max-w-lg mx-auto p-8 md:p-12 my-10 rounded-lg shadow-2xl">
+        <section>
+          <h3 class="font-bold text-2xl text-gray-700">Inquiry Form</h3>
+          <p class="text-gray-400 pt-2 text-sm">
+            Ask and you shall receive. Submit your inquiry now.{" "}
+          </p>
+        </section>
 
-                <div class="grid grid-cols-2 gap-4 sm:grid-cols-2">
-                  <div>
-                    <label class="sr-only" for="email">
-                      Email
-                    </label>
-                    <input
-                      class="w-full rounded-lg border border-gray-200 p-3 text-sm"
-                      placeholder="Email address"
-                      type="email"
-                      id="email"
-                    />
-                  </div>
-
-                  <div>
-                    <label class="sr-only" for="phone">
-                      Phone
-                    </label>
-                    <input
-                      class="w-full rounded-lg border border-gray-200 p-3 text-sm"
-                      placeholder="Phone Number"
-                      type="tel"
-                      id="phone"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label class="sr-only" for="message">
-                    Message
-                  </label>
-                  <textarea
-                    class="w-full rounded-lg border border-gray-200 p-3 text-sm"
-                    placeholder="Message"
-                    rows="8"
-                    id="message"
-                  ></textarea>
-                </div>
-
-                <div class="mt-4">
-                  <button
-                    type="submit"
-                    class="inline-flex w-full items-center justify-center rounded-lg border-indigo-600 bg-indigo-600 hover:bg-indigo-700 hover:text-white px-5 py-3 text-white sm:w-auto"
-                  >
-                    <span class="font-medium"> Send Inquiry </span>
-
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="ml-3 h-5 w-5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M14 5l7 7m0 0l-7 7m7-7H3"
-                      />
-                    </svg>
-                  </button>
-                </div>
-              </form>
+        <section class="mt-10">
+          <p
+            ref={errRef}
+            className={errMsg ? "errmsg" : "offscreen"}
+            aria-live="assertive"
+          >
+            {errMsg}
+          </p>
+          <form class="flex flex-col" onSubmit={handleSubmit}>
+            <div class="mb-6 rounded">
+              <label class="block text-gray-700 text-sm font-bold mb-2 ml-1">
+                I want
+              </label>
+              <select
+                className="bg-gray-200 rounded w-full text-gray-600 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
+                ref={purposeRef}
+                onChange={(e) => setPurpose(e.target.value)}
+                onFocus={() => setPurposeFocus(true)}
+                onBlur={() => setPurposeFocus(false)}
+              >
+                <option selected value="">
+                  Select an Option
+                </option>
+                <option value="to view this property">
+                  to view this property
+                </option>
+                <option value="to ask for other details">
+                  to ask for other details
+                </option>
+                <option value="to check the availability">
+                  to check the availability
+                </option>
+              </select>
             </div>
-          </div>
-        </div>
-        <div class="max-w-screen-xl pt-2 pb-8 sm:px-6 bg-white">
-          <div class="border-t border-gray-100 mt-2 pt-2 sm:flex sm:items-center sm:justify-between">
-            <nav aria-label="Footer Navigation - Support">
-              <ul class="flex flex-wrap justify-center gap-4 text-xs lg:justify-end">
-                <li>
-                  <a href="#" class="text-gray-500 transition hover:opacity-75">
-                    Terms & Conditions
-                  </a>
-                </li>
 
-                <li>
-                  <a href="#" class="text-gray-500 transition hover:opacity-75">
-                    Privacy Policy
-                  </a>
-                </li>
+            <div class="mb-6 rounded">
+              <label class="block text-gray-700 text-sm font-bold mb-2 ml-1">
+                Your Name
+              </label>
+              <input
+                type="text"
+                id="name"
+                class="bg-gray-200 rounded w-full text-gray-700  focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
+                ref={nameRef}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                onFocus={() => setNameFocus(true)}
+                onBlur={() => setNameFocus(false)}
+                required
+              />
+            </div>
 
-                <li>
-                  <a href="#" class="text-gray-500 transition hover:opacity-75">
-                    Cookies
-                  </a>
-                </li>
+            <div class="mb-6 rounded">
+              <label class="block text-gray-700 text-sm font-bold mb-2 ml-1">
+                Your Phone Number
+              </label>
+              <input
+                type="text"
+                id="phonenum"
+                class="bg-gray-200 rounded w-full text-gray-700  focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
+                ref={phonenoRef}
+                value={phoneno}
+                onChange={(e) => setPhoneno(e.target.value)}
+                onFocus={() => setPhonenoFocus(true)}
+                onBlur={() => setPhonenoFocus(false)}
+                required
+              />
+            </div>
 
-                <li>© 2021 Aling Purring's</li>
-              </ul>
-            </nav>
+            <div class="mb-6 rounded">
+              <label class="block text-gray-700 text-sm font-bold mb-2 ml-1">
+                Your Email Address
+              </label>
+              <input
+                type="text"
+                id="email"
+                class="bg-gray-200 rounded w-full text-gray-700  focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
+                ref={emailRef}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                onFocus={() => setEmailFocus(true)}
+                onBlur={() => setEmailFocus(false)}
+                required
+              />
+            </div>
 
-            <ul class="flex justify-center gap-6 mt-8 sm:mt-0 lg:justify-end">
-              <li>
-                <a
-                  href="/"
-                  rel="noreferrer"
-                  target="_blank"
-                  class="text-gray-700 transition hover:opacity-75"
-                >
-                  <span class="sr-only">Facebook</span>
+            <div class="mb-6 rounded">
+              <label class="block text-gray-700 text-sm font-bold mb-2 ml-1">
+                I would like to be contacted by
+              </label>
+              <select
+                className="bg-gray-200 rounded w-full text-gray-600 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
+                ref={contactRef}
+                value={contact}
+                onChange={(e) => setContact(e.target.value)}
+                onFocus={() => setContactFocus(true)}
+                onBlur={() => setContactFocus(false)}
+              >
+                <option selected value="">
+                  Select an Option
+                </option>
+                <option value="Phone Number">Phone Number</option>
+                <option value="Email">Email</option>
+              </select>
+            </div>
 
-                  <svg
-                    class="w-6 h-6"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"
-                      clip-rule="evenodd"
-                    />
-                  </svg>
-                </a>
-              </li>
+            <div class="mb-6 rounded">
+              <label class="block text-gray-700 text-sm font-bold mb-2 ml-1">
+                I want to be contacted
+              </label>
+              <select
+                className="bg-gray-200 rounded w-full text-gray-600 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
+                ref={contactTimeRef}
+                value={contactTime}
+                onChange={(e) => setContactTime(e.target.value)}
+                onFocus={() => setContactTimeFocus(true)}
+                onBlur={() => setContactTimeFocus(false)}
+              >
+                <option selected value="">
+                  Select an Option
+                </option>
+                <option value="Anytime">Anytime</option>
+                <option value="In the morning (8am-11am)">
+                  In the morning (8am-11am)
+                </option>
+                <option value="In the afternoon (1pm-5pm)">
+                  In the afternoon (1pm-5pm)
+                </option>
+                <option value="At night (6pm-10pm)">At night (6pm-10pm)</option>
+              </select>
+            </div>
 
-              <li>
-                <a
-                  href="/"
-                  rel="noreferrer"
-                  target="_blank"
-                  class="text-gray-700 transition hover:opacity-75"
-                >
-                  <span class="sr-only">Instagram</span>
+            <div class="mb-10">
+              <label class="block text-gray-700 text-sm font-bold mb-2 ml-1">
+                I have the following additional questions (Optional)
+              </label>
 
-                  <svg
-                    class="w-6 h-6"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"
-                      clip-rule="evenodd"
-                    />
-                  </svg>
-                </a>
-              </li>
+              <textarea
+                className="bg-gray-200 rounded w-full text-gray-600 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
+                placeholder="Others"
+                ref={questionsRef}
+                value={questions}
+                onChange={(e) => setQuestions(e.target.value)}
+                onFocus={() => setQuestionsFocus(true)}
+                onBlur={() => setQuestionsFocus(false)}
+                rows="4"
+                id="others"
+              ></textarea>
+            </div>
 
-              <li>
-                <a
-                  href="/"
-                  rel="noreferrer"
-                  target="_blank"
-                  class="text-gray-700 transition hover:opacity-75"
-                >
-                  <span class="sr-only">Twitter</span>
-
-                  <svg
-                    class="w-6 h-6"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
-                    <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
-                  </svg>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </section>
+            <button
+              class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200"
+              type="submit"
+            >
+              Sign In
+            </button>
+          </form>
+        </section>
+      </main>
     </div>
   );
 }
