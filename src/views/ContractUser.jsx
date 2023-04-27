@@ -1,6 +1,6 @@
 import React from "react";
 
-function Contract() {
+function ContractUser() {
   return (
    
 <section className="bg-gray-100">
@@ -134,4 +134,4 @@ function Contract() {
   );
 }
 
-export default Contract;
+export default ContractUser;
