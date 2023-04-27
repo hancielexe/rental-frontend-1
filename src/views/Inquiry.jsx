@@ -6,6 +6,9 @@ import axios from "../api/axios";
 const INQ_URL = "/inquiry";
 
 function Inquiry() {
+
+  const [showModal, setShowModal] = useState(false);
+
   const purposeRef = useRef();
   const nameRef = useRef();
   const phonenoRef = useRef();
@@ -247,12 +250,48 @@ function Inquiry() {
               ></textarea>
             </div>
 
+            <>
+         
             <button
               class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200"
               type="submit"
+              onClick={() => setShowModal(true)}
             >
-              Sign In
-            </button>
+                Send Inquiry 
+                </button>
+                
+                {showModal ? (
+                <>
+                <div className="fixed inset-0 z-10">
+                <div
+                    className="fixed inset-0 w-full h-full bg-black opacity-40"
+                    onClick={() => setShowModal(false)}
+                ></div>
+                <div className="flex items-start min-h-screen px-8 py-12 ">
+                    <div className="relative w-full max-w-lg p-8 mx-auto bg-white rounded-md shadow-lg">
+                        <div className="sm:flex">
+                            
+                                <p className="sm:flex text-xl leading-relaxed text-gray-500 ">
+                                    Your inquiry is sent!
+
+                                </p>
+
+                                <button
+                                                className="w-full mt-20 p-1 flex-1 bg-gray-400 text-black-8900 rounded-sm outline-none border ring-offset-1 ring-gray-600 focus:ring-1"
+                                                onClick={() =>
+                                                    setShowModal(false)
+                                                }
+                                            >                                           
+                                                Close
+                                            </button>
+                                
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </>
+                ) : null}
+                </>
           </form>
         </section>
       </main>

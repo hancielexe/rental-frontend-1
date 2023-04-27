@@ -25,6 +25,7 @@ import Complaint from "./views/complaint";
 import MainteAdmin from "./views/MainteAdmin";
 import Sales from "./views/Sales";
 import SalesDetails from "./views/SalesDetails";
+import Contract from "./views/Contract";
 
 const ROLES = {
   Tenant: 2001,
@@ -70,6 +71,7 @@ function App() {
             <Route exact path="/changepass" element={<ChangePass />} />
             <Route path="/maintenance" element={<Maintenance />} />
             <Route path="/complaint" element={<Complaint />} />
+            <Route path="/contract" element={<Contract />} />
           </Route>
         </Route>
 
