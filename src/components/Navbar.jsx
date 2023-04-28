@@ -27,9 +27,11 @@ function Navbar() {
               </li>
 
               <li>
+              
                 <a class="text-black transition hover:text-black/75" href="/">
                   Contact
                 </a>
+               
               </li>
 
               <li>
@@ -41,7 +43,7 @@ function Navbar() {
               <li>
                 <a class="text-black transition hover:text-black/75" href="/">
                   Help
-                </a>
+                </a>            
               </li>
             </ul>
           </nav>

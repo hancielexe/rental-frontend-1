@@ -25,6 +25,7 @@ import Complaint from "./views/complaint";
 import MainteAdmin from "./views/MainteAdmin";
 import Sales from "./views/Sales";
 import SalesDetails from "./views/SalesDetails";
+import ContractUser from "./views/ContractUser";
 import Registry from "./views/Registry";
 import Profile from "./views/Profile";
 
@@ -73,6 +74,7 @@ function App() {
             <Route exact path="/changepass" element={<ChangePass />} />
             <Route path="/maintenance" element={<Maintenance />} />
             <Route path="/complaint" element={<Complaint />} />
+            <Route path="/contractuser" element={<ContractUser />} />
             <Route path="/profile" element={<Profile />} />
           </Route>
         </Route>
