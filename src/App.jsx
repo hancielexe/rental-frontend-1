@@ -26,6 +26,8 @@ import MainteAdmin from "./views/MainteAdmin";
 import Sales from "./views/Sales";
 import SalesDetails from "./views/SalesDetails";
 import ContractUser from "./views/ContractUser";
+import Registry from "./views/Registry";
+import Profile from "./views/Profile";
 
 const ROLES = {
   Tenant: 2001,
@@ -62,6 +64,7 @@ function App() {
             <Route path="/mainteadmin" element={<MainteAdmin />} />
             <Route path="/finance/sales" element={<Sales />} />
             <Route path="/finance/sales/details" element={<SalesDetails />} />
+            <Route path="/registry" element={<Registry />} />
           </Route>
 
           <Route element={<RequireAuth allowedRoles={[ROLES.Tenant]} />}>
@@ -72,6 +75,7 @@ function App() {
             <Route path="/maintenance" element={<Maintenance />} />
             <Route path="/complaint" element={<Complaint />} />
             <Route path="/contractuser" element={<ContractUser />} />
+            <Route path="/profile" element={<Profile />} />
           </Route>
         </Route>
 
