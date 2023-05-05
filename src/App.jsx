@@ -28,6 +28,7 @@ import SalesDetails from "./views/SalesDetails";
 import ContractUser from "./views/ContractUser";
 import Registry from "./views/Registry";
 import Profile from "./views/Profile";
+import TenantIn_Out from "./views/TenantIn_Out";
 
 const ROLES = {
   Tenant: 2001,
@@ -65,6 +66,7 @@ function App() {
             <Route path="/finance/sales" element={<Sales />} />
             <Route path="/finance/sales/details" element={<SalesDetails />} />
             <Route path="/registry" element={<Registry />} />
+            <Route path="/tenantin_out" element={<TenantIn_Out />} />
           </Route>
 
           <Route element={<RequireAuth allowedRoles={[ROLES.Tenant]} />}>
