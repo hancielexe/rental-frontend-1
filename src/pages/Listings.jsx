@@ -102,7 +102,7 @@ function Listings() {
                           <img
                             src={filteredUnit.imagePath}
                             alt="unit"
-                            className="object-fill h-full"
+                            className="object-fill h-full w-full"
                           />
                         </div>
                       </div>

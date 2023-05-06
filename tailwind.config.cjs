@@ -62,7 +62,7 @@ module.exports = {
         'powderblue': '#A8DADC'
       },
       backgroundImage: {
-        'image': "url('./assets/listing1.png')",
+        'image': "url('./assets/landing-bg.png')",
         'card1': "url('./assets/listing2.png')",
         'card2': "url('./assets/listing3.png')",
         'card3': "url('./assets/listing4.png')"
