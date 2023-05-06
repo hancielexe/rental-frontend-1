@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Footer() {
   return (
@@ -14,12 +15,13 @@ function Footer() {
             maiores ipsum eos temporibus ea nihil.
           </p>
 
-          <a
-            href="#"
+          <Link
+            end
+            to="/listings"
             class="inline-block px-12 py-3 mt-8 text-sm font-medium text-indigo-600 border border-indigo-600 rounded-full hover:bg-indigo-600 hover:text-white focus:outline-none focus:ring active:bg-indigo-500"
           >
-            Get Started
-          </a>
+            See Listings
+          </Link>
         </div>
 
         <div class="pt-8 mt-16 border-t border-gray-100 sm:flex sm:items-center sm:justify-between lg:mt-24">
