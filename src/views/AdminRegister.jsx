@@ -1,6 +1,6 @@
 import React from "react";
 import { useRef, useState, useEffect } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import axios from "../api/axios";
 import Sidebar from "../partials/Sidebar";
 import Header from "../partials/Header";
@@ -50,6 +50,10 @@ function AdminRegister() {
   const [showModal, setShowModal] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  const [units, setUnits] = useState("");
+  const [unit, setUnit] = useState("");
+  const axiosPrivate = useAxiosPrivate();
+
   useEffect(() => {
     const result = USER_REGEX.test(user);
     setValidName(result);
@@ -67,6 +71,35 @@ function AdminRegister() {
     setErrMsg("");
   }, [user, pwd, matchPwd]);
 
+  useEffect(() => {
+    console.log(unit);
+  }, [unit]);
+
+  //get all units
+  useEffect(() => {
+    let isMounted = true;
+    const controller = new AbortController();
+
+    const getUnits = async () => {
+      try {
+        const response = await axiosPrivate.get(`/units`, {
+          signal: controller.signal,
+        });
+        console.log(response.data);
+        isMounted && setUnits(response.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    getUnits();
+
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     // if button enabled with JS hack
@@ -79,7 +112,17 @@ function AdminRegister() {
     try {
       const response = await axios.post(
         REGISTER_URL,
-        JSON.stringify({ user, pwd, phone, occ, email, add, fname, lname }),
+        JSON.stringify({
+          user,
+          pwd,
+          phone,
+          occ,
+          email,
+          add,
+          fname,
+          lname,
+          unit,
+        }),
         {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
@@ -207,7 +250,7 @@ function AdminRegister() {
 
                   <input
                     class="w-full rounded-lg border-gray-200 p-3 text-sm"
-                    type="number"
+                    type="text"
                     id="phonenumber"
                     autoComplete="off"
                     onChange={(e) => setPhone(e.target.value)}
@@ -375,6 +418,36 @@ function AdminRegister() {
                   </p>
                 </div>
 
+                <div className="col-span-6 sm:col-span-3">
+                  <label
+                    for="Unit"
+                    class="block text-sm font-medium text-cyan-700"
+                  >
+                    Select Unit
+                  </label>
+                  {units?.length ? (
+                    <select
+                      class="w-full rounded-lg border-gray-200 p-3 text-sm"
+                      required
+                      onChange={(e) => setUnit(e.target.value)}
+                    >
+                      {units
+                        .filter((unit) => {
+                          if (unit.unitAvailability === true) return unit;
+                        })
+                        .map((filteredUnit) => (
+                          <option value={filteredUnit._id}>
+                            {filteredUnit.unitName}
+                          </option>
+                        ))}
+                    </select>
+                  ) : (
+                    <select class="w-full rounded-lg border-gray-200 p-3 text-sm">
+                      <option value=""></option>
+                    </select>
+                  )}
+                </div>
+
                 <div className="col-span-6 sm:col-span-4">
                   <div className="col-span-6 sm:col-span-4">
                     <label
@@ -398,7 +471,7 @@ function AdminRegister() {
                 <div className="col-span-6 sm:col-span-6 sm:flex sm:items-end sm:gap-4 flex justify-end">
                   <button
                     className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500"
-                    type="button"
+                    type="submit"
                   >
                     Create Account
                   </button>
