@@ -102,7 +102,7 @@ function Listings() {
                           <img
                             src={filteredUnit.imagePath}
                             alt="unit"
-                            className="object-fill h-full"
+                            className="object-fill h-full w-full"
                           />
                         </div>
                       </div>
@@ -222,7 +222,7 @@ function Listings() {
             ))}
         </div>
       ) : (
-        <p>No users to display!</p>
+        <p>Loading...</p>
       )}
     </div>
   );

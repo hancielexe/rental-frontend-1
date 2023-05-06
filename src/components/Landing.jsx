@@ -43,36 +43,6 @@ function Landing() {
                 </a>
               </Link>
             </div>
-
-            <div class="grid grid-cols-2 gap-4 sm:grid-cols-3">
-              <Link
-                to="/listings"
-                class="h-60 bg-card1 bg-cover block rounded-xl border border-gray-100 p-4 shadow-sm hover:border-gray-200 hover:ring-1 hover:ring-gray-200 focus:outline-none focus:ring"
-                href="/accountant"
-              >
-                <h2 class="mt-2 text-white font-bold text-3xl">
-                  Sampaloc, Manila
-                </h2>
-              </Link>
-
-              <Link
-                to="/listings"
-                class="h-60 bg-card2 bg-cover block rounded-xl border border-gray-100 p-4 shadow-sm hover:border-gray-200 hover:ring-1 hover:ring-gray-200 focus:outline-none focus:ring"
-                href="/accountant"
-              >
-                <h2 class="text-white mt-2 font-bold text-3xl">
-                  Quiapo, Manila
-                </h2>
-              </Link>
-
-              <Link
-                to="/listings"
-                class="h-60 bg-card3 bg-cover block rounded-xl border border-gray-100 p-4 shadow-sm hover:border-gray-200 hover:ring-1 hover:ring-gray-200 focus:outline-none focus:ring"
-                href="/accountant"
-              >
-                <h2 class="text-white mt-2 font-bold text-3xl">Taguig</h2>
-              </Link>
-            </div>
           </div>
         </div>
       </section>
