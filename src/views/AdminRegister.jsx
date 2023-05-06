@@ -395,13 +395,48 @@ function AdminRegister() {
                   </div>
                 </div>
 
-                <div className="col-span-6 sm:col-span-6 sm:flex sm:items-end sm:gap-4 flex justify-end">
-                  <button
-                    className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500"
-                    type="button"
-                  >
-                    Create Account
-                  </button>
+            <div className="col-span-6 sm:col-span-6 sm:flex sm:items-end sm:gap-4 flex justify-end">
+          <>
+            <button
+              class="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500"
+              type="submit"
+              onClick={() => setShowModal(true)}
+            >
+                Send Registration 
+                </button>
+                
+                {showModal ? (
+                <>
+                <div className="fixed inset-0 z-10">
+                <div
+                    className="fixed inset-0 w-full h-full bg-black opacity-40"
+                    onClick={() => setShowModal(false)}
+                ></div>
+                <div className="flex items-start min-h-screen px-8 py-12 ">
+                    <div className="relative w-full max-w-lg p-8 mx-auto bg-white rounded-md shadow-lg">
+                        <div className="sm:flex">
+                            
+                                <p className="sm:flex text-xl leading-relaxed text-gray-500 ">
+                                    Your registration is successfully created!
+
+                                </p>
+
+                                <button
+                                                className="w-full mt-20 p-1 flex-1 bg-gray-400 text-black-8900 rounded-sm outline-none border ring-offset-1 ring-gray-600 focus:ring-1"
+                                                onClick={() =>
+                                                    setShowModal(false)
+                                                }
+                                            >                                           
+                                                Close
+                                            </button>
+                                
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+              </>
+                ) : null}
+            </>
                 </div>
               </form>
             </div>
