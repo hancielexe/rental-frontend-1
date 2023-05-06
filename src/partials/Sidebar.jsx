@@ -812,7 +812,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
               >
                 <NavLink
                   end
-                  to="/inbox"
+                  to="/tenantin_out"
                   className={`block text-slate-200 truncate transition duration-150 ${
                     pathname.includes("inbox")
                       ? "hover:text-slate-200"
