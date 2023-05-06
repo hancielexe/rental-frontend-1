@@ -55,6 +55,7 @@ function Unit() {
                                             <img src = "./src/assets/QR1.png" className="w-40 h-40"/>
                                         </div>
                                        </div>*/}
+<<<<<<< HEAD
                   <div className="group relative">
                     <button class="group relative h-12 w-48 group-hover:visible invisible overflow-hidden rounded-lg bg-white text-lg shadow" >
                       <Link
@@ -70,6 +71,10 @@ function Unit() {
                       width={365}
                     />
 
+=======
+                  <div className="relative">
+                    <img src="./assets/QR1.png" className="mx-20" width={365} />
+>>>>>>> f317013ea04621601673d484c48682c718ec7b31
                     <img
                       className="group absolute top-0 left-0 rounded-lg group-hover:opacity-25 transition-opacity duration-1000 ease-out group-hover:hidden w-150 h-180"
                       src={units.imagePath}
@@ -388,7 +393,7 @@ function Unit() {
               </div>
             </div>
           ) : (
-            <p>No users to display!</p>
+            <p>Loading...</p>
           )}
         </div>
       </section>
