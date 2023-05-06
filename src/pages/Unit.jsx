@@ -56,11 +56,7 @@ function Unit() {
                                         </div>
                                        </div>*/}
                   <div className="relative">
-                    <img
-                      src="./src/assets/QR1.png"
-                      className="mx-20"
-                      width={365}
-                    />
+                    <img src="./assets/QR1.png" className="mx-20" width={365} />
                     <img
                       className="absolute top-0 left-0 rounded-lg hover:opacity-25 transition-opacity duration-1000 ease-out w-150 h-180"
                       src={units.imagePath}
@@ -379,7 +375,7 @@ function Unit() {
               </div>
             </div>
           ) : (
-            <p>No users to display!</p>
+            <p>Loading...</p>
           )}
         </div>
       </section>

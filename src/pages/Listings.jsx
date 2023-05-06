@@ -222,7 +222,7 @@ function Listings() {
             ))}
         </div>
       ) : (
-        <p>No users to display!</p>
+        <p>Loading...</p>
       )}
     </div>
   );
