@@ -154,12 +154,10 @@ function UserSidebar({ sidebarOpen, setSidebarOpen }) {
             </h3>
             <ul className="mt-3">
               {/* Dashboard */}
-              <SidebarLinkGroup
-                activecondition={pathname === "/" || pathname.includes("user")}
+              <li
+                className={`px-3 py-2 rounded-sm mb-0.5 last:mb-0 duration-200 ${pathname.includes("user") && "bg-slate-900"
+                  }`}
               >
-                {(handleClick, open) => {
-                  return (
-                    <React.Fragment>
                       <NavLink
                         end
                         to="/user"
@@ -206,10 +204,8 @@ function UserSidebar({ sidebarOpen, setSidebarOpen }) {
                           </div>
                         </div>
                       </NavLink>
-                    </React.Fragment>
-                  );
-                }}
-              </SidebarLinkGroup>
+                    </li>
+                  
               {/* Profile */}
               <li
                 className={`px-3 py-2 rounded-sm mb-0.5 last:mb-0 duration-200 ${
