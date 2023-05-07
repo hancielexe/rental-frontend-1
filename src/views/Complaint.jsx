@@ -4,6 +4,9 @@ import UserHeader from "../partials/UserHeader";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 function Complaint() {
+
+  const [showModal, setShowModal] = useState(false);
+
   const axiosPrivate = useAxiosPrivate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [units, setUnits] = useState();
@@ -94,14 +97,47 @@ function Complaint() {
                       ></textarea>
                     </div>
 
-                    <div className="mt-4">
-                      <button
-                        type="submit"
-                        className="inline-block w-full rounded-lg bg-indigo-600 px-5 py-3 font-medium text-white sm:w-auto"
-                      >
-                        Send
-                      </button>
+        <>
+            <button
+              class="inline-block w-full rounded-lg bg-indigo-600 px-5 py-3 font-medium text-white sm:w-auto"
+              type="submit"
+              onClick={() => setShowModal(true)}
+            >
+                Send  
+                </button>
+                
+                {showModal ? (
+                <>
+                <div className="fixed inset-0 z-10">
+                <div
+                    className="fixed inset-0 w-full h-full bg-black opacity-40"
+                    onClick={() => setShowModal(false)}
+                ></div>
+                <div className="flex items-start min-h-screen px-8 py-12 ">
+                    <div className="relative w-full max-w-lg p-8 mx-auto bg-white rounded-md shadow-lg">
+                        <div className="sm:flex">
+                            
+                                <p className="sm:flex text-xl leading-relaxed text-gray-500 ">
+                                    Your complaint is submitted!
+
+                                </p>
+
+                                <button
+                                                className="w-full mt-20 p-1 flex-1 bg-gray-400 text-black-8900 rounded-sm outline-none border ring-offset-1 ring-gray-600 focus:ring-1"
+                                                onClick={() =>
+                                                    setShowModal(false)
+                                                }
+                                            >                                           
+                                                Close
+                                            </button>
+                                
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                </>
+                ) : null}
+        </>
                   </div>
                 </form>
               </div>
