@@ -2,6 +2,7 @@ import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import React, { useState, useRef, useEffect } from "react";
 import useLogout from "../hooks/useLogout";
 import { Link, useNavigate } from "react-router-dom";
+import Loading from "../components/Loading";
 
 import UserAvatar from "../images/user-avatar-32.png";
 
@@ -66,7 +67,7 @@ function Listings() {
           <select
             ref={trigger}
             aria-expanded={dropdownOpen}
-            className="inline-flex justify-start px-8 py-3 border-white text-gray-500 bg-gray-100 rounded-md hover:bg-gray-200 hover:text-gray-60 hover:border-gray-700 "
+            className="inline-flex justify-start pr-10 py-3 border-white text-gray-500 bg-gray-100 rounded-md hover:bg-gray-200 hover:text-gray-60 hover:border-gray-700 "
             aria-haspopup="true"
             onClick={() => setDropdownOpen(!dropdownOpen)}
             onFocus={() => setDropdownOpen(true)}
@@ -222,7 +223,7 @@ function Listings() {
             ))}
         </div>
       ) : (
-        <p>Loading...</p>
+        <Loading />
       )}
     </div>
   );

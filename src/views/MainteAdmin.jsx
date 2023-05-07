@@ -41,6 +41,11 @@ function MainteAdmin() {
         {/*  Site header */}
         <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
         <div className="mx-6">
+          <div className="max-w-xl mt-4">
+            <h1 className="text-4xl font-extrabold px-5 text-transparent bg-clip-text bg-gradient-to-l from-indigo-800 via-blue-700 to-sky-600">
+              Maintenance
+            </h1>
+          </div>
           <table className="min-w-full mt-7 divide-y-2 divide-gray-200 text-sm">
             <thead className="ltr:text-left rtl:text-right bg-indigo-500 tracking-widest font-mono-bold">
               <tr>

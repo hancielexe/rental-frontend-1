@@ -4,6 +4,7 @@ import UserSidebar from "../partials/UserSidebar";
 import UserHeader from "../partials/UserHeader";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { useSearchParams } from "react-router-dom";
+import Loading from "../components/Loading";
 
 function UserApartment() {
   const { auth } = useAuth();
@@ -50,7 +51,7 @@ function UserApartment() {
             <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto bg-gray-100">
               <div class="px-12 h-90">
                 <div class="relative">
-                  <ul class="bg-white absolute left-0 right-0 -bottom-18 p-3 border-gray-200 rounded-lg sm:flex-row flex-col shadow-xl transition-shadow hover:shadow-lg sm:p-6 lg:p-10">
+                  <ul class="bg-white absolute left-0 right-0 p-3 border-gray-200 rounded-lg sm:flex-row shadow-xl transition-shadow hover:shadow-lg sm:p-6 lg:p-10">
                     <li class="text-2xl text-gray-700 font-bold border-b border-gray border-solid py-5 px-5 mb-2 -mt-3">
                       Apartment Information
                     </li>
@@ -347,7 +348,7 @@ function UserApartment() {
             </div>
           </main>
         ) : (
-          <p>Loading...</p>
+          <Loading />
         )}
       </div>
     </div>

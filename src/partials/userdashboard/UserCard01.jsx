@@ -1,12 +1,12 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import EditMenu from "../EditMenu";
 
 function UserCard01() {
   return (
-    <div class="p-5 bg-white flex items-center mx-auto border-b  mb-10 border-gray-200 rounded-lg sm:flex-row flex-col shadow-xl transition-shadow hover:shadow-lg sm:p-6 lg:p-10">
-      <div class="sm:w-32 sm:h-32 h-20 w-20 sm:mr-10 inline-flex items-center justify-center flex-shrink-0">
-        <img class="object-contain w-full" src="./assets/unit1.png" alt="" />
+    <div class="p-5 bg-white flex items-center mx-auto border-b mb-10 border-gray-200 rounded-lg sm:flex-row flex-col shadow-xl transition-shadow hover:shadow-lg sm:p-6 lg:p-10">
+      <div class="m:w-32 sm:h-52 sm:mr-10 inline-flex items-center justify-center flex-shrink-0">
+        <img class="border rounded-lg object-fill h-full w-full" src="./assets/q1-apt3-landsc2.png" alt="" />
       </div>
       <div class="flex-grow sm:text-left text-center mt-6 sm:mt-0">
         <h1 class="text-black text-2xl title-font font-bold mb-2">
@@ -135,20 +135,18 @@ function UserCard01() {
             </div>
           </div>
         </div>
-        <a class="mt-3 text-indigo-500 inline-flex items-center">
-          View Details
-          <svg
-            fill="none"
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            class="w-4 h-4 ml-2 hover:translate-x-3"
-            viewBox="0 0 24 24"
-          >
-            <path d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-          </svg>
-        </a>
+        <NavLink
+          end
+          to="/apartment">
+          <button class="group flex bg-transparent text-m font-semibold text-white">
+            <span class="relative mt-2 pr-4 pb-1 text-indigo-500 after:transition-transform after:duration-500 after:ease-out after:absolute after:bottom-0 after:left-0 after:block after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-indigo-400 after:content-[''] after:group-hover:origin-bottom-left after:group-hover:scale-x-100">
+              View Details</span>
+            <svg viewBox="0 0 46 16" height="10" width="20" xmlns="http://www.w3.org/2000/svg" id="arrow-horizontal" class="mt-4 -translate-x-2 fill-indigo-500 transition-all duration-300 ease-out group-hover:translate-x-1 group-hover:scale-x-105 group-hover:fill-white">
+              <path transform="translate(30)" d="M8,0,6.545,1.455l5.506,5.506H-30V9.039H12.052L6.545,14.545,8,16l8-8Z" data-name="Path 10" id="Path_10"></path>
+            </svg>
+          </button>
+
+        </NavLink>
       </div>
     </div>
   );

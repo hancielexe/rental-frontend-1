@@ -29,6 +29,8 @@ import ContractUser from "./views/ContractUser";
 import Registry from "./views/Registry";
 import Profile from "./views/Profile";
 import TenantIn_Out from "./views/TenantIn_Out";
+import ComplaintAdmin from "./views/ComplaintAdmin";
+import Expenses from "./views/Expenses";
 
 const ROLES = {
   Tenant: 2001,
@@ -63,8 +65,10 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/adminregister" element={<AdminRegister />} />
             <Route path="/mainteadmin" element={<MainteAdmin />} />
+            <Route path="/complaintadmin" element={<ComplaintAdmin />} />
             <Route path="/finance/sales" element={<Sales />} />
             <Route path="/finance/sales/details" element={<SalesDetails />} />
+            <Route path="/finance/expenses" element={<Expenses />} />
             <Route path="/registry" element={<Registry />} />
             <Route path="/tenantin_out" element={<TenantIn_Out />} />
           </Route>
