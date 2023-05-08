@@ -45,11 +45,11 @@ function TenantIn_Out() {
         <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
         <div className="col-span-6 sm:col-span-4">
           <div className="max-w-xl mt-4">
-            <h1 className="text-4xl mb-5 ml-2 font-extrabold px-5 text-transparent bg-clip-text bg-gradient-to-l from-indigo-800 via-blue-700 to-sky-600">
+            <h1 className="text-4xl mb-5 ml-14 font-extrabold px-5 text-transparent bg-clip-text bg-gradient-to-l from-indigo-800 via-blue-700 to-sky-600">
               Tenant In and Out Status
             </h1>
           </div>
-          <div className="relative w-full lg:max-w-sm mb-2 px-8">
+          <div className="relative w-full lg:max-w-sm mb-10 ml-12 px-8">
             <select className="w-full p-2.5 text-gray-500 bg-white border border-zinc-300 rounded-md appearance-none focus:border-indigo-600">
               <option selected class="text-start">
                 Select Username
@@ -57,52 +57,6 @@ function TenantIn_Out() {
               <option>Hansen</option>
               <option>Hehenciel</option>
             </select>
-          </div>
-
-          <div className="relative mx-80 align-middle mb-10">
-            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-              <thead className="text-xs text-gray-700 uppercase dark:text-gray-400">
-                <tr>
-                  <th scope="col" className="px-6 py-3">
-                    Username
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Status
-                  </th>
-                </tr>
-              </thead>
-              <tbody class="shadow-md hover:shadow-sm">
-                <tr className="bg-white ">
-                  <th
-                    scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-gray"
-                  >
-                    Hansen
-                  </th>
-                  <td class="px-6 py-4">
-                    <span class="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-600">
-                      <span class="h-1.5 w-1.5 rounded-full bg-green-600"></span>
-                      Active
-                    </span>
-                  </td>
-                </tr>
-
-                <tr className="bg-white ">
-                  <th
-                    scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-gray"
-                  >
-                    Hehenciel
-                  </th>
-                  <td class="px-6 py-4">
-                    <span class="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-600">
-                      <span class="h-1.5 w-1.5 rounded-full bg-green-600"></span>
-                      Active
-                    </span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
           </div>
 
           {/* Tenant In/ Out */}

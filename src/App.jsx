@@ -23,7 +23,6 @@ import ChangePass from "./views/ChangePass";
 import Maintenance from "./views/Maintenance";
 import Complaint from "./views/complaint";
 import MainteAdmin from "./views/MainteAdmin";
-import Sales from "./views/Sales";
 import SalesDetails from "./views/SalesDetails";
 import ContractUser from "./views/ContractUser";
 import Registry from "./views/Registry";
@@ -66,8 +65,7 @@ function App() {
             <Route path="/adminregister" element={<AdminRegister />} />
             <Route path="/mainteadmin" element={<MainteAdmin />} />
             <Route path="/complaintadmin" element={<ComplaintAdmin />} />
-            <Route path="/finance/sales" element={<Sales />} />
-            <Route path="/finance/sales/details" element={<SalesDetails />} />
+            <Route path="/finance/sales" element={<SalesDetails />} />
             <Route path="/finance/expenses" element={<Expenses />} />
             <Route path="/registry" element={<Registry />} />
             <Route path="/tenantin_out" element={<TenantIn_Out />} />
