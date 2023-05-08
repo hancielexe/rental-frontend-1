@@ -3,36 +3,116 @@ import { NavLink } from "react-router-dom";
 import Sidebar from "../partials/Sidebar";
 import Header from "../partials/Header";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import Loading from "../components/Loading";
 
 function Expenses() {
     const axiosPrivate = useAxiosPrivate();
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const [units, setUnits] = useState();
-    const id = localStorage.getItem("userid");
+    const [expenses, setExpenses] = useState([]);
+
+    //states for totals
+    const [accTotal, setAccTotal] = useState([]);
+    const [advTotal, setAdvTotal] = useState(0);
+    const [maintTotal, setMaintTotal] = useState(0);
+    const [officeTotal, setOfficeTotal] = useState(0);
+    const [salaryTotal, setSalaryTotal] = useState(0);
+    const [taxTotal, setTaxTotal] = useState(0);
+    const [transpoTotal, setTranspoTotal] = useState(0);
+    const [utilTotal, setUtilTotal] = useState(0);
+    const [electQuiapoTotal, setElectQuiapoTotal] = useState(0);
+    const [electSamTotal, setElectSamTotal] = useState(0);
+    const [electTagTotal, setElectTagTotal] = useState(0);
+    const [waterQuiapoTotal, setWaterQuiapoTotal] = useState(0);
+    const [waterSamTotal, setWaterSamTotal] = useState(0);
+    const [waterTagTotal, setWaterTagTotal] = useState(0);
+    const [telQuiapoTotal, setTelQuiapoTotal] = useState(0);
+    const [telSamTotal, setTelSamTotal] = useState(0);
+    const [telTagTotal, setTelTagTotal] = useState(0);
+    const [hostingTotal, setHostingTotal] = useState(0);
+    const [otherTotal, setOtherTotal] = useState(0);
+    const [elecTotal, setElecTotal] = useState(0);
+    const [waterTotal, setWaterTotal] = useState(0);
+    const [telTotal, setTelTotal] = useState(0);
+
 
     useEffect(() => {
         let isMounted = true;
         const controller = new AbortController();
 
-        const getUnits = async () => {
+        const getExpenses = async () => {
             try {
-                const response = await axiosPrivate.get(`/sales`, {
+                const response = await axiosPrivate.get(`/expenses`, {
                     signal: controller.signal,
                 });
-                console.log(response.data);
-                isMounted && setUnits(response.data);
+
+                const accTotal = response.data.reduce((acc, item) => acc + parseInt(item.accountingandlegal), 0);
+                const advTotal = response.data.reduce((acc, item) => acc + parseInt(item.advertising), 0);
+                const maintTotal = response.data.reduce((acc, item) => acc + parseInt(item.maintenanceandrepairs), 0);
+                const officeTotal = response.data.reduce((acc, item) => acc + parseInt(item.officesupplies), 0); 
+                const salaryTotal = response.data.reduce((acc, item) => acc + parseInt(item.salariesandwages), 0);
+                const taxTotal = response.data.reduce((acc, item) => acc + parseInt(item.taxesandlicenses), 0);
+                const transpoTotal = response.data.reduce((acc, item) => acc + parseInt(item.transportationandtravelexpenses), 0);
+                const utilTotal = response.data.reduce((acc, item) => acc + parseInt(item.utilities), 0);  
+                const electQuiapoTotal = response.data.reduce((acc, item) => acc + parseInt(item.quiapo.electricity), 0);
+                const electSamTotal = response.data.reduce((acc, item) => acc + parseInt(item.sampaloc.electricity), 0);
+                const electTagTotal = response.data.reduce((acc, item) => acc + parseInt(item.taguig.electricity), 0);
+                const waterQuiapoTotal = response.data.reduce((acc, item) => acc + parseInt(item.quiapo.water), 0);
+                const waterSamTotal = response.data.reduce((acc, item) => acc + parseInt(item.sampaloc.water), 0);
+                const waterTagTotal = response.data.reduce((acc, item) => acc + parseInt(item.taguig.water), 0);
+                const telQuiapoTotal = response.data.reduce((acc, item) => acc + parseInt(item.quiapo.telandint), 0);
+                const telSamTotal = response.data.reduce((acc, item) => acc + parseInt(item.sampaloc.telandint), 0);
+                const telTagTotal = response.data.reduce((acc, item) => acc + parseInt(item.taguig.telandint), 0);
+                const hostingTotal = response.data.reduce((acc, item) => acc + parseInt(item.webhostinganddomains), 0);
+                const otherTotal = response.data.reduce((acc, item) => acc + parseInt(item.other), 0);
+
+                setAccTotal(accTotal);
+                setAdvTotal(advTotal);
+                setMaintTotal(maintTotal);
+                setOfficeTotal(officeTotal);
+                setSalaryTotal(salaryTotal);
+                setTaxTotal(taxTotal);
+                setTranspoTotal(transpoTotal);
+                setUtilTotal(utilTotal);
+                setElectQuiapoTotal(electQuiapoTotal);
+                setElectSamTotal(electSamTotal);
+                setElectTagTotal(electTagTotal);
+                setWaterQuiapoTotal(waterQuiapoTotal);
+                setWaterSamTotal(waterSamTotal);
+                setWaterTagTotal(waterTagTotal);
+                setTelQuiapoTotal(telQuiapoTotal);
+                setTelSamTotal(telSamTotal);
+                setTelTagTotal(telTagTotal);
+                setHostingTotal(hostingTotal);
+                setOtherTotal(otherTotal);
+
+                setElecTotal(electQuiapoTotal + electSamTotal + electTagTotal);
+                setWaterTotal(waterQuiapoTotal + waterSamTotal + waterTagTotal);
+                setTelTotal(telQuiapoTotal + telSamTotal + telTagTotal);
+               
+                
+
+                isMounted && setExpenses(response.data);
             } catch (err) {
                 console.log(err);
             }
         };
 
-        getUnits();
+        getExpenses();
 
         return () => {
             isMounted = false;
             controller.abort();
         };
     }, []);
+
+    // let a = 0;
+    // let sum = 0;
+    // for(a = 0; a < expenses.length; a++){
+    //     sum += parseInt(expenses[a].accountingandlegal);
+    // }
+
+    // console.log(sum);
+
     return (
         <div className="flex h-screen overflow-hidden ">
             {/* Sidebar */}
@@ -50,31 +130,15 @@ function Expenses() {
                                 </div>
                                 <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
                                     <div className="relative inline-flex">
-                                        <select
-                                            className="inline-flex justify-start text-sm pr-8 py-2 border-white text-gray-500 bg-gray-100 rounded-md hover:bg-gray-200 hover:text-gray-60 hover:border-gray-700 ">
-                                            <option value="">All</option>
-                                            <option value="jan">January</option>
-                                            <option value="feb">February</option>
-                                            <option value="mar">March</option>
-                                            <option value="apr">April</option>
-                                            <option value="may">May</option>
-                                            <option value="jun">June</option>
-                                            <option value="jul">July</option>
-                                            <option value="aug">August</option>
-                                            <option value="sep">September</option>
-                                            <option value="oct">October</option>
-                                            <option value="nov">November</option>
-                                            <option value="dec">December</option>
-                                        </select>
+                                        <button type="submit" >Hello</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                         <div class="block w-full overflow-x-auto">
                             <table class="items-center bg-transparent w-full border-collapse ">
                                 <thead>
-                                    <tr class = "bg-gray-100">
+                                    <tr class="bg-gray-100">
                                         <th class="px-6 text-gray-500 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">
                                             Operating Expenses
                                         </th>
@@ -87,6 +151,9 @@ function Expenses() {
                                         <th class="px-5 text-gray-500 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                                             March
                                         </th>
+                                        <th class="px-5 text-gray-500 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                            April
+                                        </th>
                                         <th class="px-5 text-gray-500 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-bold text-left">
                                             TOTAL
                                         </th>
@@ -98,392 +165,253 @@ function Expenses() {
                                         <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                                             Accounting and Legal
                                         </th>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
-                                            0
-                                        </td>
-                                        <td class="border-t-0 px-6 align-center border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            0
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            0
-                                        </td>
+                                        {expenses && (expenses.map((expense) => (
+                                            <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
+                                                {expense.accountingandlegal}
+                                            </td>
+                                        )))}
                                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs font-semibold whitespace-nowrap p-4">
-                                            0
+                                            {accTotal}
                                         </td>
                                     </tr>
                                     <tr>
                                         <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                                             Advertising
                                         </th>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            0
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            1,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            0
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs font-semibold whitespace-nowrap p-4">
-                                            1,000
+                                        {expenses && (expenses.map((expense) => (
+                                            <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
+                                                {expense.advertising}
+                                            </td>
+                                        )))}
+                                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs font-semibold whitespace-nowrap p-4">
+                                            {advTotal}
                                         </td>
                                     </tr>
                                     <tr>
                                         <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                                             Maintenance and Repairs
                                         </th>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            0
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            250,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            0
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs font-semibold whitespace-nowrap p-4">
-                                            250,000
+                                        {expenses && (expenses.map((expense) => (
+                                            <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
+                                                {expense.maintenanceandrepairs}
+                                            </td>
+                                        )))}
+                                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs font-semibold whitespace-nowrap p-4">
+                                            {maintTotal}
                                         </td>
                                     </tr>
                                     <tr>
                                         <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                                             Office Supplies
                                         </th>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            500
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            500
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            500
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs font-semibold whitespace-nowrap p-4">
-                                            15,000
+                                        {expenses && (expenses.map((expense) => (
+                                            <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
+                                                {expense.officesupplies}
+                                            </td>
+                                        )))}
+                                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs font-semibold whitespace-nowrap p-4">
+                                            {officeTotal}
                                         </td>
                                     </tr>
                                     <tr>
                                         <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                                             Salaries and Wages
                                         </th>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs font-semibold whitespace-nowrap p-4">
-                                            30,000
+                                        {expenses && (expenses.map((expense) => (
+                                            <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
+                                                {expense.salariesandwages}
+                                            </td>
+                                        )))}
+                                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs font-semibold whitespace-nowrap p-4">
+                                            {salaryTotal}
                                         </td>
                                     </tr>
                                     <tr>
                                         <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                                             Taxes and Wages
                                         </th>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs font-semibold whitespace-nowrap p-4">
-                                            30,000
+                                        {expenses && (expenses.map((expense) => (
+                                            <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
+                                                {expense.taxesandlicenses}
+                                            </td>
+                                        )))}
+                                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs font-semibold whitespace-nowrap p-4">
+                                            {taxTotal}
                                         </td>
                                     </tr>
                                     <tr>
                                         <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                                             Transportation & Travel
                                         </th>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
+                                        {expenses && (expenses.map((expense) => (
+                                            <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
+                                                {expense.transportationandtravelexpenses}
+                                            </td>
+                                        )))}
                                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs font-semibold whitespace-nowrap p-4">
-                                            30,000
+                                            {transpoTotal}
                                         </td>
                                     </tr>
                                     <tr>
                                         <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                                             Utilities
                                         </th>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
+                                        {expenses && (expenses.map((expense) => (
+                                            <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
+                                                {expense.utilities}
+                                            </td>
+                                        )))}
                                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs font-semibold whitespace-nowrap p-4">
-                                            30,000
+                                            {utilTotal}
                                         </td>
                                     </tr>
                                     <tr>
                                         <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                                             Electricity - Quiapo
                                         </th>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
+                                        {expenses && (expenses.map((expense) => (
+                                            <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
+                                                {expense.quiapo.electricity}
+                                            </td>
+                                        )))}
                                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs font-semibold whitespace-nowrap p-4">
-                                            30,000
+                                            {electQuiapoTotal}
                                         </td>
                                     </tr>
                                     <tr>
                                         <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                                             Electricity - Sampaloc
                                         </th>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
+                                        {expenses && (expenses.map((expense) => (
+                                            <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
+                                                {expense.sampaloc.electricity}
+                                            </td>
+                                        )))}
                                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs font-semibold whitespace-nowrap p-4">
-                                            30,000
+                                            {electSamTotal}
                                         </td>
                                     </tr>
                                     <tr>
                                         <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                                             Electricity - Taguig
                                         </th>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
+                                        {expenses && (expenses.map((expense) => (
+                                            <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
+                                                {expense.taguig.electricity}
+                                            </td>
+                                        )))}
                                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs font-semibold whitespace-nowrap p-4">
-                                            30,000
-                                        </td>
-                                    </tr>
-                                    <tr class = "bg-gray-100">
-                                        <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
-                                            Total Electricity Expenses
-                                        </th>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs font-semibold whitespace-nowrap p-4">
-                                            30,000
+                                            {electTagTotal}
                                         </td>
                                     </tr>
                                     <tr>
                                         <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                                             Water - Quiapo
                                         </th>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
+                                        {expenses && (expenses.map((expense) => (
+                                            <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
+                                                {expense.quiapo.water}
+                                            </td>
+                                        )))}
                                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs font-semibold whitespace-nowrap p-4">
-                                            30,000
+                                            {waterQuiapoTotal}
                                         </td>
                                     </tr>
                                     <tr>
                                         <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                                             Water - Sampaloc
                                         </th>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
+                                        {expenses && (expenses.map((expense) => (
+                                            <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
+                                                {expense.sampaloc.water}
+                                            </td>
+                                        )))}
                                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs font-semibold whitespace-nowrap p-4">
-                                            30,000
+                                            {waterSamTotal}
                                         </td>
                                     </tr>
                                     <tr>
                                         <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                                             Water - Taguig
                                         </th>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
+                                        {expenses && (expenses.map((expense) => (
+                                            <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
+                                                {expense.taguig.water}
+                                            </td>
+                                        )))}
                                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs font-semibold whitespace-nowrap p-4">
-                                            30,000
-                                        </td>
-                                    </tr>
-                                    <tr class = "bg-gray-100">
-                                        <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
-                                            Total Water Expenses
-                                        </th>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs font-semibold whitespace-nowrap p-4">
-                                            30,000
+                                            {waterTagTotal}
                                         </td>
                                     </tr>
                                     <tr>
                                         <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                                             Telephone & Internet - Quiapo
                                         </th>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
+                                        {expenses && (expenses.map((expense) => (
+                                            <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
+                                                {expense.quiapo.telandint}
+                                            </td>
+                                        )))}
                                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs font-semibold whitespace-nowrap p-4">
-                                            30,000
+                                            {telQuiapoTotal}
                                         </td>
                                     </tr>
                                     <tr>
                                         <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                                             Telephone & Internet - Sampaloc
                                         </th>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
+                                        {expenses && (expenses.map((expense) => (
+                                            <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
+                                                {expense.sampaloc.telandint}
+                                            </td>
+                                        )))}
                                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs font-semibold whitespace-nowrap p-4">
-                                            30,000
+                                            {telSamTotal}
                                         </td>
                                     </tr>
                                     <tr>
                                         <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                                             Telephone & Internet - Taguig
                                         </th>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
+                                        {expenses && (expenses.map((expense) => (
+                                            <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
+                                                {expense.taguig.telandint}
+                                            </td>
+                                        )))}
                                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs font-semibold whitespace-nowrap p-4">
-                                            30,000
-                                        </td>
-                                    </tr>
-                                    <tr class = "bg-gray-100">
-                                        <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
-                                            Total Telephone & Internet Expenses
-                                        </th>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs font-semibold whitespace-nowrap p-4">
-                                            30,000
+                                            {telTagTotal}
                                         </td>
                                     </tr>
                                     <tr>
                                         <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                                             Web Hosting and Domain
                                         </th>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
+                                        {expenses && (expenses.map((expense) => (
+                                            <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
+                                                {expense.webhostinganddomains}
+                                            </td>
+                                        )))}
                                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs font-semibold whitespace-nowrap p-4">
-                                            30,000
+                                            {hostingTotal}
                                         </td>
                                     </tr>
                                     <tr>
                                         <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                                             Other
                                         </th>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
+                                        {expenses && (expenses.map((expense) => (
+                                            <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
+                                                {expense.other}
+                                            </td>
+                                        )))}
                                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs font-semibold whitespace-nowrap p-4">
-                                            30,000
+                                            {otherTotal}
                                         </td>
                                     </tr>
-                                    <tr class = "border border-solid">
+                                    <tr class="border border-solid">
                                         <th class="text-indigo-600 border-t-0 px-6 align-middle border-l-0 border-r-0 text-s whitespace-nowrap p-4 text-left tracking-wider">
                                             TOTAL
                                         </th>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs font-semibold whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs font-semibold whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs font-semibold whitespace-nowrap p-4">
-                                            10,000
-                                        </td>
-                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs font-bold whitespace-nowrap p-4">
-                                            100,000
-                                        </td>
                                     </tr>
                                 </tbody>
                             </table>

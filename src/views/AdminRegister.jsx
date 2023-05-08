@@ -497,7 +497,7 @@ function AdminRegister() {
                                 <button
                                                 className="w-full mt-20 p-1 flex-1 bg-gray-400 text-black-8900 rounded-sm outline-none border ring-offset-1 ring-gray-600 focus:ring-1"
                                                 onClick={() =>
-                                                    setShowModal(false)
+                                                  window.location.reload(true)
                                                 }
                                             >                                           
                                                 Close
