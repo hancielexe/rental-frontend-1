@@ -1,6 +1,5 @@
 import React from "react";
 import Register from "./Register";
-import Sidebar from "../components/Sidebar";
 import Users from "../components/Users";
 
 function Admin() {

@@ -3,21 +3,34 @@ import { useSearchParams } from "react-router-dom";
 import Sidebar from "../partials/Sidebar";
 import Header from "../partials/Header";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import Loading from "../components/Loading";
 
 function SalesDetails() {
   const axiosPrivate = useAxiosPrivate();
+
+  const [sales, setSales] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [totalRent, setTotalRent] = useState(0);
+  const [totalElec, setTotalElec] = useState(0);
+  const [totalWat, setTotalWat] = useState(0);
+  const [totalInt, setTotalInt] = useState(0);
+  const [sum, setSum] = useState(0);
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [sales, setSales] = useState();
+  const [search, setSearch] = useState("");
+  const [counter, setCounter] = useState(0);
+  const [size, setSize] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
   const id = localStorage.getItem("userid");
-
-  const type = searchParams.get("type");
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const trigger = useRef(null);
+  const dropdown = useRef(null);
 
   useEffect(() => {
     let isMounted = true;
     const controller = new AbortController();
 
-    const getUnits = async () => {
+    const getSales = async () => {
       try {
         const response = await axiosPrivate.get(`/sales`, {
           signal: controller.signal,
@@ -29,13 +42,51 @@ function SalesDetails() {
       }
     };
 
-    getUnits();
+    getSales();
 
     return () => {
       isMounted = false;
       controller.abort();
     };
   }, []);
+
+  const handleFilterChange = () => {
+    const filteredRows = sales.filter((sale) => {
+      return search.toLowerCase() === ""
+        ? sale
+        : sale.month.toLowerCase().includes(search);
+    })
+
+    setFilteredData(filteredRows);
+
+    let addRent = 0;
+    let addElec = 0
+    let addWat = 0
+    let addInt = 0
+
+    for (let i = 0; i < filteredRows.length; i++) {
+      const { expenses: { rental, electricity, water, internet } } = filteredRows[i];
+        let rent = parseInt(rental);
+        let elec = parseInt(electricity);
+        let wat = parseInt(water);
+        let int = parseInt(internet);
+
+        addRent += rent;
+        addElec += elec;
+        addWat += wat;
+        addInt += int;
+    }
+
+    setTotalRent(addRent);
+    setTotalElec(addElec);
+    setTotalWat(addWat);
+    setTotalInt(addInt);
+  }
+
+  useEffect(() => {
+    handleFilterChange();
+  }, [search]);
+
   return (
     <div className="flex h-screen overflow-hidden ">
       {/* Sidebar */}
@@ -55,7 +106,15 @@ function SalesDetails() {
                   </div>
                   <div className="flex justify-end">
                     <select
-                      className="inline-flex text-sm pr-8 py-2 border-white text-gray-500 bg-gray-100 rounded-md hover:bg-gray-200 hover:text-gray-60 hover:border-gray-700 ">
+                      className="inline-flex text-sm pr-8 py-2 border-white text-gray-500 bg-gray-100 rounded-md hover:bg-gray-200 hover:text-gray-60 hover:border-gray-700 "
+                      ref={trigger}
+                      aria-expanded={dropdownOpen}
+                      aria-haspopup="true"
+                      onClick={() => setDropdownOpen(!dropdownOpen)}
+                      onFocus={() => setDropdownOpen(true)}
+                      onBlur={() => setDropdownOpen(false)}
+                      onChange={(e) => setSearch(e.target.value)}>
+                      <option>Select month</option>
                       <option value="jan">January</option>
                       <option value="feb">February</option>
                       <option value="mar">March</option>
@@ -90,7 +149,7 @@ function SalesDetails() {
                           <div class="font-semibold text-center">Water</div>
                         </th>
                         <th class="p-2 whitespace-nowrap">
-                          <div class="font-semibold text-center">Telephone & Internet</div>
+                          <div class="font-semibold text-center">Internet</div>
                         </th>
                         <th class="p-2 whitespace-nowrap">
                           <div class="font-bold text-center">TOTAL</div>
@@ -98,87 +157,88 @@ function SalesDetails() {
                       </tr>
                     </thead>
                     <tbody class="text-sm divide-y divide-gray-100">
-                      <tr>
-                        <td class="p-2 whitespace-nowrap">
-                          <div class="flex items-center">
-                            <div class="w-10 h-10 flex-shrink-0 flex items-center">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="currentColor"
-                                class="w-5 h-5"
-                              >
-                                <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
-                              </svg>
+                      {filteredData.map((row, index) => (
+                        <tr key={index}>
+                          <td class="p-2 whitespace-nowrap">
+                            <div class="flex items-center">
+                              <div class="w-10 h-10 flex-shrink-0 flex items-center">
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  viewBox="0 0 24 24"
+                                  fill="currentColor"
+                                  class="w-5 h-5"
+                                >
+                                  <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
+                                </svg>
+                              </div>
+
+                              <div class="font-medium text-gray-800">
+                                {row.unitName}
+                              </div>
                             </div>
-                            <div class="font-medium text-gray-800">
-                              Quiapo 1 - Room 101
+                          </td>
+
+                          <td class="p-2 whitespace-nowrap">
+                            <div class="text-center">
+                              ₱{row.expenses.rental}
                             </div>
-                          </div>
-                        </td>
+                          </td>
+                          <td class="p-2 whitespace-nowrap">
+                            <div class="text-center">
+                              ₱{row.expenses.electricity}
+                            </div>
+                          </td>
+                          <td class="p-2 whitespace-nowrap">
+                            <div class="text-center">
+                              ₱{row.expenses.water}
+                            </div>
+                          </td>
+                          <td class="p-2 whitespace-nowrap">
+                            <div class="text-center">
+                              ₱{row.expenses.internet}
+                            </div>
+                          </td>
+                          <td class="p-2 whitespace-nowrap">
+                            <div class="text-center">
+                              ₱{parseInt(row.expenses.rental) + parseInt(row.expenses.electricity) + parseInt(row.expenses.water) + parseInt(row.expenses.internet)}
+                            </div>
+                          </td>
 
+                        </tr>
+                      ))}
+                      <tr class="bg-gray-100">
                         <td class="p-2 whitespace-nowrap">
-                          <div class="text-center">
-                            ₱100
-                          </div>
-                        </td>
-                        <td class="p-2 whitespace-nowrap">
-                          <div class="text-center">
-                            ₱100
-                          </div>
-                        </td>
-                        <td class="p-2 whitespace-nowrap">
-                          <div class="text-center">
-                            ₱100
-                          </div>
-                        </td>
-                        <td class="p-2 whitespace-nowrap">
-                          <div class="text-center">
-                            ₱100
-                          </div>
-                        </td>
-                        <td class="p-2 whitespace-nowrap">
-                          <div class="text-center font-semibold">
-                            ₱400
-                          </div>
-                        </td>
-                      </tr>
-
-
-                      <tr class = "bg-gray-100">
-                      <td class="p-2 whitespace-nowrap">
                           <div class="flex justify-end">
                             <div class="font-semibold tracking-wider text-gray-800">
                               TOTAL
                             </div>
                           </div>
                         </td>
-
                         <td class="p-2 whitespace-nowrap">
                           <div class="text-center">
-                            ₱100
-                          </div>
-                        </td>
-                        <td class="p-2 whitespace-nowrap">
-                          <div class="text-center">
-                            ₱100
+                            ₱{totalRent}
                           </div>
                         </td>
                         <td class="p-2 whitespace-nowrap">
                           <div class="text-center">
-                            ₱100
+                            ₱{totalElec}
                           </div>
                         </td>
                         <td class="p-2 whitespace-nowrap">
                           <div class="text-center">
-                            ₱100
+                            ₱{totalWat}
                           </div>
                         </td>
                         <td class="p-2 whitespace-nowrap">
-                          <div class="text-center font-semibold">
-                            ₱400
+                          <div class="text-center">
+                            ₱{totalInt}
                           </div>
                         </td>
+                        <td class="p-2 whitespace-nowrap">
+                            <div class="text-center font-semibold">
+                              ₱{totalRent + totalWat + totalElec + totalInt}
+                            </div>
+                          </td>
                       </tr>
                     </tbody>
                   </table>

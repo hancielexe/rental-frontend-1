@@ -30,6 +30,10 @@ import Profile from "./views/Profile";
 import TenantIn_Out from "./views/TenantIn_Out";
 import ComplaintAdmin from "./views/ComplaintAdmin";
 import Expenses from "./views/Expenses";
+import AssetsLiabilities from "./views/AssetsLiabilities";
+import CashFlow from "./views/CashFlow";
+import RoomView from "./views/RoomView";
+import Billing from "./views/Billing";
 
 const ROLES = {
   Tenant: 2001,
@@ -53,6 +57,7 @@ function App() {
         <Route path="/inquire" element={<Inquiry />} />
         <Route path="/login" element={<Login />} />
         <Route exact path="/listings" element={<Listings />} />
+        <Route exact path="/roomview" element={<RoomView />} />
         <Route exact path="/unit" element={<Unit />}>
           <Route path=":id" element={<Unit />} />
         </Route>
@@ -67,8 +72,11 @@ function App() {
             <Route path="/complaintadmin" element={<ComplaintAdmin />} />
             <Route path="/finance/sales" element={<SalesDetails />} />
             <Route path="/finance/expenses" element={<Expenses />} />
+            <Route path="/assets/a" element={<AssetsLiabilities />} />
+            <Route path="/assets/cashflow" element={<CashFlow />} />
             <Route path="/registry" element={<Registry />} />
             <Route path="/tenantin_out" element={<TenantIn_Out />} />
+            <Route path="/billing" element={<Billing />} />
           </Route>
 
           <Route element={<RequireAuth allowedRoles={[ROLES.Tenant]} />}>
