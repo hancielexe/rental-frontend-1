@@ -5,9 +5,95 @@ import axios from "../api/axios";
 import Sidebar from "../partials/Sidebar";
 import Header from "../partials/Header";
 
+const SALES_URL = "/sales/add";
+const year = 2023;
+const unitname = "hahah";
+
 function SalesForm() {
+    const [month, setMonth] = useState("");
+    const [rent, setRent] = useState("");
+    const [elec, setElec] = useState("");
+    const [water, setWater] = useState("");
+    const [int, setInt] = useState("");
+    const [units, setUnits] = useState("");
+    const [unit, setUnit] = useState("");
+    const [unitname, setUnitname] = useState("");
+    const axiosPrivate = useAxiosPrivate();
+
+    const [errMsg, setErrMsg] = useState("");
+    const [success, setSuccess] = useState(false);
+
     const [showModal, setShowModal] = useState(false);
     const [sidebarOpen, setSidebarOpen] = useState(false);
+
+    //get all units
+    useEffect(() => {
+        let isMounted = true;
+        const controller = new AbortController();
+
+        const getUnits = async () => {
+            try {
+                const response = await axiosPrivate.get(`/units`, {
+                    signal: controller.signal,
+                });
+                console.log(response.data);
+                isMounted && setUnits(response.data);
+            } catch (err) {
+                console.log(err);
+            }
+        };
+
+        getUnits();
+
+        return () => {
+            isMounted = false;
+            controller.abort();
+        };
+    }, []);
+
+    useEffect(() => {
+        setUnitname("hahah");
+    }, [unit]);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        // if button enabled with JS hack
+
+        try {
+            const response = await axiosPrivate.post(
+                SALES_URL,
+                JSON.stringify({
+                    month,
+                    unit,
+                    unitname,
+                    year,
+                    rent,
+                    elec,
+                    water,
+                    int
+                }),
+                {
+                    headers: { "Content-Type": "application/json" },
+                    withCredentials: true,
+                }
+            );
+            console.log(response?.data);
+            console.log(response?.accessToken);
+            console.log(JSON.stringify(response));
+            setSuccess(true);
+            //clear state and controlled inputs
+            //need value attrib on inputs for this
+            setRent("");
+        } catch (err) {
+            if (!err?.response) {
+                setErrMsg("No Server Response");
+            } else if (err.response?.status === 409) {
+                setErrMsg("Username Taken");
+            } else {
+                setErrMsg("Registration Failed");
+            }
+        }
+    };
 
     return (
         <div className="flex h-screen overflow-hidden">
@@ -26,45 +112,57 @@ function SalesForm() {
                     </section>
 
                     <section class="mt-10">
-                        <form class="flex flex-col">
+                        <form class="flex flex-col" onSubmit={handleSubmit}>
+                            {console.log(errMsg)}
                             <div class="mb-6 rounded">
                                 <label class="block text-gray-700 text-sm font-bold mb-2 ml-1">
                                     Select Month
                                 </label>
                                 <select
                                     className="bg-gray-200 rounded w-full text-gray-600 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
+                                    onChange={(e) => setMonth(e.target.value)}
                                 >
-                                    <option selected value="">
+                                    <option selected>
                                         Select a Month
                                     </option>
-                                    <option value="jan">January</option>
-                                    <option value="feb">February</option>
-                                    <option value="mar">March</option>
-                                    <option value="apr">April</option>
+                                    <option value="january">January</option>
+                                    <option value="february">February</option>
+                                    <option value="march">March</option>
+                                    <option value="april">April</option>
                                     <option value="may">May</option>
-                                    <option value="jun">June</option>
-                                    <option value="jul">July</option>
-                                    <option value="aug">August</option>
-                                    <option value="sep">September</option>
-                                    <option value="oct">October</option>
-                                    <option value="nov">November</option>
-                                    <option value="dec">December</option>
+                                    <option value="june">June</option>
+                                    <option value="july">July</option>
+                                    <option value="august">August</option>
+                                    <option value="september">September</option>
+                                    <option value="october">October</option>
+                                    <option value="november">November</option>
+                                    <option value="december">December</option>
                                 </select>
                             </div>
 
                             <div class="mb-6 rounded">
-                                <label class="block text-gray-700 text-sm font-bold mb-2 ml-1">
-                                    Select Unit
-                                </label>
-                                <select
-                                    className="bg-gray-200 rounded w-full text-gray-600 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
-                                >
-                                    <option selected value="">
-                                        Select a Unit
-                                    </option>
-                                    <option value="unitone">Unit 1</option>
-                                    <option value="unittwo">Unit 2</option>
-                                </select>
+                                <div className="col-span-6 sm:col-span-3">
+                                    <label
+                                        for="Unit"
+                                        class="block text-sm font-medium text-cyan-700"
+                                    >
+                                        Select Unit
+                                    </label>
+                                    {units?.length ? (
+                                        <select
+                                            class="w-full rounded-lg border-gray-200 p-3 text-sm"
+                                            required
+                                            onChange={(e) => setUnit(e.target.value)}
+                                        >
+                                            {units
+                                                .map((filteredUnit) => (
+                                                    <option value={filteredUnit._id}>
+                                                        {filteredUnit.unitName}
+                                                    </option>
+                                                ))}
+                                        </select>
+                                    ) : null}
+                                </div>
                             </div>
 
                             <div class="mb-6 rounded">
@@ -75,6 +173,7 @@ function SalesForm() {
                                     type="text"
                                     id="rentsale"
                                     class="bg-gray-200 rounded w-full text-gray-700  focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
+                                    onChange={(e) => setRent(e.target.value)}
                                 />
                             </div>
 
@@ -86,6 +185,7 @@ function SalesForm() {
                                     type="text"
                                     id="elecsale"
                                     class="bg-gray-200 rounded w-full text-gray-700  focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
+                                    onChange={(e) => setElec(e.target.value)}
                                 />
                             </div>
 
@@ -97,6 +197,7 @@ function SalesForm() {
                                     type="text"
                                     id="watsale"
                                     class="bg-gray-200 rounded w-full text-gray-700  focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
+                                    onChange={(e) => setWater(e.target.value)}
                                 />
                             </div>
 
@@ -108,6 +209,7 @@ function SalesForm() {
                                     type="text"
                                     id="intsale"
                                     class="bg-gray-200 rounded w-full text-gray-700  focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
+                                    onChange={(e) => setInt(e.target.value)}
                                 />
                             </div>
 

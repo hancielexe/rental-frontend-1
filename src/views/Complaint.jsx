@@ -6,22 +6,26 @@ import useAxiosPrivate from "../hooks/useAxiosPrivate";
 const COMP_URL = "/complaints";
 
 function Complaint() {
-  const [showModal, setShowModal] = useState(false);
+
+  const axiosPrivate = useAxiosPrivate();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const username = localStorage.getItem("user").replace(/['"]+/g, '');
 
   const [issue, setIssue] = useState("");
   const [issueFocus, setIssueFocus] = useState(false);
   const [other, setOther] = useState("");
   const [otherFocus, setOtherFocus] = useState(false);
 
-  const axiosPrivate = useAxiosPrivate();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const username = localStorage.getItem("user");
+  const [showModal, setShowModal] = useState(false);
+
+  const [errMsg, setErrMsg] = useState("");
+  const [success, setSuccess] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(
+      const response = await axiosPrivate.post(
         COMP_URL,
         JSON.stringify({
           username,
@@ -46,9 +50,12 @@ function Complaint() {
       } else {
         setErrMsg("Registration Failed");
       }
-      errRef.current.focus();
     }
   };
+
+  useEffect(() => {
+    setErrMsg("");
+  }, [issue, other]);
 
   return (
     <div className="flex h-screen overflow-hidden ">
@@ -68,7 +75,7 @@ function Complaint() {
               </div>
 
               <div className="rounded-lg bg-white p-8 shadow-lg lg:col-span-5 lg:p-12">
-                <form action="" onSubmit={handleSubmit}>
+                <form action="#" onSubmit={handleSubmit}>
                   <div className="grid grid-cols-1 gap-4 text-center sm:grid-cols-3">
                     <div>
                       <input
@@ -98,14 +105,14 @@ function Complaint() {
                         onBlur={() => setIssueFocus(false)}
                       >
                         <option>Select Option</option>
-                        <option value="Noise Complaint">Noise Complaint</option>
-                        <option value="Garbage Complaint">
+                        <option value="noise">Noise Complaint</option>
+                        <option value="garbage">
                           Garbage Complaint
                         </option>
-                        <option value="Maintenance Problem">
+                        <option value="maintenance">
                           Maintenance Problem
                         </option>
-                        <option value="Other">Other</option>
+                        <option value="other">Other</option>
                       </select>
                     </div>
 
@@ -125,15 +132,15 @@ function Complaint() {
                       ></textarea>
                     </div>
 
-                    <>
-                      <button
-                        class="inline-block w-full rounded-lg bg-indigo-600 px-5 py-3 font-medium text-white sm:w-auto"
-                        type="submit"
-                        onClick={() => setShowModal(true)}
-                      >
-                        Send
-                      </button>
+                    <button
+                      class="inline-block w-full rounded-lg bg-indigo-600 px-5 py-3 font-medium text-white sm:w-auto"
+                      type="submit"
+                      onClick={() => setShowModal(true)}
+                    >
+                      Send
+                    </button>
 
+                    <>
                       {showModal ? (
                         <>
                           <div className="fixed inset-0 z-10">
@@ -150,7 +157,9 @@ function Complaint() {
 
                                   <button
                                     className="w-full mt-20 p-1 flex-1 bg-gray-400 text-black-8900 rounded-sm outline-none border ring-offset-1 ring-gray-600 focus:ring-1"
-                                    onClick={() => setShowModal(false)}
+                                    onClick={() =>
+                                      window.location.reload(true)
+                                    }
                                   >
                                     Close
                                   </button>
