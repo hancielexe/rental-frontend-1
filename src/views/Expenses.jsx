@@ -4,36 +4,38 @@ import Sidebar from "../partials/Sidebar";
 import Header from "../partials/Header";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import Loading from "../components/Loading";
+import { elements } from "chart.js";
 
 function Expenses() {
     const axiosPrivate = useAxiosPrivate();
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [expenses, setExpenses] = useState([]);
+    const sums = [0,0,0,0];
 
-    //states for totals
-    const [accTotal, setAccTotal] = useState([]);
-    const [advTotal, setAdvTotal] = useState(0);
-    const [maintTotal, setMaintTotal] = useState(0);
-    const [officeTotal, setOfficeTotal] = useState(0);
-    const [salaryTotal, setSalaryTotal] = useState(0);
-    const [taxTotal, setTaxTotal] = useState(0);
-    const [transpoTotal, setTranspoTotal] = useState(0);
-    const [utilTotal, setUtilTotal] = useState(0);
-    const [electQuiapoTotal, setElectQuiapoTotal] = useState(0);
-    const [electSamTotal, setElectSamTotal] = useState(0);
-    const [electTagTotal, setElectTagTotal] = useState(0);
-    const [waterQuiapoTotal, setWaterQuiapoTotal] = useState(0);
-    const [waterSamTotal, setWaterSamTotal] = useState(0);
-    const [waterTagTotal, setWaterTagTotal] = useState(0);
-    const [telQuiapoTotal, setTelQuiapoTotal] = useState(0);
-    const [telSamTotal, setTelSamTotal] = useState(0);
-    const [telTagTotal, setTelTagTotal] = useState(0);
-    const [hostingTotal, setHostingTotal] = useState(0);
-    const [otherTotal, setOtherTotal] = useState(0);
-    const [elecTotal, setElecTotal] = useState(0);
-    const [waterTotal, setWaterTotal] = useState(0);
-    const [telTotal, setTelTotal] = useState(0);
-
+     //states for totals
+     const [accTotal, setAccTotal] = useState(0);
+     const [advTotal, setAdvTotal] = useState(0);
+     const [maintTotal, setMaintTotal] = useState(0);
+     const [officeTotal, setOfficeTotal] = useState(0);
+     const [salaryTotal, setSalaryTotal] = useState(0);
+     const [taxTotal, setTaxTotal] = useState(0);
+     const [transpoTotal, setTranspoTotal] = useState(0);
+     const [utilTotal, setUtilTotal] = useState(0);
+     const [electQuiapoTotal, setElectQuiapoTotal] = useState(0);
+     const [electSamTotal, setElectSamTotal] = useState(0);
+     const [electTagTotal, setElectTagTotal] = useState(0);
+     const [waterQuiapoTotal, setWaterQuiapoTotal] = useState(0);
+     const [waterSamTotal, setWaterSamTotal] = useState(0);
+     const [waterTagTotal, setWaterTagTotal] = useState(0);
+     const [telQuiapoTotal, setTelQuiapoTotal] = useState(0);
+     const [telSamTotal, setTelSamTotal] = useState(0);
+     const [telTagTotal, setTelTagTotal] = useState(0);
+     const [hostingTotal, setHostingTotal] = useState(0);
+     const [otherTotal, setOtherTotal] = useState(0);
+     const [elecTotal, setElecTotal] = useState(0);
+     const [waterTotal, setWaterTotal] = useState(0);
+     const [telTotal, setTelTotal] = useState(0);
+     let total = 0;
 
     useEffect(() => {
         let isMounted = true;
@@ -84,13 +86,7 @@ function Expenses() {
                 setTelTagTotal(telTagTotal);
                 setHostingTotal(hostingTotal);
                 setOtherTotal(otherTotal);
-
-                setElecTotal(electQuiapoTotal + electSamTotal + electTagTotal);
-                setWaterTotal(waterQuiapoTotal + waterSamTotal + waterTagTotal);
-                setTelTotal(telQuiapoTotal + telSamTotal + telTagTotal);
                
-                
-
                 isMounted && setExpenses(response.data);
             } catch (err) {
                 console.log(err);
@@ -105,13 +101,70 @@ function Expenses() {
         };
     }, []);
 
-    // let a = 0;
-    // let sum = 0;
-    // for(a = 0; a < expenses.length; a++){
-    //     sum += parseInt(expenses[a].accountingandlegal);
-    // }
 
-    // console.log(sum);
+    //get all sums of expenses
+    for (let i = 0; i < expenses.length; i++){
+        const { accountingandlegal, advertising, maintenanceandrepairs, officesupplies, salariesandwages, taxesandlicenses, transportationandtravelexpenses, utilities, webhostinganddomains, other } = expenses[i];
+        const { quiapo: {electricity: quiapoelec, water: quiapowater, telandint: quiapoint} } = expenses[i];
+        const { taguig: {electricity: taguigelec, water: taguigwater, telandint: taguigint} } = expenses[i];
+        const { sampaloc: {electricity: samelec, water: samwater, telandint: samint} } = expenses[i];
+
+        //add accounting and legal expenses
+        let acc = parseInt(accountingandlegal);
+        sums[i] += acc;
+
+        //add accounting and legal expenses
+        let adv = parseInt(advertising);
+        sums[i] += adv;
+
+        //add accounting and legal expenses
+        let maint = parseInt(maintenanceandrepairs);
+        sums[i] += maint;
+
+        //add accounting and legal expenses
+        let off = parseInt(officesupplies);
+        sums[i] += off;
+
+        //add accounting and legal expenses
+        let salw = parseInt(salariesandwages);
+        sums[i] += salw;
+        
+        //add accounting and legal expenses
+        let tax = parseInt(taxesandlicenses);
+        sums[i] += tax;
+        
+        //add accounting and legal expenses
+        let transpo = parseInt(transportationandtravelexpenses);
+        sums[i] += transpo;
+
+        //add accounting and legal expenses
+        let util = parseInt(utilities);
+        sums[i] += util;
+
+        //add accounting and legal expenses
+        let web = parseInt(webhostinganddomains);
+        sums[i] += web;
+
+        //add accounting and legal expenses
+        let oth = parseInt(other);
+        sums[i] += oth;
+
+        //add electricity and legal expenses
+        let elec = parseInt(quiapoelec) + parseInt(taguigelec) + parseInt(samelec);
+        sums[i] += elec;
+
+        //add electricity and legal expenses
+        let water = parseInt(quiapowater) + parseInt(taguigwater) + parseInt(samwater);
+        sums[i] += water;
+
+        //add electricity and legal expenses
+        let int = parseInt(quiapoint) + parseInt(taguigint) + parseInt(samint);
+        sums[i] += int;
+
+        total += sums[i];
+    }
+
+    console.log(total);
 
     return (
         <div className="flex h-screen overflow-hidden ">
@@ -129,8 +182,10 @@ function Expenses() {
                                     <h3 class="font-semibold text-lg tracking-wide">Expenses</h3>
                                 </div>
                                 <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
-                                    <div className="relative inline-flex">
-                                        <button type="submit" >Hello</button>
+                                    <div className="flex justify-end">
+                                        <a href="#_" class="px-5 py-1.5 font-medium bg-blue-50 hover:bg-blue-100 hover:text-blue-600 text-blue-500 rounded-lg text-sm">
+                                            Print
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -412,6 +467,14 @@ function Expenses() {
                                         <th class="text-indigo-600 border-t-0 px-6 align-middle border-l-0 border-r-0 text-s whitespace-nowrap p-4 text-left tracking-wider">
                                             TOTAL
                                         </th>
+                                        {sums && (sums.map((sum) => (
+                                            <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
+                                                {sum}
+                                            </td>
+                                        )))}
+                                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs font-bold whitespace-nowrap p-4 ">
+                                            {total}
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>

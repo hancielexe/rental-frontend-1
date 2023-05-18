@@ -104,6 +104,7 @@ function Listings() {
                             src={filteredUnit.imagePath}
                             alt="unit"
                             className="object-fill h-full w-full"
+                            lazy
                           />
                         </div>
                       </div>

@@ -389,54 +389,22 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                               </span>
                             </NavLink>
                           </li>
-                          <li className="mb-1 last:mb-0">
-                            <NavLink
-                              end
-                              to="/community/profile"
-                              className={({ isActive }) =>
-                                "block transition duration-150 truncate " +
-                                (isActive
-                                  ? "text-indigo-500"
-                                  : "text-slate-400 hover:text-slate-200")
-                              }
-                            >
-                              <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                Income Tax
-                              </span>
-                            </NavLink>
-                          </li>
-                          <li className="mb-1 last:mb-0">
-                            <NavLink
-                              end
-                              to="/community/profile"
-                              className={({ isActive }) =>
-                                "block transition duration-150 truncate " +
-                                (isActive
-                                  ? "text-indigo-500"
-                                  : "text-slate-400 hover:text-slate-200")
-                              }
-                            >
-                              <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                Income Statement
-                              </span>
-                            </NavLink>
-                          </li>
                         </ul>
                       </div>
                     </React.Fragment>
                   );
                 }}
               </SidebarLinkGroup>
-              {/* E-Commerce */}
+              {/* Assets */}
               <SidebarLinkGroup
-                activecondition={pathname.includes("ecommerce")}
+                activecondition={pathname.includes("assets")}
               >
                 {(handleClick, open) => {
                   return (
                     <React.Fragment>
                       <a
                         href="#0"
-                        className={`block text-slate-200 truncate transition duration-150 ${pathname.includes("ecommerce")
+                        className={`block text-slate-200 truncate transition duration-150 ${pathname.includes("assets")
                             ? "hover:text-slate-200"
                             : "hover:text-white"
                           }`}
@@ -454,21 +422,21 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                               viewBox="0 0 24 24"
                             >
                               <path
-                                className={`fill-current ${pathname.includes("ecommerce")
+                                className={`fill-current ${pathname.includes("assets")
                                     ? "text-indigo-300"
                                     : "text-slate-400"
                                   }`}
                                 d="M13 15l11-7L11.504.136a1 1 0 00-1.019.007L0 7l13 8z"
                               />
                               <path
-                                className={`fill-current ${pathname.includes("ecommerce")
+                                className={`fill-current ${pathname.includes("assets")
                                     ? "text-indigo-600"
                                     : "text-slate-700"
                                   }`}
                                 d="M13 15L0 7v9c0 .355.189.685.496.864L13 24v-9z"
                               />
                               <path
-                                className={`fill-current ${pathname.includes("ecommerce")
+                                className={`fill-current ${pathname.includes("assets")
                                     ? "text-indigo-500"
                                     : "text-slate-600"
                                   }`}
@@ -496,7 +464,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                           <li className="mb-1 last:mb-0 ">
                             <NavLink
                               end
-                              to="/community/users-tabs"
+                              to="/assets/a"
                               className={({ isActive }) =>
                                 "block transition duration-150 truncate " +
                                 (isActive
@@ -505,30 +473,14 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                               }
                             >
                               <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                Cost of Operation
+                                Assets & Liabilities
                               </span>
                             </NavLink>
                           </li>
                           <li className="mb-1 last:mb-0">
                             <NavLink
                               end
-                              to="/community/users-tiles"
-                              className={({ isActive }) =>
-                                "block transition duration-150 truncate " +
-                                (isActive
-                                  ? "text-indigo-500"
-                                  : "text-slate-400 hover:text-slate-200")
-                              }
-                            >
-                              <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                Liabilities & Equity
-                              </span>
-                            </NavLink>
-                          </li>
-                          <li className="mb-1 last:mb-0">
-                            <NavLink
-                              end
-                              to="/community/users-tiles"
+                              to="/assets/cashflow"
                               className={({ isActive }) =>
                                 "block transition duration-150 truncate " +
                                 (isActive
@@ -547,24 +499,21 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                   );
                 }}
               </SidebarLinkGroup>
-              {/* Utility */}
-              <SidebarLinkGroup activecondition={pathname.includes("utility")}>
-                {(handleClick, open) => {
-                  return (
-                    <React.Fragment>
-                      <a
-                        href="#0"
-                        className={`block text-slate-200 truncate transition duration-150 ${pathname.includes("utility")
-                            ? "hover:text-slate-200"
-                            : "hover:text-white"
-                          }`}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          sidebarExpanded
-                            ? handleClick()
-                            : setSidebarExpanded(true);
-                        }}
-                      >
+              {/* Billing */}
+              <li
+                className={`px-3 py-2 rounded-sm mb-0.5 last:mb-0 duration-200${
+                  pathname.includes("billing") && "bg-slate-900"
+                }`}
+              >
+                <NavLink
+                  end
+                  to="/billing"
+                  className={`block text-slate-200 truncate transition duration-150 ${
+                    pathname.includes("billing")
+                      ? "hover:text-slate-200"
+                      : "hover:text-white"
+                  }`}
+                >
                         <div className="flex items-center justify-between">
                           <div className="flex items-center">
                             <svg
@@ -572,7 +521,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                               viewBox="0 0 24 24"
                             >
                               <circle
-                                className={`fill-current ${pathname.includes("utility")
+                                className={`fill-current ${pathname.includes("billing")
                                     ? "text-indigo-300"
                                     : "text-slate-400"
                                   }`}
@@ -581,7 +530,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                                 r="4.5"
                               />
                               <circle
-                                className={`fill-current ${pathname.includes("utility")
+                                className={`fill-current ${pathname.includes("billing")
                                     ? "text-indigo-500"
                                     : "text-slate-600"
                                   }`}
@@ -590,7 +539,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                                 r="4.5"
                               />
                               <circle
-                                className={`fill-current ${pathname.includes("utility")
+                                className={`fill-current ${pathname.includes("billing")
                                     ? "text-indigo-500"
                                     : "text-slate-600"
                                   }`}
@@ -599,7 +548,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                                 r="4.5"
                               />
                               <circle
-                                className={`fill-current ${pathname.includes("utility")
+                                className={`fill-current ${pathname.includes("billing")
                                     ? "text-indigo-300"
                                     : "text-slate-400"
                                   }`}
@@ -613,11 +562,8 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                             </span>
                           </div>
                         </div>
-                      </a>
-                    </React.Fragment>
-                  );
-                }}
-              </SidebarLinkGroup>
+                      </NavLink>
+                    </li>
               {/* Tasks */}
               <SidebarLinkGroup activecondition={pathname.includes("tasks")}>
                 {(handleClick, open) => {

@@ -1,7 +1,7 @@
 import Header from "../components/Header";
 import React, { useState, useRef, useEffect } from "react";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, NavLink, useSearchParams } from "react-router-dom";
 
 function Unit() {
   const [units, setUnits] = useState();
@@ -54,20 +54,36 @@ function Unit() {
                                         </div>
                                        </div>*/}
                   <div className="group relative">
-                    <button class="group relative h-12 w-48 group-hover:visible invisible overflow-hidden rounded-lg bg-white text-lg shadow">
-                      <Link end to="/listings">
-                        <div class="absolute inset-0 w-3 bg-amber-400 transition-all duration-[250ms] ease-out group-hover:w-full"></div>
-                        <span class="relative text-black group-hover:text-white">
-                          Hover me!
-                        </span>
-                      </Link>
-                    </button>
-                    <img src="./assets/QR1.png" className="mx-24" width={365} />
+                    <div class="rounded-lg shadow-lg transition-shadow hover:shadow-md m-5">
+                      <a href="#" class="rounded-lg group relative block bg-black">
+                        <img
+                          alt="apartment"
+                          src={units.imagePath}
+                          class="rounded-lg absolute inset-0 h-full w-full object-cover transition-opacity group-hover:opacity-50"
+                        />
 
-                    <img
-                      className="group absolute top-0 left-0 rounded-lg group-hover:opacity-25 transition-opacity duration-1000 ease-out group-hover:hidden w-150 h-180"
-                      src={units.imagePath}
-                    />
+                        <div class="relative p-4 sm:p-6 lg:p-8">
+                          <div class="mt-32 sm:mt-48 lg:mt-64">
+                            <div class="mb-10 flex justify-center translate-y-8 transform opacity-0 transition-all group-hover:translate-y-0 group-hover:opacity-100">
+                              <div>
+                                <div><p class = "font-semibold text-white flex justify-center mb-5">See an AR view of your apartment</p></div>
+                                <div>
+                                  <NavLink
+                                   end
+                                   to = "/roomview"
+                                   className = "mr-4 inline-flex items-center justify-center h-16 px-10 py-0 text-xl font-semibold text-center text-gray-200 no-underline align-middle transition-all duration-300 ease-in-out bg-transparent border-2 border-gray-600 border-solid rounded-full cursor-pointer select-none hover:text-white hover:border-white focus:shadow-xs focus:no-underline">
+                                    Room View
+                                  </NavLink>
+                                  <a href="#_" class="inline-flex items-center justify-center h-16 px-10 py-0 text-xl font-semibold text-center text-gray-200 no-underline align-middle transition-all duration-300 ease-in-out bg-transparent border-2 border-gray-600 border-solid rounded-full cursor-pointer select-none hover:text-white hover:border-white focus:shadow-xs focus:no-underline">
+                                    Apt View
+                                  </a>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
                   </div>
                   {/* 
                                     <div class="flex-wrap hidden -mx-2 md:flex">
@@ -95,6 +111,7 @@ function Unit() {
                                     */}
                 </div>
               </div>
+
               <div class="w-full px-4 md:w-1/2">
                 <div class="lg:pl-20">
                   <div class="mb-6 ">
