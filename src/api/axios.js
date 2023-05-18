@@ -1,5 +1,5 @@
 import axios from "axios"
-//const BASE_URL = 'https://api.marlynshouserental.com'
+// const BASE_URL = 'https://api.marlynshouserental.com'
 const BASE_URL = 'http://localhost:3000/'
 
 export default axios.create({
