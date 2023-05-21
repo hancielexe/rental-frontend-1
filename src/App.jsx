@@ -34,6 +34,8 @@ import AssetsLiabilities from "./views/AssetsLiabilities";
 import CashFlow from "./views/CashFlow";
 import RoomView from "./views/RoomView";
 import Billing from "./views/Billing";
+import UserBilling from "./views/UserBilling";
+import SalesForm from "./views/SalesForm";
 
 const ROLES = {
   Tenant: 2001,
@@ -71,6 +73,7 @@ function App() {
             <Route path="/mainteadmin" element={<MainteAdmin />} />
             <Route path="/complaintadmin" element={<ComplaintAdmin />} />
             <Route path="/finance/sales" element={<SalesDetails />} />
+            <Route path="/salesform" element={<SalesForm />} />
             <Route path="/finance/expenses" element={<Expenses />} />
             <Route path="/assets/a" element={<AssetsLiabilities />} />
             <Route path="/assets/cashflow" element={<CashFlow />} />
@@ -88,6 +91,7 @@ function App() {
             <Route path="/complaint" element={<Complaint />} />
             <Route path="/contractuser" element={<ContractUser />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/bill" element={<UserBilling />} />
           </Route>
         </Route>
 
