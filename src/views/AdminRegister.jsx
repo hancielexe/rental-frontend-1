@@ -54,6 +54,11 @@ function AdminRegister() {
   const [unit, setUnit] = useState("");
   const axiosPrivate = useAxiosPrivate();
 
+  const [image, setImage] = useState({});
+  const fileOnChange = (e) => {
+    setImage(e.target.files[0]);
+  };
+
   useEffect(() => {
     const result = USER_REGEX.test(user);
     setValidName(result);
@@ -110,24 +115,35 @@ function AdminRegister() {
       return;
     }
     try {
-      const response = await axios.post(
-        REGISTER_URL,
-        JSON.stringify({
-          user,
-          pwd,
-          phone,
-          occ,
-          email,
-          add,
-          fname,
-          lname,
-          unit,
-        }),
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
-      );
+      const formData = new FormData();
+
+      formData.append("user", user);
+      formData.append("pwd", pwd);
+      formData.append("phone", phone);
+      formData.append("occ", occ);
+      formData.append("email", email);
+      formData.append("add", add);
+      formData.append("fname", fname);
+      formData.append("lname", lname);
+      formData.append("unit", unit);
+      formData.append("image", image);
+
+      await axios({
+        method: "post",
+        url: REGISTER_URL,
+        data: formData,
+        headers: { "Content-Type": "multipart/form-data" },
+        withCredentials: true,
+      })
+        .then(function (response) {
+          //handle success
+          console.log(response);
+        })
+        .catch(function (response) {
+          //handle error
+          console.log(response);
+        });
+
       console.log(response?.data);
       console.log(response?.accessToken);
       console.log(JSON.stringify(response));
@@ -172,6 +188,7 @@ function AdminRegister() {
                 action="#"
                 className="mt-8 grid grid-cols-6 gap-6"
                 onSubmit={handleSubmit}
+                enctype="multipart/form-data"
               >
                 <div className="col-span-6 sm:col-span-3">
                   <label
@@ -458,12 +475,7 @@ function AdminRegister() {
                     </label>
 
                     <div class="col-span-6 sm:flex sm:items-center sm:gap-4">
-                      <button class="inline-block shrink-0 mt-2 border border-black-400 bg-gray-200 px-0 py-0 text-sm font-medium text-black transition hover:bg-transparent hover:text-gray-900 focus:outline-none focus:ring active:text-black-400">
-                        Choose file
-                      </button>
-                      <p class="mt-4 text-xs text-gray-500 sm:mt-2">
-                        No file Chosen
-                      </p>
+                      <input type="file" onChange={fileOnChange} />
                     </div>
                   </div>
                 </div>
