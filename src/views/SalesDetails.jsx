@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, NavLink } from "react-router-dom";
 import Sidebar from "../partials/Sidebar";
 import Header from "../partials/Header";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
@@ -66,15 +66,15 @@ function SalesDetails() {
 
     for (let i = 0; i < filteredRows.length; i++) {
       const { expenses: { rental, electricity, water, internet } } = filteredRows[i];
-        let rent = parseInt(rental);
-        let elec = parseInt(electricity);
-        let wat = parseInt(water);
-        let int = parseInt(internet);
+      let rent = parseInt(rental);
+      let elec = parseInt(electricity);
+      let wat = parseInt(water);
+      let int = parseInt(internet);
 
-        addRent += rent;
-        addElec += elec;
-        addWat += wat;
-        addInt += int;
+      addRent += rent;
+      addElec += elec;
+      addWat += wat;
+      addInt += int;
     }
 
     setTotalRent(addRent);
@@ -235,13 +235,24 @@ function SalesDetails() {
                           </div>
                         </td>
                         <td class="p-2 whitespace-nowrap">
-                            <div class="text-center font-semibold">
-                              ₱{totalRent + totalWat + totalElec + totalInt}
-                            </div>
-                          </td>
+                          <div class="text-center font-semibold">
+                            ₱{totalRent + totalWat + totalElec + totalInt}
+                          </div>
+                        </td>
                       </tr>
                     </tbody>
                   </table>
+                  <div class="flex justify-end mt-3">
+                  <NavLink
+                  end 
+                  to = "/salesform">
+                    <button
+                      class="rounded-md bg-blue-50 px-10 py-3 text-sm font-semibold text-blue-500 transition hover:bg-blue-100 hover:text-blue-600"
+                    >
+                      Add Record
+                    </button>
+                  </NavLink>
+                  </div>
                 </div>
               </div>
             </div>
