@@ -6,15 +6,14 @@ import axios from "../api/axios";
 const INQ_URL = "/inquiry";
 
 function Inquiry() {
-
   const [showModal, setShowModal] = useState(false);
 
   const purposeRef = useRef();
   const nameRef = useRef();
   const phonenoRef = useRef();
   const emailRef = useRef();
-  const contactRef = useRef();
-  const contactTimeRef = useRef();
+  const branchRef = useRef();
+  // const contactTimeRef = useRef();
   const questionsRef = useRef();
 
   const navigate = useNavigate();
@@ -33,11 +32,11 @@ function Inquiry() {
   const [email, setEmail] = useState("");
   const [emailFocus, setEmailFocus] = useState(false);
 
-  const [contact, setContact] = useState("");
-  const [contactFocus, setContactFocus] = useState(false);
+  const [branch, setBranch] = useState("");
+  const [branchFocus, setBranchFocus] = useState(false);
 
-  const [contactTime, setContactTime] = useState("");
-  const [contactTimeFocus, setContactTimeFocus] = useState(false);
+  // const [contactTime, setContactTime] = useState("");
+  // const [contactTimeFocus, setContactTimeFocus] = useState(false);
 
   const [questions, setQuestions] = useState("");
   const [questionsFocus, setQuestionsFocus] = useState(false);
@@ -47,7 +46,7 @@ function Inquiry() {
 
   useEffect(() => {
     setErrMsg("");
-  }, [purpose, name, phoneno, email, contact, contactTime, questions]);
+  }, [purpose, name, phoneno, email, branch, questions]);
 
   const errRef = useRef();
 
@@ -62,8 +61,8 @@ function Inquiry() {
           name,
           phoneno,
           email,
-          contact,
-          contactTime,
+          branch,
+          // contactTime,
           questions,
         }),
         {
@@ -77,17 +76,19 @@ function Inquiry() {
       setSuccess(true);
       //clear state and controlled inputs
       //need value attrib on inputs for this
-      navigate(from, { replace: true });
     } catch (err) {
       if (!err?.response) {
         setErrMsg("No Server Response");
-      } else if (err.response?.status === 409) {
-        setErrMsg("Username Taken");
       } else {
         setErrMsg("Please fill in all the required fields!");
       }
       errRef.current.focus();
     }
+  };
+
+  const handleFormClose = async (e) => {
+    setShowModal(false);
+    navigate(from, { replace: true });
   };
 
   return (
@@ -96,7 +97,7 @@ function Inquiry() {
         <section>
           <h3 class="font-bold text-2xl text-gray-700">Inquiry Form</h3>
           <p class="text-gray-400 pt-2 text-sm">
-            Ask and you shall receive. Submit your inquiry now.{" "}
+            Ask and you shall receive. Submit your inquiry now.
           </p>
         </section>
 
@@ -188,25 +189,27 @@ function Inquiry() {
 
             <div class="mb-6 rounded">
               <label class="block text-gray-700 text-sm font-bold mb-2 ml-1">
-                I would like to be contacted by
+                The unit location I am interested is at
               </label>
               <select
                 className="bg-gray-200 rounded w-full text-gray-600 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
-                ref={contactRef}
-                value={contact}
-                onChange={(e) => setContact(e.target.value)}
-                onFocus={() => setContactFocus(true)}
-                onBlur={() => setContactFocus(false)}
+                ref={branchRef}
+                value={branch}
+                onChange={(e) => setBranch(e.target.value)}
+                onFocus={() => setBranchFocus(true)}
+                onBlur={() => setBranchFocus(false)}
+                required
               >
                 <option selected value="">
                   Select an Option
                 </option>
-                <option value="Phone Number">Phone Number</option>
-                <option value="Email">Email</option>
+                <option value="Quiapo">Quiapo</option>
+                <option value="Sampaloc">Sampaloc</option>
+                <option value="Taguig">Taguig</option>
               </select>
             </div>
 
-            <div class="mb-6 rounded">
+            {/* <div class="mb-6 rounded">
               <label class="block text-gray-700 text-sm font-bold mb-2 ml-1">
                 I want to be contacted
               </label>
@@ -230,7 +233,7 @@ function Inquiry() {
                 </option>
                 <option value="At night (6pm-10pm)">At night (6pm-10pm)</option>
               </select>
-            </div>
+            </div> */}
 
             <div class="mb-10">
               <label class="block text-gray-700 text-sm font-bold mb-2 ml-1">
@@ -251,47 +254,43 @@ function Inquiry() {
             </div>
 
             <>
-         
-            <button
-              class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200"
-              type="submit"
-              onClick={() => setShowModal(true)}
-            >
-                Send Inquiry 
-                </button>
-                
-                {showModal ? (
+              <button
+                class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200"
+                type="submit"
+                onClick={() =>
+                  !errMsg ? setShowModal(true) : setShowModal(false)
+                }
+              >
+                Send Inquiry
+              </button>
+
+              {showModal ? (
                 <>
-                <div className="fixed inset-0 z-10">
-                <div
-                    className="fixed inset-0 w-full h-full bg-black opacity-40"
-                    onClick={() => setShowModal(false)}
-                ></div>
-                <div className="flex items-start min-h-screen px-8 py-12 ">
-                    <div className="relative w-full max-w-lg p-8 mx-auto bg-white rounded-md shadow-lg">
+                  <div className="fixed inset-0 z-10">
+                    <div
+                      className="fixed inset-0 w-full h-full bg-black opacity-40"
+                      onClick={() => handleFormClose()}
+                    ></div>
+                    <div className="flex items-start min-h-screen px-8 py-12 ">
+                      <div className="relative w-full max-w-lg p-8 mx-auto bg-white rounded-md shadow-lg">
                         <div className="sm:flex">
-                            
-                                <p className="sm:flex text-xl leading-relaxed text-gray-500 ">
-                                    Your inquiry is sent!
+                          <p className="sm:flex text-xl leading-relaxed text-gray-500 ">
+                            Your inquiry is sent!
+                          </p>
 
-                                </p>
-
-                                <button
-                                                className="w-full mt-20 p-1 flex-1 bg-gray-400 text-black-8900 rounded-sm outline-none border ring-offset-1 ring-gray-600 focus:ring-1"
-                                                onClick={() =>
-                                                    setShowModal(false)
-                                                }
-                                            >                                           
-                                                Close
-                                            </button>
-                                
-                                </div>
-                            </div>
+                          <button
+                            className="w-full mt-20 p-1 flex-1 bg-gray-400 text-black-8900 rounded-sm outline-none border ring-offset-1 ring-gray-600 focus:ring-1"
+                            onClick={() => handleFormClose()}
+                          >
+                            Close
+                          </button>
                         </div>
+                      </div>
                     </div>
+                  </div>
                 </>
-                ) : null}
-                </>
+              ) : null}
+            </>
           </form>
         </section>
       </main>
