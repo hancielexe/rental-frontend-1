@@ -11,8 +11,8 @@ function Footer() {
           </h2>
 
           <p class="max-w-sm mx-auto mt-4 text-gray-500">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cum
-            maiores ipsum eos temporibus ea nihil.
+          Our comprehensive listings provide all the essential details you need. 
+          Embark on a seamless renting experience with our trusted rental system.
           </p>
 
           <Link
