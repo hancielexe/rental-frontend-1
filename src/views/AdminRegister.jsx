@@ -448,6 +448,7 @@ function AdminRegister() {
                       required
                       onChange={(e) => setUnit(e.target.value)}
                     >
+                      <option>Select Unit</option>
                       {units
                         .filter((unit) => {
                           if (unit.unitAvailability === true) return unit;

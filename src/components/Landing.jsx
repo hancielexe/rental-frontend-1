@@ -16,10 +16,10 @@ function Landing() {
               </h2>
 
               <p class="mt-4 text-white">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut
-                vero aliquid sint distinctio iure ipsum cupiditate? Quis, odit
-                assumenda? Deleniti quasi inventore, libero reiciendis minima
-                aliquid tempora. Obcaecati, autem.
+              Find your ideal home effortlessly with our user-friendly platform. 
+              View the list of available apartments, quickly filter them by location, 
+              and view the property in images, including an AR View, and other thorough information. 
+              Begin your search for the ideal rental property right today!
               </p>
 
               <Link to="/inquire">

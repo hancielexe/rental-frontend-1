@@ -467,15 +467,15 @@ function UserSidebar({ sidebarOpen, setSidebarOpen }) {
                   );
                 }}
               </SidebarLinkGroup>
-              {/* Messages */}
+              {/* FAQ */}
               <li
-                className={`px-3 py-2 rounded-sm mb-0.5 last:mb-0 duration-200${pathname.includes("messages") && "bg-slate-900"
+                className={`px-3 py-2 rounded-sm mb-0.5 last:mb-0 duration-200${pathname.includes("faq") && "bg-slate-900"
                   }`}
               >
                 <NavLink
                   end
-                  to="/messages"
-                  className={`block text-slate-200 truncate transition duration-150 ${pathname.includes("messages")
+                  to="/faq"
+                  className={`block text-slate-200 truncate transition duration-150 ${pathname.includes("faq")
                       ? "hover:text-slate-200"
                       : "hover:text-white"
                     }`}
@@ -484,14 +484,14 @@ function UserSidebar({ sidebarOpen, setSidebarOpen }) {
                     <div className="grow flex items-center">
                       <svg className="shrink-0 h-6 w-6" viewBox="0 0 24 24">
                         <path
-                          className={`fill-current ${pathname.includes("messages")
+                          className={`fill-current ${pathname.includes("faq")
                               ? "text-indigo-500"
                               : "text-slate-600"
                             }`}
                           d="M14.5 7c4.695 0 8.5 3.184 8.5 7.111 0 1.597-.638 3.067-1.7 4.253V23l-4.108-2.148a10 10 0 01-2.692.37c-4.695 0-8.5-3.184-8.5-7.11C6 10.183 9.805 7 14.5 7z"
                         />
                         <path
-                          className={`fill-current ${pathname.includes("messages")
+                          className={`fill-current ${pathname.includes("faq")
                               ? "text-indigo-300"
                               : "text-slate-400"
                             }`}
@@ -499,13 +499,7 @@ function UserSidebar({ sidebarOpen, setSidebarOpen }) {
                         />
                       </svg>
                       <span className="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 hover:text-indigo-300">
-                        Messages
-                      </span>
-                    </div>
-                    {/* Badge */}
-                    <div className="flex flex-shrink-0 ml-2">
-                      <span className="inline-flex items-center justify-center h-5 text-xs font-medium text-white bg-indigo-500 px-2 rounded">
-                        4
+                        FAQ
                       </span>
                     </div>
                   </div>
