@@ -36,6 +36,7 @@ import RoomView from "./views/RoomView";
 import Billing from "./views/Billing";
 import UserBilling from "./views/UserBilling";
 import SalesForm from "./views/SalesForm";
+import FAQ from "./views/FAQ";
 
 const ROLES = {
   Tenant: 2001,
@@ -92,6 +93,7 @@ function App() {
             <Route path="/contractuser" element={<ContractUser />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/bill" element={<UserBilling />} />
+            <Route path="/faq" element={<FAQ />} />
           </Route>
         </Route>
 

@@ -4,11 +4,50 @@ import Sidebar from "../partials/Sidebar";
 import Header from "../partials/Header";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import Loading from "../components/Loading";
-import { elements } from "chart.js";
 
 function Billing() {
     const axiosPrivate = useAxiosPrivate();
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [billing, setBilling] = useState();
+    const [users, setUsers] = useState();
+    const [user, setUser] = useState();
+
+    useEffect(() => {
+        let isMounted = true;
+        const controller = new AbortController();
+
+        const getUsers = async () => {
+            try {
+                const response = await axiosPrivate.get(`/users`, {
+                    signal: controller.signal,
+                });
+                console.log(response.data);
+                isMounted && setUsers(response.data);
+            } catch (err) {
+                console.log(err);
+            }
+        };
+
+        const getBilling = async () => {
+            try {
+                const response = await axiosPrivate.get(`/billing/tenant/${id}`, {
+                    signal: controller.signal,
+                });
+                console.log(response.data);
+                isMounted && setBilling(response.data);
+            } catch (err) {
+                console.log(err);
+            }
+        };
+
+        getUsers();
+        getBilling();
+
+        return () => {
+            isMounted = false;
+            controller.abort();
+        };
+    }, []);
 
     return (
         <div className="flex h-screen overflow-hidden">
@@ -26,21 +65,38 @@ function Billing() {
                             </h1>
                         </div>
                         <div className="mx-5 relative w-full lg:max-w-sm mb-10 ml-12 px-8">
-                            <select className="w-full p-2.5 text-gray-500 bg-white border border-zinc-300 rounded-md appearance-none focus:border-indigo-600">
-                                <option selected class="text-start">
-                                    Select Username
-                                </option>
-                                <option>Hansen</option>
-                                <option>Hehenciel</option>
-                            </select>
+                            {users?.length ? (
+                                <select
+                                    class="w-full rounded-lg border-gray-200 p-3 text-sm"
+                                    required
+                                    onChange={(e) => setUser(e.target.value)}
+                                >
+                                    <option>Select User</option>
+                                    {users
+                                        .filter((user) => {
+                                            if (!user.roles.Admin) return user;
+                                        })
+                                        .map((filteredUser) => (
+                                            <option value={filteredUser.username}>
+                                                {filteredUser.username}
+                                            </option>
+                                        ))}
+                                </select>
+                            ) : null}
+                            <div class="rounded-lg border border-gray-200 m-auto bg-gray-300 p-3 my-2 text-lg hover:border-black hover:bg-slate-300">
+                                <p><NavLink
+                                    end
+                                    to="/create"
+                                >Create Billing</NavLink></p>
+                            </div>
                         </div>
                     </div>
-                    <div class = "px-20">
+                    <div class="px-20">
                         <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded-lg ">
                             <div class="rounded-t mb-0 px-4 py-3 border-0">
                                 <div class="flex flex-wrap items-center">
                                     <div class="relative w-full ml-2 max-w-full flex-grow flex-1">
-                                        <h3 class="font-semibold text-lg tracking-wide">Billing for (Tenant Name)</h3>
+                                        <h3 class="font-semibold text-lg tracking-wide">Billing for {user}</h3>
                                     </div>
                                 </div>
                             </div>
@@ -83,7 +139,7 @@ function Billing() {
                                         </tr>
                                         <tr>
                                             <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                            Electricity Bill Previous Reading
+                                                Electricity Bill Previous Reading
                                             </th>
                                             <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
                                                 1000
@@ -94,7 +150,7 @@ function Billing() {
                                         </tr>
                                         <tr>
                                             <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                            Electricity Bill Total Reading
+                                                Electricity Bill Total Reading
                                             </th>
                                             <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
                                                 1000
@@ -105,7 +161,7 @@ function Billing() {
                                         </tr>
                                         <tr>
                                             <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                            Electricity Bill Total
+                                                Electricity Bill Total
                                             </th>
                                             <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
                                                 1000
@@ -116,7 +172,7 @@ function Billing() {
                                         </tr>
                                         <tr>
                                             <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                            Water Bill Latest Reading
+                                                Water Bill Latest Reading
                                             </th>
                                             <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
                                                 1000
@@ -127,7 +183,7 @@ function Billing() {
                                         </tr>
                                         <tr>
                                             <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                            Water Bill Previous Reading
+                                                Water Bill Previous Reading
                                             </th>
                                             <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
                                                 1000
@@ -138,7 +194,7 @@ function Billing() {
                                         </tr>
                                         <tr>
                                             <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                            Water Bill Total Reading
+                                                Water Bill Total Reading
                                             </th>
                                             <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
                                                 1000
@@ -149,7 +205,7 @@ function Billing() {
                                         </tr>
                                         <tr>
                                             <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                            Water Bill Total
+                                                Water Bill Total
                                             </th>
                                             <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
                                                 1000
