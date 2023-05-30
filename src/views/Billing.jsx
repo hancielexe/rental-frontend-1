@@ -11,7 +11,8 @@ function Billing() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [billing, setBilling] = useState();
   const [users, setUsers] = useState();
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState();
+  const [unit, setUnit] = useState();
   const [showForm, setShowForm] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [month, setMonth] = useState("");
@@ -41,7 +42,7 @@ function Billing() {
           signal: controller.signal,
         });
         console.log(response.data);
-        isMounted && setUsers(response.data) && setUser(response.data[0]);
+        isMounted && setUsers(response.data);
       } catch (err) {
         console.log(err);
       }
@@ -106,7 +107,7 @@ function Billing() {
       if (!err?.response) {
         setErrMsg("No Server Response");
       } else {
-        setErrMsg("Billing for this month already exists!");
+        setErrMsg("hahah!");
       }
     }
   };
@@ -125,7 +126,6 @@ function Billing() {
 
   const handleSelectChange = (event) => {
     const value = parseInt(event.target.value);
-    console.log(value);
     setMonth(value);
   };
 
@@ -133,6 +133,8 @@ function Billing() {
     setShowModal(false);
     window.location.reload(true);
   };
+
+  console.log(`${user} ${unit}`);
 
   return (
     <div className="flex h-screen overflow-hidden">
@@ -149,50 +151,56 @@ function Billing() {
                 Billing
               </h1>
             </div>
-            <div className="mx-5 relative w-full lg:max-w-sm mb-10 ml-12 px-8">
+            <div className="mx-5 w-full lg:max-w-sm mb-3 ml-12 px-8">
               {users?.length ? (
-                <select
-                  class="w-full rounded-lg border-gray-200 p-3 text-sm"
-                  required
-                  onChange={(e) => setUser(e.target.value)}
-                >
-                  <option>Select User</option>
-                  {users
-                    .filter((user) => {
-                      if (!user.roles.Admin) return user;
-                    })
-                    .map((filteredUser) => (
-                      <option value={filteredUser._id}>
-                        {filteredUser.username}
-                      </option>
-                    ))}
-                </select>
+                <>
+                  <select
+                    class="w-full rounded-lg border-gray-200 p-3 text-sm"
+                    required
+                    onChange={(e) => setUser(e.target.value)}
+                  >
+                    <option>Select User</option>
+                    {users
+                      .filter((user) => {
+                        if (!user.roles.Admin) return user;
+                      })
+                      .map((filteredUser) => (
+                        <option value={filteredUser._id}>
+                          {filteredUser.username}
+                        </option>
+                      ))}
+                  </select>
+                </>
               ) : null}
-              <div class="rounded-lg border border-gray-200 m-auto bg-gray-300 p-3 my-2 text-lg hover:border-black hover:bg-slate-300">
-                <button onClick={() => setShowForm(true)}>
-                  Create Billing
-                </button>
-              </div>
+
             </div>
           </div>
           <div class="px-20">
             <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded-lg ">
               <div class="rounded-t mb-0 px-4 py-3 border-0">
-                <div class="flex flex-wrap items-center">
-                  <div class="relative w-full ml-2 max-w-full flex-grow flex-1">
-                    <h3 class="font-semibold text-lg tracking-wide">
-                      Billing for {user}
+                <div class="w-full mx-auto">
+                  <div class="grid grid-cols-2">
+                    <h3 class="font-semibold text-lg tracking-wide flex items-center">
+                      Billing for { }
                     </h3>
+                    <div class="flex justify-end">
+                      <button
+                        class="px-5 py-2.5 font-medium bg-blue-50 hover:bg-blue-100 hover:text-blue-600 text-blue-500 rounded-lg text-sm"
+                        onClick={() => setShowForm(true)}>
+                        Create Billing
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
               <div class="block w-full overflow-x-auto">
                 <table class="items-center bg-transparent w-full border-collapse ">
                   <tbody>
+                    <hr />
                     {billing?.length ? (
                       <>
                         <select
-                          class="w-full rounded-lg border-gray-200 p-3 text-sm"
+                          class="flex-row-reverse rounded-lg border-gray-200 w-40 p-3 text-sm m-5"
                           required
                           value={month}
                           onChange={handleSelectChange}
@@ -226,7 +234,7 @@ function Billing() {
                                   Electricity Bill Latest Reading
                                 </th>
                                 <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
-                                  {filteredBill.latestElec}
+                                  ₱{filteredBill.latestElec}.00
                                 </td>
                               </tr>
                               <tr>
@@ -234,7 +242,7 @@ function Billing() {
                                   Electricity Bill Previous Reading
                                 </th>
                                 <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
-                                  {filteredBill.prevElec}
+                                  ₱{filteredBill.prevElec}.00
                                 </td>
                               </tr>
                               <tr>
@@ -242,8 +250,8 @@ function Billing() {
                                   Electricity Bill Total Reading
                                 </th>
                                 <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
-                                  {filteredBill.latestElec -
-                                    filteredBill.prevElec}
+                                  ₱{filteredBill.latestElec -
+                                    filteredBill.prevElec}.00
                                 </td>
                               </tr>
                               <tr>
@@ -251,9 +259,9 @@ function Billing() {
                                   Electricity Bill Total
                                 </th>
                                 <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
-                                  {(filteredBill.latestElec -
+                                  ₱{(filteredBill.latestElec -
                                     filteredBill.prevElec) *
-                                    15}
+                                    15}.00
                                 </td>
                               </tr>
                               <tr>
@@ -261,7 +269,7 @@ function Billing() {
                                   Water Bill Latest Reading
                                 </th>
                                 <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
-                                  {filteredBill.latestWat}
+                                  ₱{filteredBill.latestWat}.00
                                 </td>
                               </tr>
                               <tr>
@@ -269,7 +277,7 @@ function Billing() {
                                   Water Bill Previous Reading
                                 </th>
                                 <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
-                                  {filteredBill.prevWat}
+                                  ₱{filteredBill.prevWat}.00
                                 </td>
                               </tr>
                               <tr>
@@ -277,8 +285,8 @@ function Billing() {
                                   Water Bill Total Reading
                                 </th>
                                 <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
-                                  {filteredBill.latestWat -
-                                    filteredBill.prevWat}
+                                  ₱{filteredBill.latestWat -
+                                    filteredBill.prevWat}.00
                                 </td>
                               </tr>
                               <tr>
@@ -286,9 +294,9 @@ function Billing() {
                                   Water Bill Total
                                 </th>
                                 <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
-                                  {(filteredBill.latestWat -
+                                  ₱{(filteredBill.latestWat -
                                     filteredBill.prevWat) *
-                                    42}
+                                    42}.00
                                 </td>
                               </tr>
                               <tr>
@@ -296,7 +304,7 @@ function Billing() {
                                   Internet Bill
                                 </th>
                                 <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
-                                  {filteredBill.int}
+                                  ₱{filteredBill.int}.00
                                 </td>
                               </tr>
                               <tr>
@@ -304,7 +312,7 @@ function Billing() {
                                   Rental Fee
                                 </th>
                                 <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
-                                  {filteredBill.rent}
+                                  ₱{filteredBill.rent}.00
                                 </td>
                               </tr>
                               <tr class="border border-solid">
@@ -312,14 +320,14 @@ function Billing() {
                                   TOTAL
                                 </th>
                                 <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
-                                  {(filteredBill.latestElec -
+                                  ₱{(filteredBill.latestElec -
                                     filteredBill.prevElec) *
                                     15 +
                                     (filteredBill.latestWat -
                                       filteredBill.prevWat) *
-                                      42 +
+                                    42 +
                                     filteredBill.int +
-                                    filteredBill.rent}
+                                    filteredBill.rent}.00
                                 </td>
                               </tr>
                             </>

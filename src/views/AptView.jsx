@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-function RoomView() {
+function AptView() {
     const [showAlert, setShowAlert] = React.useState(true);
     return (
         <div class="flex justify-center px-36 place-content-center mt-10">
@@ -70,19 +70,20 @@ function RoomView() {
                 />
 
                 <div class="mt-4 sm:flex sm:items-center sm:justify-center sm:gap-4">
-                    <strong class="font-medium">Room View</strong>
+                    
+                    <NavLink
+                    end
+                    to = "/roomview">
+                    <p class="mt-0.5 opacity-50 sm:mt-0 hover:text-indigo-600 hover:opacity-80">Room View</p>
+                    </NavLink>
 
                     <span class="hidden sm:block sm:h-px sm:w-8 sm:bg-indigo-500"></span>
 
-                    <NavLink
-                    end
-                    to = "/aptview">
-                    <p class="mt-0.5 opacity-50 sm:mt-0 hover:text-indigo-600 hover:opacity-80">Apartment View</p>
-                    </NavLink>
+                    <strong class="font-medium">Apartment View</strong>
                 </div>
             </div>
         </div>
     );
 }
 
-export default RoomView;
+export default AptView;

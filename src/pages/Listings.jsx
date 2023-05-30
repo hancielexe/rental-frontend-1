@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect } from "react";
 import useLogout from "../hooks/useLogout";
 import { Link, useNavigate } from "react-router-dom";
 import Loading from "../components/Loading";
+import Navbar from "../components/Navbar";
 
 import UserAvatar from "../images/user-avatar-32.png";
 
@@ -58,6 +59,8 @@ function Listings() {
   });
 
   return (
+    <>
+    <Navbar />
     <div className="px-4 sm:px-6 lg:px-8 py-5 w-full max-w-9xl mx-auto">
       <div className="flex flex-1 items-center justify-end md:justify-between">
         <h2 className="mb-7 font-extrabold text-3xl text-gray-800 md:text-5xl">
@@ -227,6 +230,7 @@ function Listings() {
         <Loading />
       )}
     </div>
+    </>
   );
 }
 

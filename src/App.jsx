@@ -21,13 +21,13 @@ import UserApartment from "./views/UserApartment";
 import AdminRegister from "./views/AdminRegister";
 import ChangePass from "./views/ChangePass";
 import Maintenance from "./views/Maintenance";
-import Complaint from "./views/complaint";
+import Complaint from "./views/Complaint";
 import MainteAdmin from "./views/MainteAdmin";
 import SalesDetails from "./views/SalesDetails";
 import ContractUser from "./views/ContractUser";
 import Registry from "./views/Registry";
 import Profile from "./views/Profile";
-import TenantIn_Out from "./views/TenantIn_Out";
+import TenantIn from "./views/TenantIn";
 import ComplaintAdmin from "./views/ComplaintAdmin";
 import Expenses from "./views/Expenses";
 import AssetsLiabilities from "./views/AssetsLiabilities";
@@ -37,6 +37,10 @@ import Billing from "./views/Billing";
 import UserBilling from "./views/UserBilling";
 import SalesForm from "./views/SalesForm";
 import FAQ from "./views/FAQ";
+import AptView from "./views/AptView";
+import TenantOut from "./views/TenantOut";
+import About from "./views/About";
+import Contact from "./views/Contact";
 
 const ROLES = {
   Tenant: 2001,
@@ -60,7 +64,11 @@ function App() {
         <Route path="/inquire" element={<Inquiry />} />
         <Route path="/login" element={<Login />} />
         <Route exact path="/listings" element={<Listings />} />
+        <Route exact path="/faq" element={<FAQ />} />
+        <Route exact path="/about" element={<About />} />
+        <Route exact path="/contact" element={<Contact />} />
         <Route exact path="/roomview" element={<RoomView />} />
+        <Route exact path="/aptview" element={<AptView />} />
         <Route exact path="/unit" element={<Unit />}>
           <Route path=":id" element={<Unit />} />
         </Route>
@@ -79,7 +87,8 @@ function App() {
             <Route path="/assets/a" element={<AssetsLiabilities />} />
             <Route path="/assets/cashflow" element={<CashFlow />} />
             <Route path="/registry" element={<Registry />} />
-            <Route path="/tenantin_out" element={<TenantIn_Out />} />
+            <Route path="/tenantin" element={<TenantIn />} />
+            <Route path="/tenantout" element={<TenantOut />} />
             <Route path="/billing" element={<Billing />} />
           </Route>
 
@@ -93,7 +102,6 @@ function App() {
             <Route path="/contractuser" element={<ContractUser />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/bill" element={<UserBilling />} />
-            <Route path="/faq" element={<FAQ />} />
           </Route>
         </Route>
 

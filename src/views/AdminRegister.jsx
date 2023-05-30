@@ -498,19 +498,56 @@ function AdminRegister() {
                             className="fixed inset-0 w-full h-full bg-black opacity-40"
                             onClick={() => setShowModal(false)}
                           ></div>
-                          <div className="flex items-start min-h-screen px-8 py-12 ">
-                            <div className="relative w-full max-w-lg p-8 mx-auto bg-white rounded-md shadow-lg">
+                          <div className="flex items-start min-h-screen px-8 py-12 mt-10">
+                            <div className="relative w-full max-w-lg p-8 mx-auto rounded-xl border border-gray-100 bg-white shadow-xl">
                               <div className="sm:flex">
-                                <p className="sm:flex text-xl leading-relaxed text-gray-500 ">
-                                  Your registration is successfully created!
-                                </p>
+                                <span class="text-green-600">
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    class="h-6 w-6"
+                                  >
+                                    <path
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                    />
+                                  </svg>
+                                </span>
+
+                                <div class="flex-1 ml-3">
+                                  <strong class="block font-medium text-gray-900"> User registered! </strong>
+
+                                  <p class="mt-1 text-sm text-gray-700">
+                                    Your have successfuly made a registration.
+                                  </p>
+                                </div>
 
                                 <button
-                                  className="w-full mt-20 p-1 flex-1 bg-gray-400 text-black-8900 rounded-sm outline-none border ring-offset-1 ring-gray-600 focus:ring-1"
+                                  class="flex align-top text-gray-500 transition hover:text-gray-600"
                                   onClick={() => window.location.reload(true)}
                                 >
-                                  Close
+                                  <span class="sr-only">Dismiss popup</span>
+
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    class="h-6 w-6"
+                                  >
+                                    <path
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      d="M6 18L18 6M6 6l12 12"
+                                    />
+                                  </svg>
                                 </button>
+
                               </div>
                             </div>
                           </div>

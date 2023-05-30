@@ -13,8 +13,7 @@ function UserCard01() {
           Your Apartment
         </h1>
         <p class="leading-relaxed text-base">
-          Blue bottle crucifix vinyl post-ironic four dollar toast vegan
-          taxidermy. Gastropub indxgo juice poutine.
+          This cozy space offers a comfortable and inviting atmosphere, making it the perfect place to call home.
         </p>
         <div class="py-4">
           <div class=" inline-block mr-2">

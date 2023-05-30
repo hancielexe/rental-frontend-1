@@ -264,7 +264,7 @@ function UserBilling() {
                                 Amount Due{" "}
                               </p>
                             </div>
-                            <p class="font-bold text-black text-3xl">
+                            <p class="font-bold text-black text-2xl">
                               {" "}
                               ₱
                               {(filteredBill.latestElec -
