@@ -11,6 +11,11 @@ function SalesDetails() {
   const [sales, setSales] = useState();
   const [users, setUsers] = useState();
   const [month, setMonth] = useState("");
+  const [elecTotal, setElecTotal] = useState(0);
+  const [watTotal, setWatTotal] = useState(0);
+  const [rentTotal, setRentTotal] = useState(0);
+  const [intTotal, setIntTotal] = useState(0);
+  const [salaryTotal, setSalaryTotal] = useState(0);
   const trigger = useRef(null);
   const dropdown = useRef(null);
 
@@ -23,7 +28,26 @@ function SalesDetails() {
         const response = await axiosPrivate.get(`/billing`, {
           signal: controller.signal,
         });
-        console.log(response.data);
+        
+        let rent = 0;
+        let elec = 0;
+        let wat = 0;
+        let int = 0;
+
+        response.data?.length 
+          await response.data.filter((sale) => {
+            if (getMonthFromBSONDate(sale.date) === month){
+              elec += (sale.latestElec - sale.prevElec) * 15;
+              wat += (sale.latestWat - sale.prevWat) * 42;
+              rent += sale.rent;
+              int += sale.int;
+            }
+          })
+        setElecTotal(elec);
+        setWatTotal(wat);
+        setRentTotal(rent);
+        setIntTotal(int);
+
         isMounted && setSales(response.data);
       } catch (err) {
         console.log(err);
@@ -36,7 +60,7 @@ function SalesDetails() {
       isMounted = false;
       controller.abort();
     };
-  }, []);
+  }, [month]);
 
   const handleSelectChange = (event) => {
     const value = parseInt(event.target.value);
@@ -82,6 +106,7 @@ function SalesDetails() {
                       <option value="2">March</option>
                       <option value="3">April</option>
                       <option value="4">May</option>
+                      <option value="5">June</option>
                     </select>
                   </div>
                 </div>
@@ -179,27 +204,27 @@ function SalesDetails() {
                         </td>
                         <td class="p-2 whitespace-nowrap">
                           <div class="text-center">
-                            ₱{ }
+                            ₱{rentTotal}.00
                           </div>
                         </td>
                         <td class="p-2 whitespace-nowrap">
                           <div class="text-center">
-                            ₱{ }
+                            ₱{elecTotal}.00
                           </div>
                         </td>
                         <td class="p-2 whitespace-nowrap">
                           <div class="text-center">
-                            ₱{ }
+                            ₱{watTotal}.00
                           </div>
                         </td>
                         <td class="p-2 whitespace-nowrap">
                           <div class="text-center">
-                            ₱{ }
+                            ₱{intTotal}.00
                           </div>
                         </td>
                         <td class="p-2 whitespace-nowrap">
                           <div class="text-center font-semibold">
-                            ₱{ }
+                            ₱{ rentTotal + elecTotal + watTotal + intTotal }.00
                           </div>
                         </td>
                       </tr>

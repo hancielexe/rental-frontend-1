@@ -11,7 +11,6 @@ function UserBilling() {
   const axiosPrivate = useAxiosPrivate();
   const id = localStorage.getItem("userid");
   const currentMonth = new Date().getMonth(); // Get the current month (1-12)
-  console.log(currentMonth);
 
   useEffect(() => {
     let isMounted = true;
@@ -86,6 +85,9 @@ function UserBilling() {
       <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden bg-gray-100">
         {/*  Site header */}
         <UserHeader sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+        <div class="flex justify-center items-center h-screen">
+            <p class = "font-bold text-gray-600 m-auto text-2xl mb-10 z-0 absolute">No billing for this month!</p>
+        </div>
         {billing ? (
           <div class="px-20">
             {billing
@@ -97,7 +99,7 @@ function UserBilling() {
                   return bill;
               })
               .map((filteredBill) => (
-                <div class="max-w-2xl mx-auto py-0 md:py-16">
+                <div class="max-w-2xl mx-auto py-0 md:py-16 z-10">
                   <article
                     class="shadow-none md:shadow-md md:rounded-md overflow-hidden"
                     id="billing_form"
@@ -284,9 +286,7 @@ function UserBilling() {
                 </div>
               ))}
           </div>
-        ) : (
-          <h1>No billing for this month</h1>
-        )}
+        ) : null}
       </div>
     </div>
   );

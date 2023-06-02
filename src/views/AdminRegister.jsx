@@ -122,7 +122,7 @@ function AdminRegister() {
       formData.append("phone", phone);
       formData.append("occ", occ);
       formData.append("email", email);
-      formData.append("add", add);
+      formData.append("address", add);
       formData.append("fname", fname);
       formData.append("lname", lname);
       formData.append("unit", unit);
@@ -319,7 +319,6 @@ function AdminRegister() {
                     autoComplete="off"
                     onChange={(e) => setAdd(e.target.value)}
                     required
-                    aria-invalid={validName ? "false" : "true"}
                     aria-describedby="uidnote"
                     onFocus={() => setAddFocus(true)}
                     onBlur={() => setAddFocus(false)}

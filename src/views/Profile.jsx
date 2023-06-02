@@ -8,6 +8,7 @@ function Profile() {
   const axiosPrivate = useAxiosPrivate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [user, setUser] = useState();
+  const [inForm, setInForm] = useState();
   const id = localStorage.getItem("userid");
 
   useEffect(() => {
@@ -27,6 +28,30 @@ function Profile() {
     };
 
     getUser();
+
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
+  }, []);
+
+  useEffect(() => {
+    let isMounted = true;
+    const controller = new AbortController();
+
+    const getInForm = async () => {
+      try {
+        const response = await axiosPrivate.get(`/tenantin/${id}`, {
+          signal: controller.signal,
+        });
+        console.log(response.data);
+        isMounted && setInForm(response.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    getInForm();
 
     return () => {
       isMounted = false;
@@ -277,79 +302,90 @@ function Profile() {
         )}
 
         <div className="flex justify-center">
-        {/* Tenant In Status */}
-        <section class="bg-white p-4 sm:p-6 lg:p-8 rounded-lg shadow-lg transition-shadow hover:shadow-md m-5 w-full">
-          <div class="flex items-start sm:gap-8">
-            <div
-              class="hidden sm:grid sm:h-20 sm:w-20 sm:shrink-0 sm:place-content-center sm:rounded-full sm:border-2 sm:border-indigo-500"
-              aria-hidden="true"
-            >
-              <div class="flex items-center gap-1 text-indigo-500">
-                <svg class="h-16 w-16 mt-3" fill="currentColor" id="Layer_2" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path d="M405.44,143.58a59,59,0,1,0-44.4,0,45,45,0,0,0-23.2,39.35v39.23l-85.72,25.78a26,26,0,0,0-13.57,9.66A25.93,25.93,0,0,0,225,247.93l-50.82-15.28V182.92A45,45,0,0,0,151,143.57a59,59,0,1,0-44.4,0,45,45,0,0,0-23.2,39.34V477.1a5,5,0,0,0,10,0V261a26.15,26.15,0,0,0,8.57,4.43l61.53,18.51L129.24,476.23a5,5,0,0,0,4,5.79,4.37,4.37,0,0,0,.88.08,5,5,0,0,0,4.91-4.12l34-191.19L210,297.88a26,26,0,0,0,7.51,1.11,26.27,26.27,0,0,0,21.08-10.79,26,26,0,0,0,28.6,9.68l70.69-21.27v3.78a5.12,5.12,0,0,0,.08.87l35,196.72a5,5,0,0,0,4.91,4.12,4.37,4.37,0,0,0,.88-.08,5,5,0,0,0,4.05-5.79L347.84,279.94v-97a35,35,0,0,1,35-35h.81a35,35,0,0,1,35,35v113.7a16.08,16.08,0,0,1-32.16,0V193a5,5,0,0,0-10,0V296.62a26.06,26.06,0,0,0,42.16,20.51v160a5,5,0,0,0,10,0V182.92A45,45,0,0,0,405.44,143.58ZM79.75,88.91a49,49,0,1,1,49,49A49.07,49.07,0,0,1,79.75,88.91ZM232.87,277.54a16.38,16.38,0,0,1-20,10.76l-108-32.49a16,16,0,0,1-11.45-15.4V182.92a35,35,0,0,1,35-35h.81a35,35,0,0,1,35,35v46.72L135.52,221V193a5,5,0,1,0-10,0v31.76a5,5,0,0,0,3.56,4.79l93,28A16.1,16.1,0,0,1,232.87,277.54Zm31.4,10.76a16.37,16.37,0,0,1-20-10.76,16.1,16.1,0,0,1,10.76-20l82.84-24.92v33.58Zm70-199.39a49,49,0,1,1,49,49A49.06,49.06,0,0,1,334.23,88.91Z" /></svg>
+          {/* Tenant In Status */}
+          <section class="bg-white p-4 sm:p-6 lg:p-8 rounded-lg shadow-lg transition-shadow hover:shadow-md m-5 w-full">
+            <div class="flex items-start sm:gap-8">
+              <div
+                class="hidden sm:grid sm:h-20 sm:w-20 sm:shrink-0 sm:place-content-center sm:rounded-full sm:border-2 sm:border-indigo-500"
+                aria-hidden="true"
+              >
+                <div class="flex items-center gap-1 text-indigo-500">
+                  <svg class="h-16 w-16 mt-3" fill="currentColor" id="Layer_2" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path d="M405.44,143.58a59,59,0,1,0-44.4,0,45,45,0,0,0-23.2,39.35v39.23l-85.72,25.78a26,26,0,0,0-13.57,9.66A25.93,25.93,0,0,0,225,247.93l-50.82-15.28V182.92A45,45,0,0,0,151,143.57a59,59,0,1,0-44.4,0,45,45,0,0,0-23.2,39.34V477.1a5,5,0,0,0,10,0V261a26.15,26.15,0,0,0,8.57,4.43l61.53,18.51L129.24,476.23a5,5,0,0,0,4,5.79,4.37,4.37,0,0,0,.88.08,5,5,0,0,0,4.91-4.12l34-191.19L210,297.88a26,26,0,0,0,7.51,1.11,26.27,26.27,0,0,0,21.08-10.79,26,26,0,0,0,28.6,9.68l70.69-21.27v3.78a5.12,5.12,0,0,0,.08.87l35,196.72a5,5,0,0,0,4.91,4.12,4.37,4.37,0,0,0,.88-.08,5,5,0,0,0,4.05-5.79L347.84,279.94v-97a35,35,0,0,1,35-35h.81a35,35,0,0,1,35,35v113.7a16.08,16.08,0,0,1-32.16,0V193a5,5,0,0,0-10,0V296.62a26.06,26.06,0,0,0,42.16,20.51v160a5,5,0,0,0,10,0V182.92A45,45,0,0,0,405.44,143.58ZM79.75,88.91a49,49,0,1,1,49,49A49.07,49.07,0,0,1,79.75,88.91ZM232.87,277.54a16.38,16.38,0,0,1-20,10.76l-108-32.49a16,16,0,0,1-11.45-15.4V182.92a35,35,0,0,1,35-35h.81a35,35,0,0,1,35,35v46.72L135.52,221V193a5,5,0,1,0-10,0v31.76a5,5,0,0,0,3.56,4.79l93,28A16.1,16.1,0,0,1,232.87,277.54Zm31.4,10.76a16.37,16.37,0,0,1-20-10.76,16.1,16.1,0,0,1,10.76-20l82.84-24.92v33.58Zm70-199.39a49,49,0,1,1,49,49A49.06,49.06,0,0,1,334.23,88.91Z" /></svg>
+                </div>
+              </div>
+
+              <div>
+
+                <h3 class="text-lg font-medium sm:text-xl">
+                  Tenant In Status
+                </h3>
+
+                {
+                  inForm?.length ? (
+                    inForm.map((form) => {
+                      for (let key in form) {
+                        if (!form[key]) {
+                          <div class="mt-4 flex items-center gap-2 text-rose-500">
+                            <svg width="20" height="20" fill="currentColor" id="Icons2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path class="cls-1" d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm0,22A10,10,0,1,1,22,12,10.011,10.011,0,0,1,12,22Z" /><path class="cls-1" d="M16.707,7.293a1,1,0,0,0-1.414,0L12,10.586,8.707,7.293A1,1,0,1,0,7.293,8.707L10.586,12,7.293,15.293a1,1,0,1,0,1.414,1.414L12,13.414l3.293,3.293a1,1,0,0,0,1.414-1.414L13.414,12l3.293-3.293A1,1,0,0,0,16.707,7.293Z" /></svg>
+                            <p class="text-sm font-medium text-gray-500">
+                              Doorknob
+                            </p>
+                          </div>
+                        } else {
+                          <div class="mt-4 flex items-center gap-2 text-lime-500">
+                            <svg width="20" height="20" fill="currentColor" id="Icons" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path class="cls-1" d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm0,22A10,10,0,1,1,22,12,10.011,10.011,0,0,1,12,22Z" /><path class="cls-1" d="M16.293,8.293,10,14.586,7.707,12.293a1,1,0,0,0-1.414,1.414l3,3a1,1,0,0,0,1.414,0l7-7a1,1,0,0,0-1.414-1.414Z" /></svg>
+                            <p class="text-sm font-medium text-gray-500">
+                              All household equipment are in good condition!
+                            </p>
+                          </div>
+                        }
+                      }
+                    })
+                  ) : (
+                    null
+                  )
+                }
+
               </div>
             </div>
+          </section>
 
-            <div>
-
-              <h3 class="text-lg font-medium sm:text-xl">
-                Tenant In Status
-              </h3>
-
-              <div class="mt-4 flex items-center gap-2 text-lime-500">
-                <svg width="20" height="20" fill="currentColor" id="Icons" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path class="cls-1" d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm0,22A10,10,0,1,1,22,12,10.011,10.011,0,0,1,12,22Z" /><path class="cls-1" d="M16.293,8.293,10,14.586,7.707,12.293a1,1,0,0,0-1.414,1.414l3,3a1,1,0,0,0,1.414,0l7-7a1,1,0,0,0-1.414-1.414Z" /></svg>
-                <p class="text-sm font-medium text-gray-500">
-                  Doorknob
-                </p>
+          {/* Tenant Out Status */}
+          <section class="bg-white p-4 sm:p-6 lg:p-8 rounded-lg shadow-lg transition-shadow hover:shadow-md m-5 w-full">
+            <div class="flex items-start sm:gap-8">
+              <div
+                class="hidden sm:grid sm:h-20 sm:w-20 sm:shrink-0 sm:place-content-center sm:rounded-full sm:border-2 sm:border-indigo-500"
+                aria-hidden="true"
+              >
+                <div class="flex items-center gap-1 text-indigo-500">
+                  <svg class="h-16 w-16 mt-5" fill="currentColor" id="Layer_3" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><title /><path d="M484.3,46.89a30,30,0,0,0-42.35,0L361,127.81a17,17,0,0,1-11.95,5h-6.9a42.19,42.19,0,0,0,15.67-32.65V80.57a42.45,42.45,0,0,0-84.9,0v19.55a42.18,42.18,0,0,0,15.66,32.65H223.39a42.18,42.18,0,0,0,15.66-32.65V80.57a42.45,42.45,0,0,0-84.9,0v19.55a42.19,42.19,0,0,0,15.67,32.65h-6.9a17,17,0,0,1-11.95-5L70,46.88A29.94,29.94,0,0,0,27.7,89.22l104,104a42.39,42.39,0,0,1,12.51,30.21V467.91a6,6,0,0,0,11.92,0V223.4a54.25,54.25,0,0,0-16-38.65L36.15,80.79A18,18,0,0,1,61.6,55.32l80.93,80.92a29,29,0,0,0,20.39,8.45H277.79l-26,26a6,6,0,0,0-1.74,4.22v293a6,6,0,1,0,11.92,0V177.39l31.92-31.91c.21-.22.14-.55.32-.79h54.88a29,29,0,0,0,20.39-8.45l80.91-80.91a18,18,0,1,1,25.47,25.46l-103.92,104a54.23,54.23,0,0,0-16,38.66V467.91a6,6,0,0,0,11.92,0V223.4a42.37,42.37,0,0,1,12.53-30.22l103.94-104A30,30,0,0,0,484.3,46.89ZM284.87,100.12V80.57a30.53,30.53,0,0,1,61.06,0v19.55a30.53,30.53,0,0,1-61.06,0Zm-118.8,0V80.57a30.53,30.53,0,0,1,61.06,0v19.55a30.53,30.53,0,0,1-61.06,0Z" /><path d="M204.71,338.73a6,6,0,0,0-6,6V467.91a6,6,0,1,0,11.92,0V344.69A6,6,0,0,0,204.71,338.73Z" /><path d="M310.58,338.73a6,6,0,0,0-6,6V467.91a6,6,0,0,0,11.92,0V344.69A6,6,0,0,0,310.58,338.73Z" /></svg>
+                </div>
               </div>
 
-              <div class="mt-4 flex items-center gap-2 text-rose-500">
-                <svg width="20" height="20" fill="currentColor" id="Icons2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path class="cls-1" d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm0,22A10,10,0,1,1,22,12,10.011,10.011,0,0,1,12,22Z" /><path class="cls-1" d="M16.707,7.293a1,1,0,0,0-1.414,0L12,10.586,8.707,7.293A1,1,0,1,0,7.293,8.707L10.586,12,7.293,15.293a1,1,0,1,0,1.414,1.414L12,13.414l3.293,3.293a1,1,0,0,0,1.414-1.414L13.414,12l3.293-3.293A1,1,0,0,0,16.707,7.293Z" /></svg>
-                <p class="text-sm font-medium text-gray-500">
-                  Doorknob
-                </p>
+              <div>
+
+                <h3 class="text-lg font-medium sm:text-xl">
+                  Tenant Out Status
+                </h3>
+
+                <div class="mt-4 flex items-center gap-2 text-lime-500">
+                  <svg width="20" height="20" fill="currentColor" id="Icons" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path class="cls-1" d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm0,22A10,10,0,1,1,22,12,10.011,10.011,0,0,1,12,22Z" /><path class="cls-1" d="M16.293,8.293,10,14.586,7.707,12.293a1,1,0,0,0-1.414,1.414l3,3a1,1,0,0,0,1.414,0l7-7a1,1,0,0,0-1.414-1.414Z" /></svg>
+                  <p class="text-sm font-medium text-gray-500">
+                    Doorknob
+                  </p>
+                </div>
+
+                <div class="mt-4 flex items-center gap-2 text-rose-500">
+                  <svg width="20" height="20" fill="currentColor" id="Icons2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path class="cls-1" d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm0,22A10,10,0,1,1,22,12,10.011,10.011,0,0,1,12,22Z" /><path class="cls-1" d="M16.707,7.293a1,1,0,0,0-1.414,0L12,10.586,8.707,7.293A1,1,0,1,0,7.293,8.707L10.586,12,7.293,15.293a1,1,0,1,0,1.414,1.414L12,13.414l3.293,3.293a1,1,0,0,0,1.414-1.414L13.414,12l3.293-3.293A1,1,0,0,0,16.707,7.293Z" /></svg>
+                  <p class="text-sm font-medium text-gray-500">
+                    Doorknob
+                  </p>
+                </div>
+
+
               </div>
-
-
             </div>
-          </div>
-        </section>
-
-        {/* Tenant Out Status */}
-        <section class="bg-white p-4 sm:p-6 lg:p-8 rounded-lg shadow-lg transition-shadow hover:shadow-md m-5 w-full">
-          <div class="flex items-start sm:gap-8">
-            <div
-              class="hidden sm:grid sm:h-20 sm:w-20 sm:shrink-0 sm:place-content-center sm:rounded-full sm:border-2 sm:border-indigo-500"
-              aria-hidden="true"
-            >
-              <div class="flex items-center gap-1 text-indigo-500">
-                <svg class="h-16 w-16 mt-5" fill="currentColor" id="Layer_3" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><title/><path d="M484.3,46.89a30,30,0,0,0-42.35,0L361,127.81a17,17,0,0,1-11.95,5h-6.9a42.19,42.19,0,0,0,15.67-32.65V80.57a42.45,42.45,0,0,0-84.9,0v19.55a42.18,42.18,0,0,0,15.66,32.65H223.39a42.18,42.18,0,0,0,15.66-32.65V80.57a42.45,42.45,0,0,0-84.9,0v19.55a42.19,42.19,0,0,0,15.67,32.65h-6.9a17,17,0,0,1-11.95-5L70,46.88A29.94,29.94,0,0,0,27.7,89.22l104,104a42.39,42.39,0,0,1,12.51,30.21V467.91a6,6,0,0,0,11.92,0V223.4a54.25,54.25,0,0,0-16-38.65L36.15,80.79A18,18,0,0,1,61.6,55.32l80.93,80.92a29,29,0,0,0,20.39,8.45H277.79l-26,26a6,6,0,0,0-1.74,4.22v293a6,6,0,1,0,11.92,0V177.39l31.92-31.91c.21-.22.14-.55.32-.79h54.88a29,29,0,0,0,20.39-8.45l80.91-80.91a18,18,0,1,1,25.47,25.46l-103.92,104a54.23,54.23,0,0,0-16,38.66V467.91a6,6,0,0,0,11.92,0V223.4a42.37,42.37,0,0,1,12.53-30.22l103.94-104A30,30,0,0,0,484.3,46.89ZM284.87,100.12V80.57a30.53,30.53,0,0,1,61.06,0v19.55a30.53,30.53,0,0,1-61.06,0Zm-118.8,0V80.57a30.53,30.53,0,0,1,61.06,0v19.55a30.53,30.53,0,0,1-61.06,0Z"/><path d="M204.71,338.73a6,6,0,0,0-6,6V467.91a6,6,0,1,0,11.92,0V344.69A6,6,0,0,0,204.71,338.73Z"/><path d="M310.58,338.73a6,6,0,0,0-6,6V467.91a6,6,0,0,0,11.92,0V344.69A6,6,0,0,0,310.58,338.73Z"/></svg>
-              </div>
-            </div>
-
-            <div>
-
-              <h3 class="text-lg font-medium sm:text-xl">
-                Tenant Out Status
-              </h3>
-
-              <div class="mt-4 flex items-center gap-2 text-lime-500">
-                <svg width="20" height="20" fill="currentColor" id="Icons" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path class="cls-1" d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm0,22A10,10,0,1,1,22,12,10.011,10.011,0,0,1,12,22Z" /><path class="cls-1" d="M16.293,8.293,10,14.586,7.707,12.293a1,1,0,0,0-1.414,1.414l3,3a1,1,0,0,0,1.414,0l7-7a1,1,0,0,0-1.414-1.414Z" /></svg>
-                <p class="text-sm font-medium text-gray-500">
-                  Doorknob
-                </p>
-              </div>
-
-              <div class="mt-4 flex items-center gap-2 text-rose-500">
-                <svg width="20" height="20" fill="currentColor" id="Icons2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path class="cls-1" d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm0,22A10,10,0,1,1,22,12,10.011,10.011,0,0,1,12,22Z" /><path class="cls-1" d="M16.707,7.293a1,1,0,0,0-1.414,0L12,10.586,8.707,7.293A1,1,0,1,0,7.293,8.707L10.586,12,7.293,15.293a1,1,0,1,0,1.414,1.414L12,13.414l3.293,3.293a1,1,0,0,0,1.414-1.414L13.414,12l3.293-3.293A1,1,0,0,0,16.707,7.293Z" /></svg>
-                <p class="text-sm font-medium text-gray-500">
-                  Doorknob
-                </p>
-              </div>
-
-
-            </div>
-          </div>
-        </section>
+          </section>
         </div>
 
       </div>

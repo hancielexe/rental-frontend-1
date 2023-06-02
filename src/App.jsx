@@ -24,7 +24,7 @@ import Maintenance from "./views/Maintenance";
 import Complaint from "./views/Complaint";
 import MainteAdmin from "./views/MainteAdmin";
 import SalesDetails from "./views/SalesDetails";
-import ContractUser from "./views/ContractUser";
+import Contract from "./views/Contract";
 import Registry from "./views/Registry";
 import Profile from "./views/Profile";
 import TenantIn from "./views/TenantIn";
@@ -41,6 +41,7 @@ import AptView from "./views/AptView";
 import TenantOut from "./views/TenantOut";
 import About from "./views/About";
 import Contact from "./views/Contact";
+import AdminInquiry from "./views/AdminInquiry";
 
 const ROLES = {
   Tenant: 2001,
@@ -90,6 +91,7 @@ function App() {
             <Route path="/tenantin" element={<TenantIn />} />
             <Route path="/tenantout" element={<TenantOut />} />
             <Route path="/billing" element={<Billing />} />
+            <Route path="/inquiries" element={<AdminInquiry />} />
           </Route>
 
           <Route element={<RequireAuth allowedRoles={[ROLES.Tenant]} />}>
@@ -99,7 +101,7 @@ function App() {
             <Route exact path="/changepass" element={<ChangePass />} />
             <Route path="/maintenance" element={<Maintenance />} />
             <Route path="/complaint" element={<Complaint />} />
-            <Route path="/contractuser" element={<ContractUser />} />
+            <Route path="/contract" element={<Contract />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/bill" element={<UserBilling />} />
           </Route>
