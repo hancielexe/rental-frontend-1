@@ -11,7 +11,6 @@ function UserApartment() {
   const axiosPrivate = useAxiosPrivate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [units, setUnits] = useState();
-  const [searchParams, setSearchParams] = useSearchParams();
   const id = localStorage.getItem("userid");
 
   useEffect(() => {

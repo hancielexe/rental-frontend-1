@@ -6,34 +6,9 @@ import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 
 function AssetsLiabilities() {
-    const axiosPrivate = useAxiosPrivate();
+
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const [units, setUnits] = useState();
-    const id = localStorage.getItem("userid");
 
-    useEffect(() => {
-        let isMounted = true;
-        const controller = new AbortController();
-
-        const getUnits = async () => {
-            try {
-                const response = await axiosPrivate.get(`/sales`, {
-                    signal: controller.signal,
-                });
-                console.log(response.data);
-                isMounted && setUnits(response.data);
-            } catch (err) {
-                console.log(err);
-            }
-        };
-
-        getUnits();
-
-        return () => {
-            isMounted = false;
-            controller.abort();
-        };
-    }, []);
     return (
         <div className="flex h-screen overflow-hidden ">
             {/* Sidebar */}

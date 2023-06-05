@@ -38,7 +38,7 @@ function UserHeader({
                     {/* Header: Right side */}
                     <div className="flex items-center">
 
-                        <button
+                        {/* <button
                             className={`w-8 h-8 flex items-center justify-center bg-slate-100 hover:bg-slate-200 transition duration-150 rounded-full ml-3 ${searchModalOpen && 'bg-slate-200'}`}
                             onClick={(e) => { e.stopPropagation(); setSearchModalOpen(true); }}
                             aria-controls="search-modal"
@@ -50,7 +50,7 @@ function UserHeader({
                             </svg>
                         </button>
                         <SearchModal id="search-modal" searchId="search" modalOpen={searchModalOpen} setModalOpen={setSearchModalOpen} />
-                        <Notifications />
+                        <Notifications /> */}
                         {/*  Divider */}
                         <hr className="w-px h-6 bg-slate-200 mx-3" />
                         <UserInfo />

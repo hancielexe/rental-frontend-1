@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useSearchParams, NavLink } from "react-router-dom";
 import Sidebar from "../partials/Sidebar";
 import Header from "../partials/Header";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
@@ -7,22 +6,16 @@ import Loading from "../components/Loading";
 
 function SalesDetails() {
   const axiosPrivate = useAxiosPrivate();
-
-  const [sales, setSales] = useState([]);
-  const [filteredData, setFilteredData] = useState([]);
-  const [totalRent, setTotalRent] = useState(0);
-  const [totalElec, setTotalElec] = useState(0);
-  const [totalWat, setTotalWat] = useState(0);
-  const [totalInt, setTotalInt] = useState(0);
-  const [sum, setSum] = useState(0);
-
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [search, setSearch] = useState("");
-  const [counter, setCounter] = useState(0);
-  const [size, setSize] = useState(0);
-  const [searchParams, setSearchParams] = useSearchParams();
-  const id = localStorage.getItem("userid");
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [sales, setSales] = useState();
+  const [users, setUsers] = useState();
+  const [month, setMonth] = useState("");
+  const [elecTotal, setElecTotal] = useState(0);
+  const [watTotal, setWatTotal] = useState(0);
+  const [rentTotal, setRentTotal] = useState(0);
+  const [intTotal, setIntTotal] = useState(0);
+  const [salaryTotal, setSalaryTotal] = useState(0);
   const trigger = useRef(null);
   const dropdown = useRef(null);
 
@@ -32,10 +25,29 @@ function SalesDetails() {
 
     const getSales = async () => {
       try {
-        const response = await axiosPrivate.get(`/sales`, {
+        const response = await axiosPrivate.get(`/billing`, {
           signal: controller.signal,
         });
-        console.log(response.data);
+        
+        let rent = 0;
+        let elec = 0;
+        let wat = 0;
+        let int = 0;
+
+        response.data?.length 
+          await response.data.filter((sale) => {
+            if (getMonthFromBSONDate(sale.date) === month){
+              elec += (sale.latestElec - sale.prevElec) * 15;
+              wat += (sale.latestWat - sale.prevWat) * 42;
+              rent += sale.rent;
+              int += sale.int;
+            }
+          })
+        setElecTotal(elec);
+        setWatTotal(wat);
+        setRentTotal(rent);
+        setIntTotal(int);
+
         isMounted && setSales(response.data);
       } catch (err) {
         console.log(err);
@@ -48,44 +60,19 @@ function SalesDetails() {
       isMounted = false;
       controller.abort();
     };
-  }, []);
+  }, [month]);
 
-  const handleFilterChange = () => {
-    const filteredRows = sales.filter((sale) => {
-      return search.toLowerCase() === ""
-        ? sale
-        : sale.month.toLowerCase().includes(search);
-    })
+  const handleSelectChange = (event) => {
+    const value = parseInt(event.target.value);
+    console.log(value);
+    setMonth(value);
+  };
 
-    setFilteredData(filteredRows);
-
-    let addRent = 0;
-    let addElec = 0
-    let addWat = 0
-    let addInt = 0
-
-    for (let i = 0; i < filteredRows.length; i++) {
-      const { expenses: { rental, electricity, water, internet } } = filteredRows[i];
-      let rent = parseInt(rental);
-      let elec = parseInt(electricity);
-      let wat = parseInt(water);
-      let int = parseInt(internet);
-
-      addRent += rent;
-      addElec += elec;
-      addWat += wat;
-      addInt += int;
-    }
-
-    setTotalRent(addRent);
-    setTotalElec(addElec);
-    setTotalWat(addWat);
-    setTotalInt(addInt);
+  function getMonthFromBSONDate(bsonDate) {
+    const date = new Date(bsonDate);
+    const month = date.getMonth();
+    return month;
   }
-
-  useEffect(() => {
-    handleFilterChange();
-  }, [search]);
 
   return (
     <div className="flex h-screen overflow-hidden ">
@@ -113,20 +100,13 @@ function SalesDetails() {
                       onClick={() => setDropdownOpen(!dropdownOpen)}
                       onFocus={() => setDropdownOpen(true)}
                       onBlur={() => setDropdownOpen(false)}
-                      onChange={(e) => setSearch(e.target.value)}>
-                      <option>Select month</option>
-                      <option value="jan">January</option>
-                      <option value="feb">February</option>
-                      <option value="mar">March</option>
-                      <option value="apr">April</option>
-                      <option value="may">May</option>
-                      <option value="jun">June</option>
-                      <option value="jul">July</option>
-                      <option value="aug">August</option>
-                      <option value="sep">September</option>
-                      <option value="oct">October</option>
-                      <option value="nov">November</option>
-                      <option value="dec">December</option>
+                      onChange={handleSelectChange} >
+                      <option value="0">January</option>
+                      <option value="1">February</option>
+                      <option value="2">March</option>
+                      <option value="3">April</option>
+                      <option value="4">May</option>
+                      <option value="5">June</option>
                     </select>
                   </div>
                 </div>
@@ -157,55 +137,63 @@ function SalesDetails() {
                       </tr>
                     </thead>
                     <tbody class="text-sm divide-y divide-gray-100">
-                      {filteredData.map((row, index) => (
-                        <tr key={index}>
-                          <td class="p-2 whitespace-nowrap">
-                            <div class="flex items-center">
-                              <div class="w-10 h-10 flex-shrink-0 flex items-center">
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 24 24"
-                                  fill="currentColor"
-                                  class="w-5 h-5"
-                                >
-                                  <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
-                                </svg>
-                              </div>
+                      {sales?.length ? (
+                        <>
+                          {sales.filter((sale) => {
+                            if (
+                              getMonthFromBSONDate(sale.date) === month
+                            )
+                              return sale;
+                          }).map((row, index) => (
+                            <tr>
+                              <td class="p-2 whitespace-nowrap" key={index}>
+                                <div class="flex items-center">
+                                  <div class="w-10 h-10 flex-shrink-0 flex items-center">
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      viewBox="0 0 24 24"
+                                      fill="currentColor"
+                                      class="w-5 h-5"
+                                    >
+                                      <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
+                                    </svg>
+                                  </div>
 
-                              <div class="font-medium text-gray-800">
-                                {row.unitName}
-                              </div>
-                            </div>
-                          </td>
+                                  <div class="font-medium text-gray-800">
+                                    {row.unit}
+                                  </div>
+                                </div>
+                              </td>
 
-                          <td class="p-2 whitespace-nowrap">
-                            <div class="text-center">
-                              ₱{row.expenses.rental}
-                            </div>
-                          </td>
-                          <td class="p-2 whitespace-nowrap">
-                            <div class="text-center">
-                              ₱{row.expenses.electricity}
-                            </div>
-                          </td>
-                          <td class="p-2 whitespace-nowrap">
-                            <div class="text-center">
-                              ₱{row.expenses.water}
-                            </div>
-                          </td>
-                          <td class="p-2 whitespace-nowrap">
-                            <div class="text-center">
-                              ₱{row.expenses.internet}
-                            </div>
-                          </td>
-                          <td class="p-2 whitespace-nowrap">
-                            <div class="text-center">
-                              ₱{parseInt(row.expenses.rental) + parseInt(row.expenses.electricity) + parseInt(row.expenses.water) + parseInt(row.expenses.internet)}
-                            </div>
-                          </td>
-
-                        </tr>
-                      ))}
+                              <td class="p-2 whitespace-nowrap">
+                                <div class="text-center">
+                                  ₱{row.rent}.00
+                                </div>
+                              </td>
+                              <td class="p-2 whitespace-nowrap">
+                                <div class="text-center">
+                                  ₱{(row.latestElec - row.prevElec) * 15}.00
+                                </div>
+                              </td>
+                              <td class="p-2 whitespace-nowrap">
+                                <div class="text-center">
+                                  ₱{(row.latestWat - row.prevWat) * 42}.00
+                                </div>
+                              </td>
+                              <td class="p-2 whitespace-nowrap">
+                                <div class="text-center">
+                                  ₱{row.int}.00
+                                </div>
+                              </td>
+                              <td class="p-2 whitespace-nowrap">
+                                <div class="text-center">
+                                  ₱{row.rent + ((row.latestElec - row.prevElec) * 15) + ((row.latestWat - row.prevWat) * 42) + row.int}.00
+                                </div>
+                              </td>
+                            </tr>
+                          ))}
+                        </ >
+                      ) : null}
                       <tr class="bg-gray-100">
                         <td class="p-2 whitespace-nowrap">
                           <div class="flex justify-end">
@@ -216,43 +204,32 @@ function SalesDetails() {
                         </td>
                         <td class="p-2 whitespace-nowrap">
                           <div class="text-center">
-                            ₱{totalRent}
+                            ₱{rentTotal}.00
                           </div>
                         </td>
                         <td class="p-2 whitespace-nowrap">
                           <div class="text-center">
-                            ₱{totalElec}
+                            ₱{elecTotal}.00
                           </div>
                         </td>
                         <td class="p-2 whitespace-nowrap">
                           <div class="text-center">
-                            ₱{totalWat}
+                            ₱{watTotal}.00
                           </div>
                         </td>
                         <td class="p-2 whitespace-nowrap">
                           <div class="text-center">
-                            ₱{totalInt}
+                            ₱{intTotal}.00
                           </div>
                         </td>
                         <td class="p-2 whitespace-nowrap">
                           <div class="text-center font-semibold">
-                            ₱{totalRent + totalWat + totalElec + totalInt}
+                            ₱{ rentTotal + elecTotal + watTotal + intTotal }.00
                           </div>
                         </td>
                       </tr>
                     </tbody>
                   </table>
-                  <div class="flex justify-end mt-3">
-                  <NavLink
-                  end 
-                  to = "/salesform">
-                    <button
-                      class="rounded-md bg-blue-50 px-10 py-3 text-sm font-semibold text-blue-500 transition hover:bg-blue-100 hover:text-blue-600"
-                    >
-                      Add Record
-                    </button>
-                  </NavLink>
-                  </div>
                 </div>
               </div>
             </div>
