@@ -11,7 +11,6 @@ function UserBilling() {
   const axiosPrivate = useAxiosPrivate();
   const id = localStorage.getItem("userid");
   const currentMonth = new Date().getMonth(); // Get the current month (1-12)
-  console.log(currentMonth);
 
   useEffect(() => {
     let isMounted = true;
