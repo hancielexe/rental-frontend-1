@@ -55,7 +55,10 @@ function Unit() {
                                        </div>*/}
                   <div className="group relative">
                     <div class="rounded-lg shadow-lg transition-shadow hover:shadow-md m-5">
-                      <a href="#" class="rounded-lg group relative block bg-black">
+                      <a
+                        href="#"
+                        class="rounded-lg group relative block bg-black"
+                      >
                         <img
                           alt="apartment"
                           src={units.imagePath}
@@ -66,18 +69,24 @@ function Unit() {
                           <div class="mt-32 sm:mt-48 lg:mt-64">
                             <div class="mb-10 flex justify-center translate-y-8 transform opacity-0 transition-all group-hover:translate-y-0 group-hover:opacity-100">
                               <div>
-                                <div><p class="font-semibold text-white flex justify-center mb-5">See an AR view of your apartment</p></div>
+                                <div>
+                                  <p class="font-semibold text-white flex justify-center mb-5">
+                                    See an AR view of your apartment
+                                  </p>
+                                </div>
                                 <div>
                                   <NavLink
                                     end
-                                    to="/roomview"
-                                    className="mr-4 inline-flex items-center justify-center h-16 px-10 py-0 text-xl font-semibold text-center text-gray-200 no-underline align-middle transition-all duration-300 ease-in-out bg-transparent border-2 border-gray-600 border-solid rounded-full cursor-pointer select-none hover:text-white hover:border-white focus:shadow-xs focus:no-underline">
+                                    to={`/roomview?id=${unitid}`}
+                                    className="mr-4 inline-flex items-center justify-center h-16 px-10 py-0 text-xl font-semibold text-center text-gray-200 no-underline align-middle transition-all duration-300 ease-in-out bg-transparent border-2 border-gray-600 border-solid rounded-full cursor-pointer select-none hover:text-white hover:border-white focus:shadow-xs focus:no-underline"
+                                  >
                                     Room View
                                   </NavLink>
                                   <NavLink
                                     end
-                                    to="/aptview"
-                                    className="inline-flex items-center justify-center h-16 px-10 py-0 text-xl font-semibold text-center text-gray-200 no-underline align-middle transition-all duration-300 ease-in-out bg-transparent border-2 border-gray-600 border-solid rounded-full cursor-pointer select-none hover:text-white hover:border-white focus:shadow-xs focus:no-underline">
+                                    to={`/aptview?id=${unitid}`}
+                                    className="inline-flex items-center justify-center h-16 px-10 py-0 text-xl font-semibold text-center text-gray-200 no-underline align-middle transition-all duration-300 ease-in-out bg-transparent border-2 border-gray-600 border-solid rounded-full cursor-pointer select-none hover:text-white hover:border-white focus:shadow-xs focus:no-underline"
+                                  >
                                     Apt View
                                   </NavLink>
                                 </div>
@@ -279,7 +288,7 @@ function Unit() {
                         <path d="M2 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zM0 2a2 2 0 0 1 3.937-.5h8.126A2 2 0 1 1 14.5 3.937v8.126a2 2 0 1 1-2.437 2.437H3.937A2 2 0 1 1 1.5 12.063V3.937A2 2 0 0 1 0 2zm2.5 1.937v8.126c.703.18 1.256.734 1.437 1.437h8.126a2.004 2.004 0 0 1 1.437-1.437V3.937A2.004 2.004 0 0 1 12.063 2.5H3.937A2.004 2.004 0 0 1 2.5 3.937zM14 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zM2 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm12 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
                       </svg>
                       <p class="ml-3 text-sm">
-                        1st floor: 25 sq m / 2nd floor: 40 sq m
+                        {units.unitSqm} /sq. meter
                       </p>
                     </span>
                     <span class="text-gray-600 flex mb-1">
@@ -292,7 +301,7 @@ function Unit() {
                       >
                         <path d="M496 288h-96V256l64 .0002c8.838 0 16-7.164 16-15.1v-15.1c0-8.838-7.162-16-16-16L384 208c-17.67 0-32 14.33-32 32v47.1l-64 .0005v-192c0-17.64 14.36-32 32-32s32 14.36 32 32v16c0 8.836 7.164 16 16 16h32c8.838 0 16-7.164 16-16v-16c0-59.2-53.85-106-115.1-94.14C255.3 10.71 224 53.36 224 99.79v188.2L160 288V240c0-17.67-14.33-32-32-32L48 208c-8.836 0-16 7.162-16 16v15.1C32 248.8 39.16 256 48 256l64-.0002V288h-96c-8.836 0-16 7.164-16 16v32c0 8.836 7.164 16 16 16h480c8.836 0 16-7.164 16-16V304C512 295.2 504.8 288 496 288zM32 416c0 53.02 42.98 96 96 96h256c53.02 0 96-42.98 96-96v-32H32V416z" />
                       </svg>
-                      <p class="ml-3 text-sm">Own kitchen sink</p>
+                      <p class="ml-3 text-sm">With kitchen sink</p>
                     </span>
                     <span class="text-gray-600 flex mb-1">
                       <svg
@@ -304,37 +313,7 @@ function Unit() {
                       >
                         <path d="M32 384c0 28.32 12.49 53.52 32 71.09V496C64 504.8 71.16 512 80 512h32C120.8 512 128 504.8 128 496v-15.1h256V496c0 8.836 7.164 16 16 16h32c8.836 0 16-7.164 16-16v-40.9c19.51-17.57 32-42.77 32-71.09V352H32V384zM496 256H96V77.25C95.97 66.45 111 60.23 118.6 67.88L132.4 81.66C123.6 108.6 129.4 134.5 144.2 153.2C137.9 159.5 137.8 169.8 144 176l11.31 11.31c6.248 6.248 16.38 6.248 22.63 0l105.4-105.4c6.248-6.248 6.248-16.38 0-22.63l-11.31-11.31c-6.248-6.248-16.38-6.248-22.63 0C230.7 33.26 204.7 27.55 177.7 36.41L163.9 22.64C149.5 8.25 129.6 0 109.3 0C66.66 0 32 34.66 32 77.25v178.8L16 256C7.164 256 0 263.2 0 272v32C0 312.8 7.164 320 16 320h480c8.836 0 16-7.164 16-16v-32C512 263.2 504.8 256 496 256z" />
                       </svg>
-                      <p class="ml-3 text-sm">Own bathroom</p>
-                    </span>
-                    <span class="text-gray-600 flex mb-1">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="20"
-                        height="20"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        {" "}
-                        <g>
-                          {" "}
-                          <path fill="none" d="M0 0h24v24H0z" />{" "}
-                          <path d="M22 11v9h-2v-3H4v3H2V4h2v10h8V7h6a4 4 0 0 1 4 4zM8 13a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" />{" "}
-                        </g>{" "}
-                      </svg>
-                      <p class="ml-3 text-sm">Loft bed</p>
-                    </span>
-                    <span class="text-gray-600 flex mb-1">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="20"
-                        height="20"
-                        fill="currentColor"
-                        class="bi bi-shop-window"
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M2.97 1.35A1 1 0 0 1 3.73 1h8.54a1 1 0 0 1 .76.35l2.609 3.044A1.5 1.5 0 0 1 16 5.37v.255a2.375 2.375 0 0 1-4.25 1.458A2.371 2.371 0 0 1 9.875 8 2.37 2.37 0 0 1 8 7.083 2.37 2.37 0 0 1 6.125 8a2.37 2.37 0 0 1-1.875-.917A2.375 2.375 0 0 1 0 5.625V5.37a1.5 1.5 0 0 1 .361-.976l2.61-3.045zm1.78 4.275a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 1 0 2.75 0V5.37a.5.5 0 0 0-.12-.325L12.27 2H3.73L1.12 5.045A.5.5 0 0 0 1 5.37v.255a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0zM1.5 8.5A.5.5 0 0 1 2 9v6h12V9a.5.5 0 0 1 1 0v6h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1V9a.5.5 0 0 1 .5-.5zm2 .5a.5.5 0 0 1 .5.5V13h8V9.5a.5.5 0 0 1 1 0V13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5a.5.5 0 0 1 .5-.5z" />
-                      </svg>
-                      <p class="ml-3 text-sm">Roll up window (For tindahan)</p>
+                      <p class="ml-3 text-sm">With bathroom</p>
                     </span>
                     <span class="text-gray-600 flex mb-1">
                       <svg

@@ -125,7 +125,7 @@ function Billing() {
           latestWat: latestWater,
           int,
           tenant: user,
-          unit: unit
+          unit: unit,
         }),
         {
           headers: { "Content-Type": "application/json" },
@@ -181,7 +181,6 @@ function Billing() {
     window.location.reload(true);
   };
 
-
   return (
     <div className="flex h-screen overflow-hidden">
       {/* Sidebar */}
@@ -225,12 +224,13 @@ function Billing() {
                 <div class="w-full mx-auto">
                   <div class="grid grid-cols-2">
                     <h3 class="font-semibold text-lg tracking-wide flex items-center">
-                      Billing for { }
+                      Billing for {}
                     </h3>
                     <div class="flex justify-end">
                       <button
                         class="px-5 py-2.5 font-medium bg-blue-50 hover:bg-blue-100 hover:text-blue-600 text-blue-500 rounded-lg text-sm"
-                        onClick={() => setShowForm(true)}>
+                        onClick={() => setShowForm(true)}
+                      >
                         Create Billing
                       </button>
                     </div>
@@ -304,9 +304,11 @@ function Billing() {
                                   Electricity Bill Total
                                 </th>
                                 <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 font-bold">
-                                  ₱{(filteredBill.latestElec -
+                                  ₱
+                                  {(filteredBill.latestElec -
                                     filteredBill.prevElec) *
-                                    15}.00
+                                    15}
+                                  .00
                                 </td>
                               </tr>
                               <tr>
@@ -339,9 +341,11 @@ function Billing() {
                                   Water Bill Total
                                 </th>
                                 <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 font-bold">
-                                  ₱{(filteredBill.latestWat -
+                                  ₱
+                                  {(filteredBill.latestWat -
                                     filteredBill.prevWat) *
-                                    42}.00
+                                    42}
+                                  .00
                                 </td>
                               </tr>
                               <tr>
@@ -365,14 +369,16 @@ function Billing() {
                                   TOTAL
                                 </th>
                                 <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 font-bold">
-                                  ₱{(filteredBill.latestElec -
+                                  ₱
+                                  {(filteredBill.latestElec -
                                     filteredBill.prevElec) *
                                     15 +
                                     (filteredBill.latestWat -
                                       filteredBill.prevWat) *
-                                    42 +
+                                      42 +
                                     filteredBill.int +
-                                    filteredBill.rent}.00
+                                    filteredBill.rent}
+                                  .00
                                 </td>
                               </tr>
                             </>
@@ -404,14 +410,15 @@ function Billing() {
                               onSubmit={handleSubmit}
                             >
                               {billing?.length ? (
-                                billing.filter((bill) => {
-                                  if (
-                                    bill.tenant === user &&
-                                    getCurrentMonthFromBSONDate(bill.date) === currentMonth
-                                  )
-                                    return bill;
-                                    
-                                })
+                                billing
+                                  .filter((bill) => {
+                                    if (
+                                      bill.tenant === user &&
+                                      getCurrentMonthFromBSONDate(bill.date) ===
+                                        currentMonth
+                                    )
+                                      return bill;
+                                  })
                                   .map((filteredBill) => (
                                     <>
                                       <div className="col-span-6 sm:col-span-3">
@@ -430,7 +437,7 @@ function Billing() {
                                           required
                                           aria-describedby="uidnote"
                                           disabled
-                                          placeholder={filteredBill.prevElec}
+                                          placeholder={filteredBill.latestElec}
                                         />
                                       </div>
 
@@ -452,8 +459,12 @@ function Billing() {
                                           }
                                           required
                                           aria-describedby="uidnote"
-                                          onFocus={() => setLatestElecFocus(true)}
-                                          onBlur={() => setLatestElecFocus(false)}
+                                          onFocus={() =>
+                                            setLatestElecFocus(true)
+                                          }
+                                          onBlur={() =>
+                                            setLatestElecFocus(false)
+                                          }
                                         />
                                       </div>
 
@@ -473,7 +484,7 @@ function Billing() {
                                           required
                                           aria-describedby="uidnote"
                                           disabled
-                                          placeholder={filteredBill.prevWat}
+                                          placeholder={filteredBill.latestWat}
                                         />
                                       </div>
 
@@ -495,8 +506,12 @@ function Billing() {
                                           }
                                           required
                                           aria-describedby="uidnote"
-                                          onFocus={() => setLatestWaterFocus(true)}
-                                          onBlur={() => setLatestWaterFocus(false)}
+                                          onFocus={() =>
+                                            setLatestWaterFocus(true)
+                                          }
+                                          onBlur={() =>
+                                            setLatestWaterFocus(false)
+                                          }
                                         />
                                       </div>
 
@@ -513,7 +528,9 @@ function Billing() {
                                           type="text"
                                           id="rent"
                                           autoComplete="off"
-                                          onChange={(e) => setRent(e.target.value)}
+                                          onChange={(e) =>
+                                            setRent(e.target.value)
+                                          }
                                           required
                                           aria-describedby="uidnote"
                                           onFocus={() => setRentFocus(true)}
@@ -534,7 +551,9 @@ function Billing() {
                                           type="text"
                                           id="int"
                                           autoComplete="off"
-                                          onChange={(e) => setInt(e.target.value)}
+                                          onChange={(e) =>
+                                            setInt(e.target.value)
+                                          }
                                           required
                                           aria-describedby="uidnote"
                                           onFocus={() => setIntFocus(true)}
@@ -554,7 +573,9 @@ function Billing() {
                                             <div className="fixed inset-0 z-10">
                                               <div
                                                 className="fixed inset-0 w-full h-full bg-black opacity-40"
-                                                onClick={() => handleFormClose()}
+                                                onClick={() =>
+                                                  handleFormClose()
+                                                }
                                               ></div>
                                               <div className="flex items-start min-h-screen px-8 py-12 mt-10">
                                                 <div className="relative w-full max-w-lg p-8 mx-auto rounded-xl border border-gray-100 bg-white shadow-xl">
@@ -577,7 +598,10 @@ function Billing() {
                                                     </span>
 
                                                     <div class="flex-1 ml-3">
-                                                      <strong class="block font-medium text-gray-900"> Changes saved </strong>
+                                                      <strong class="block font-medium text-gray-900">
+                                                        {" "}
+                                                        Changes saved{" "}
+                                                      </strong>
 
                                                       <p class="mt-1 text-sm text-gray-700">
                                                         {errMsg
@@ -588,9 +612,13 @@ function Billing() {
 
                                                     <button
                                                       class="flex align-top text-gray-500 transition hover:text-gray-600"
-                                                      onClick={() => handleFormClose()}
+                                                      onClick={() =>
+                                                        handleFormClose()
+                                                      }
                                                     >
-                                                      <span class="sr-only">Dismiss popup</span>
+                                                      <span class="sr-only">
+                                                        Dismiss popup
+                                                      </span>
 
                                                       <svg
                                                         xmlns="http://www.w3.org/2000/svg"
@@ -615,7 +643,8 @@ function Billing() {
                                         ) : null}
                                       </div>
                                     </>
-                                  ))) : (
+                                  ))
+                              ) : (
                                 <>
                                   <div className="col-span-6 sm:col-span-3">
                                     <label
@@ -780,7 +809,10 @@ function Billing() {
                                                 </span>
 
                                                 <div class="flex-1 ml-3">
-                                                  <strong class="block font-medium text-gray-900"> Changes saved </strong>
+                                                  <strong class="block font-medium text-gray-900">
+                                                    {" "}
+                                                    Changes saved{" "}
+                                                  </strong>
 
                                                   <p class="mt-1 text-sm text-gray-700">
                                                     {errMsg
@@ -791,9 +823,13 @@ function Billing() {
 
                                                 <button
                                                   class="flex align-top text-gray-500 transition hover:text-gray-600"
-                                                  onClick={() => handleFormClose()}
+                                                  onClick={() =>
+                                                    handleFormClose()
+                                                  }
                                                 >
-                                                  <span class="sr-only">Dismiss popup</span>
+                                                  <span class="sr-only">
+                                                    Dismiss popup
+                                                  </span>
 
                                                   <svg
                                                     xmlns="http://www.w3.org/2000/svg"

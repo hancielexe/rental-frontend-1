@@ -72,10 +72,8 @@ function Inquiry() {
           withCredentials: true,
         }
       );
-      console.log("pogi");
-      console.log(response?.data);
-      console.log(JSON.stringify(response));
       setSuccess(true);
+      setShowModal(true);
       //clear state and controlled inputs
       //need value attrib on inputs for this
     } catch (err) {
@@ -261,9 +259,6 @@ function Inquiry() {
                 <button
                   class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200"
                   type="submit"
-                  onClick={() =>
-                    !errMsg ? setShowModal(true) : setShowModal(false)
-                  }
                 >
                   Send Inquiry
                 </button>

@@ -41,7 +41,7 @@ function MainteAdmin() {
         `/maintenances/${maintenance}`,
         JSON.stringify({
           status: true,
-          isStatus: "resolved"
+          isStatus: "resolved",
         }),
         {
           headers: { "Content-Type": "application/json" },
@@ -70,7 +70,7 @@ function MainteAdmin() {
         `/maintenances/${maintenance}`,
         JSON.stringify({
           status: true,
-          isStatus: "rejected"
+          isStatus: "rejected",
         }),
         {
           headers: { "Content-Type": "application/json" },
@@ -117,24 +117,12 @@ function MainteAdmin() {
             <table className="w-full text-sm text-gray-500">
               <thead className="text-xs text-gray-500 uppercase bg-gray-200">
                 <tr>
-                  <th className="px-4 py-4">
-                    Tenant
-                  </th>
-                  <th className="px-4 py-4">
-                    Maintenance
-                  </th>
-                  <th className="px-4 py-4">
-                    Other Concerns
-                  </th>
-                  <th className="px-4 py-4">
-                    Date
-                  </th>
-                  <th className="px-4 py-4">
-                    Status
-                  </th>
-                  <th className="px-4 py-4">
-                    Action
-                  </th>
+                  <th className="px-4 py-4">Tenant</th>
+                  <th className="px-4 py-4">Maintenance</th>
+                  <th className="px-4 py-4">Other Concerns</th>
+                  <th className="px-4 py-4">Date</th>
+                  <th className="px-4 py-4">Status</th>
+                  <th className="px-4 py-4">Action</th>
                   <th className="px-4 py-2"></th>
                 </tr>
               </thead>
@@ -158,16 +146,23 @@ function MainteAdmin() {
                         </td>
                         {maintenance?.isStatus === "resolved" || "rejected" ? (
                           <td className="whitespace-nowrap px-4 py-2">
-                            {maintenance?.isStatus === "resolved" ?
-                              <p className="text-lime-500 font-bold">{maintenance?.isStatus}</p> :
-                              <p className="text-rose-500 font-bold">{maintenance?.isStatus}</p>
-                            }
+                            {maintenance?.isStatus === "resolved" ? (
+                              <p className="text-lime-500 font-bold">
+                                {maintenance?.isStatus}
+                              </p>
+                            ) : (
+                              <p className="text-rose-500 font-bold">
+                                {maintenance?.isStatus}
+                              </p>
+                            )}
                           </td>
                         ) : null}
                         {maintenance?.isStatus === null ? (
                           <td className="whitespace-nowrap px-4 py-2">
                             <button
-                              onClick={() => resolveMaintenance(maintenance._id)}
+                              onClick={() =>
+                                resolveMaintenance(maintenance._id)
+                              }
                               className="inline-block rounded bg-lime-500 px-4 py-2 text-xs font-medium text-white hover:bg-green-700 mr-2"
                             >
                               Resolve
@@ -180,7 +175,6 @@ function MainteAdmin() {
                             </button>
                           </td>
                         ) : null}
-
                       </tr>
                     ))}
                   </>

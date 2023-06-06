@@ -129,7 +129,7 @@ function Login() {
                 required
               />
             </div>
-            <div class="flex justify-between">
+            <div class="flex justify-between mb-7">
               <div class="text-sm text-purple-600">
                 <input
                   type="checkbox"
@@ -140,12 +140,6 @@ function Login() {
                 />
                 <label htmlFor="persist">Trust this device</label>
               </div>
-              <a
-                href="#"
-                class="text-sm text-purple-600 hover:text-purple-700 hover:underline mb-6"
-              >
-                Forgot your password?
-              </a>
             </div>
             <button
               class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200"

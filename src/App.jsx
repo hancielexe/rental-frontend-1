@@ -92,6 +92,7 @@ function App() {
             <Route path="/tenantout" element={<TenantOut />} />
             <Route path="/billing" element={<Billing />} />
             <Route path="/inquiries" element={<AdminInquiry />} />
+            <Route path="/contract" element={<Contract />} />
           </Route>
 
           <Route element={<RequireAuth allowedRoles={[ROLES.Tenant]} />}>

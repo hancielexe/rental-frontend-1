@@ -10,7 +10,7 @@ function SalesDetails() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [sales, setSales] = useState();
   const [users, setUsers] = useState();
-  const [month, setMonth] = useState("");
+  const [month, setMonth] = useState(0);
   const [elecTotal, setElecTotal] = useState(0);
   const [watTotal, setWatTotal] = useState(0);
   const [rentTotal, setRentTotal] = useState(0);
@@ -28,21 +28,21 @@ function SalesDetails() {
         const response = await axiosPrivate.get(`/billing`, {
           signal: controller.signal,
         });
-        
+
         let rent = 0;
         let elec = 0;
         let wat = 0;
         let int = 0;
 
-        response.data?.length 
-          await response.data.filter((sale) => {
-            if (getMonthFromBSONDate(sale.date) === month){
-              elec += (sale.latestElec - sale.prevElec) * 15;
-              wat += (sale.latestWat - sale.prevWat) * 42;
-              rent += sale.rent;
-              int += sale.int;
-            }
-          })
+        response.data?.length;
+        await response.data.filter((sale) => {
+          if (getMonthFromBSONDate(sale.date) === month) {
+            elec += (sale.latestElec - sale.prevElec) * 15;
+            wat += (sale.latestWat - sale.prevWat) * 42;
+            rent += sale.rent;
+            int += sale.int;
+          }
+        });
         setElecTotal(elec);
         setWatTotal(wat);
         setRentTotal(rent);
@@ -89,7 +89,9 @@ function SalesDetails() {
               <header class="px-5 py-4 border-b border-gray-100">
                 <div class="grid grid-cols-2">
                   <div class="flex items-center">
-                    <h2 class="font-semibold text-gray-800">Sales and Profit</h2>
+                    <h2 class="font-semibold text-gray-800">
+                      Sales and Profit
+                    </h2>
                   </div>
                   <div className="flex justify-end">
                     <select
@@ -100,7 +102,8 @@ function SalesDetails() {
                       onClick={() => setDropdownOpen(!dropdownOpen)}
                       onFocus={() => setDropdownOpen(true)}
                       onBlur={() => setDropdownOpen(false)}
-                      onChange={handleSelectChange} >
+                      onChange={handleSelectChange}
+                    >
                       <option value="0">January</option>
                       <option value="1">February</option>
                       <option value="2">March</option>
@@ -123,7 +126,9 @@ function SalesDetails() {
                           <div class="font-semibold text-center">Rental</div>
                         </th>
                         <th class="p-2 whitespace-nowrap">
-                          <div class="font-semibold text-center">Electricity</div>
+                          <div class="font-semibold text-center">
+                            Electricity
+                          </div>
                         </th>
                         <th class="p-2 whitespace-nowrap">
                           <div class="font-semibold text-center">Water</div>
@@ -139,60 +144,61 @@ function SalesDetails() {
                     <tbody class="text-sm divide-y divide-gray-100">
                       {sales?.length ? (
                         <>
-                          {sales.filter((sale) => {
-                            if (
-                              getMonthFromBSONDate(sale.date) === month
-                            )
-                              return sale;
-                          }).map((row, index) => (
-                            <tr>
-                              <td class="p-2 whitespace-nowrap" key={index}>
-                                <div class="flex items-center">
-                                  <div class="w-10 h-10 flex-shrink-0 flex items-center">
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      viewBox="0 0 24 24"
-                                      fill="currentColor"
-                                      class="w-5 h-5"
-                                    >
-                                      <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
-                                    </svg>
-                                  </div>
+                          {sales
+                            .filter((sale) => {
+                              if (getMonthFromBSONDate(sale.date) === month)
+                                return sale;
+                            })
+                            .map((row, index) => (
+                              <tr>
+                                <td class="p-2 whitespace-nowrap" key={index}>
+                                  <div class="flex items-center">
+                                    <div class="w-10 h-10 flex-shrink-0 flex items-center">
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 24 24"
+                                        fill="currentColor"
+                                        class="w-5 h-5"
+                                      >
+                                        <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
+                                      </svg>
+                                    </div>
 
-                                  <div class="font-medium text-gray-800">
-                                    {row.unit}
+                                    <div class="font-medium text-gray-800">
+                                      {row.unit}
+                                    </div>
                                   </div>
-                                </div>
-                              </td>
+                                </td>
 
-                              <td class="p-2 whitespace-nowrap">
-                                <div class="text-center">
-                                  ₱{row.rent}.00
-                                </div>
-                              </td>
-                              <td class="p-2 whitespace-nowrap">
-                                <div class="text-center">
-                                  ₱{(row.latestElec - row.prevElec) * 15}.00
-                                </div>
-                              </td>
-                              <td class="p-2 whitespace-nowrap">
-                                <div class="text-center">
-                                  ₱{(row.latestWat - row.prevWat) * 42}.00
-                                </div>
-                              </td>
-                              <td class="p-2 whitespace-nowrap">
-                                <div class="text-center">
-                                  ₱{row.int}.00
-                                </div>
-                              </td>
-                              <td class="p-2 whitespace-nowrap">
-                                <div class="text-center">
-                                  ₱{row.rent + ((row.latestElec - row.prevElec) * 15) + ((row.latestWat - row.prevWat) * 42) + row.int}.00
-                                </div>
-                              </td>
-                            </tr>
-                          ))}
-                        </ >
+                                <td class="p-2 whitespace-nowrap">
+                                  <div class="text-center">₱{row.rent}.00</div>
+                                </td>
+                                <td class="p-2 whitespace-nowrap">
+                                  <div class="text-center">
+                                    ₱{(row.latestElec - row.prevElec) * 15}.00
+                                  </div>
+                                </td>
+                                <td class="p-2 whitespace-nowrap">
+                                  <div class="text-center">
+                                    ₱{(row.latestWat - row.prevWat) * 42}.00
+                                  </div>
+                                </td>
+                                <td class="p-2 whitespace-nowrap">
+                                  <div class="text-center">₱{row.int}.00</div>
+                                </td>
+                                <td class="p-2 whitespace-nowrap">
+                                  <div class="text-center">
+                                    ₱
+                                    {row.rent +
+                                      (row.latestElec - row.prevElec) * 15 +
+                                      (row.latestWat - row.prevWat) * 42 +
+                                      row.int}
+                                    .00
+                                  </div>
+                                </td>
+                              </tr>
+                            ))}
+                        </>
                       ) : null}
                       <tr class="bg-gray-100">
                         <td class="p-2 whitespace-nowrap">
@@ -203,28 +209,20 @@ function SalesDetails() {
                           </div>
                         </td>
                         <td class="p-2 whitespace-nowrap">
-                          <div class="text-center">
-                            ₱{rentTotal}.00
-                          </div>
+                          <div class="text-center">₱{rentTotal}.00</div>
                         </td>
                         <td class="p-2 whitespace-nowrap">
-                          <div class="text-center">
-                            ₱{elecTotal}.00
-                          </div>
+                          <div class="text-center">₱{elecTotal}.00</div>
                         </td>
                         <td class="p-2 whitespace-nowrap">
-                          <div class="text-center">
-                            ₱{watTotal}.00
-                          </div>
+                          <div class="text-center">₱{watTotal}.00</div>
                         </td>
                         <td class="p-2 whitespace-nowrap">
-                          <div class="text-center">
-                            ₱{intTotal}.00
-                          </div>
+                          <div class="text-center">₱{intTotal}.00</div>
                         </td>
                         <td class="p-2 whitespace-nowrap">
                           <div class="text-center font-semibold">
-                            ₱{ rentTotal + elecTotal + watTotal + intTotal }.00
+                            ₱{rentTotal + elecTotal + watTotal + intTotal}.00
                           </div>
                         </td>
                       </tr>
