@@ -5,14 +5,15 @@ import UserHeader from "../partials/UserHeader";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { useSearchParams } from "react-router-dom";
 import Loading from "../components/Loading";
+const month = new Date().getMonth(); // Get the current month (1-12)
 
 function UserApartment() {
   const { auth } = useAuth();
   const axiosPrivate = useAxiosPrivate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [units, setUnits] = useState();
-  const [searchParams, setSearchParams] = useSearchParams();
   const id = localStorage.getItem("userid");
+  const [sales, setSales] = useState();
 
   useEffect(() => {
     let isMounted = true;
@@ -23,7 +24,6 @@ function UserApartment() {
         const response = await axiosPrivate.get(`/users/unit/${id}`, {
           signal: controller.signal,
         });
-        console.log(response.data);
         isMounted && setUnits(response.data);
       } catch (err) {
         console.log(err);
@@ -37,6 +37,35 @@ function UserApartment() {
       controller.abort();
     };
   }, []);
+
+  useEffect(() => {
+    let isMounted = true;
+    const controller = new AbortController();
+
+    const getSales = async () => {
+      try {
+        const response = await axiosPrivate.get(`/billing/${id}`, {
+          signal: controller.signal,
+        });
+        isMounted && setSales(response.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    getSales();
+
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
+  }, []);
+
+  function getCurrentMonthFromBSONDate(bsonDate) {
+    const date = new Date(bsonDate);
+    const month = date.getMonth();
+    return month;
+  }
 
   return (
     <div className="flex h-screen overflow-hidden ">
@@ -116,88 +145,114 @@ function UserApartment() {
                         </p>
                       </div>
                     </li>
-                    <li class="text-xs uppercase text-gray-400 border-b border-gray border-solid py-2 px-5 mb-2">
-                      Remaining Balance
-                    </li>
-                    <li class="grid grid-cols-10 gap-4 justify-center items-center cursor-pointer px-4 py-2 rounded-lg hover:bg-gray-50">
-                      <div class="flex justify-center items-center">
-                        <svg
-                          class="h-8 w-8 text-blue-500"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          stroke-width="2"
-                          stroke="currentColor"
-                          fill="none"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        >
-                          {" "}
-                          <path stroke="none" d="M0 0h24v24H0z" />{" "}
-                          <path d="M6 4h11a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-11a1 1 0 0 1 -1 -1v-14a1 1 0 0 1 1 -1m3 0v18" />{" "}
-                          <line x1="13" y1="8" x2="15" y2="8" />{" "}
-                          <line x1="13" y1="12" x2="15" y2="12" />
-                        </svg>
-                      </div>
-                      <div class="col-start-2 col-end-11 pl-8 border-l-2 border-solid border-gray">
-                        <h3 class="text-gray-900 font-medium text-md">Rent</h3>
-                        <p class="text-gray-600 mt-1 font-regular text-sm">
-                          As of April 2023: Your remaining balance for rent is
-                          ₱7,000.
-                        </p>
-                      </div>
-                    </li>
-                    <li class="grid grid-cols-10 gap-4 justify-center items-center cursor-pointer px-4 py-2 rounded-lg hover:bg-gray-50">
-                      <div class="flex justify-center items-center text-indigo-500">
-                        <svg
-                          class="h-8 w-8 text-blue-700"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        >
-                          {" "}
-                          <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
-                        </svg>
-                      </div>
-                      <div class="col-start-2 col-end-11 pl-8 border-l-2 border-solid border-gray">
-                        <h3 class="text-gray-900 font-medium text-md">
-                          Water Bill
-                        </h3>
-                        <p class="text-gray-600 mt-1 font-regular text-sm">
-                          As of April 2023: Your remaining balance for the water
-                          bill is ₱300.
-                        </p>
-                      </div>
-                    </li>
-                    <li class="grid grid-cols-10 gap-4 justify-center items-center cursor-pointer px-4 py-2 rounded-lg hover:bg-gray-50">
-                      <div class="flex justify-center items-center">
-                        <svg
-                          class="h-8 w-8 text-yellow-500"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M13 10V3L4 14h7v7l9-11h-7z"
-                          />
-                        </svg>
-                      </div>
-                      <div class="col-start-2 col-end-11 pl-8 border-l-2 border-solid border-gray">
-                        <h3 class="text-gray-900 font-medium text-md">
-                          Electricity Bill
-                        </h3>
-                        <p class="text-gray-600 mt-1 font-regular text-sm">
-                          As of April 2023: Your remaining balance for the
-                          electricity bill is ₱1,000.
-                        </p>
-                      </div>
-                    </li>
+                    {sales?.length
+                      ? sales
+                          .filter((sale) => {
+                            if (
+                              getCurrentMonthFromBSONDate(sale.date) === month
+                            )
+                              return sale;
+                          })
+                          .map((filteredSale) => (
+                            <>
+                              <li class="text-xs uppercase text-gray-400 border-b border-gray border-solid py-2 px-5 mb-2">
+                                Remaining Balance
+                              </li>
+                              <li class="grid grid-cols-10 gap-4 justify-center items-center cursor-pointer px-4 py-2 rounded-lg hover:bg-gray-50">
+                                <div class="flex justify-center items-center">
+                                  <svg
+                                    class="h-8 w-8 text-blue-500"
+                                    width="24"
+                                    height="24"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="2"
+                                    stroke="currentColor"
+                                    fill="none"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  >
+                                    {" "}
+                                    <path
+                                      stroke="none"
+                                      d="M0 0h24v24H0z"
+                                    />{" "}
+                                    <path d="M6 4h11a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-11a1 1 0 0 1 -1 -1v-14a1 1 0 0 1 1 -1m3 0v18" />{" "}
+                                    <line x1="13" y1="8" x2="15" y2="8" />{" "}
+                                    <line x1="13" y1="12" x2="15" y2="12" />
+                                  </svg>
+                                </div>
+                                <div class="col-start-2 col-end-11 pl-8 border-l-2 border-solid border-gray">
+                                  <h3 class="text-gray-900 font-medium text-md">
+                                    Rent
+                                  </h3>
+                                  <p class="text-gray-600 mt-1 font-regular text-sm">
+                                    As of April 2023: Your remaining balance for
+                                    rent is ₱{filteredSale.rent}.
+                                  </p>
+                                </div>
+                              </li>
+                              <li class="grid grid-cols-10 gap-4 justify-center items-center cursor-pointer px-4 py-2 rounded-lg hover:bg-gray-50">
+                                <div class="flex justify-center items-center text-indigo-500">
+                                  <svg
+                                    class="h-8 w-8 text-blue-700"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  >
+                                    {" "}
+                                    <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
+                                  </svg>
+                                </div>
+                                <div class="col-start-2 col-end-11 pl-8 border-l-2 border-solid border-gray">
+                                  <h3 class="text-gray-900 font-medium text-md">
+                                    Water Bill
+                                  </h3>
+                                  <p class="text-gray-600 mt-1 font-regular text-sm">
+                                    As of April 2023: Your remaining balance for
+                                    the water bill is ₱
+                                    {(filteredSale.latestWat -
+                                      filteredSale.prevWat) *
+                                      42}
+                                    .
+                                  </p>
+                                </div>
+                              </li>
+                              <li class="grid grid-cols-10 gap-4 justify-center items-center cursor-pointer px-4 py-2 rounded-lg hover:bg-gray-50">
+                                <div class="flex justify-center items-center">
+                                  <svg
+                                    class="h-8 w-8 text-yellow-500"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                  >
+                                    <path
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      stroke-width="2"
+                                      d="M13 10V3L4 14h7v7l9-11h-7z"
+                                    />
+                                  </svg>
+                                </div>
+                                <div class="col-start-2 col-end-11 pl-8 border-l-2 border-solid border-gray">
+                                  <h3 class="text-gray-900 font-medium text-md">
+                                    Electricity Bill
+                                  </h3>
+                                  <p class="text-gray-600 mt-1 font-regular text-sm">
+                                    As of April 2023: Your remaining balance for
+                                    the electricity bill is ₱
+                                    {(filteredSale.latestElec -
+                                      filteredSale.prevElec) *
+                                      15}
+                                    .
+                                  </p>
+                                </div>
+                              </li>
+                            </>
+                          ))
+                      : null}
                     <li class="text-xs uppercase text-gray-400 border-b border-gray border-solid py-2 px-5 mb-2">
                       Other Details
                     </li>

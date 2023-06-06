@@ -6,32 +6,99 @@ import useAxiosPrivate from "../hooks/useAxiosPrivate";
 function ComplaintAdmin() {
     const axiosPrivate = useAxiosPrivate();
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const [units, setUnits] = useState();
-    const id = localStorage.getItem("userid");
+    const [complaints, setComplaints] = useState();
+
+    const [errMsg, setErrMsg] = useState("");
+    const [success, setSuccess] = useState(false);
 
     useEffect(() => {
         let isMounted = true;
         const controller = new AbortController();
 
-        const getUnits = async () => {
+        const getComplaints = async () => {
             try {
-                const response = await axiosPrivate.get(`/users/unit/${id}`, {
+                const response = await axiosPrivate.get(`/complaints`, {
                     signal: controller.signal,
                 });
                 console.log(response.data);
-                isMounted && setUnits(response.data);
+                isMounted && setComplaints(response.data);
             } catch (err) {
                 console.log(err);
             }
         };
 
-        getUnits();
+        getComplaints();
 
         return () => {
             isMounted = false;
             controller.abort();
         };
     }, []);
+
+    async function resolveComplaint(complaint) {
+        try {
+            const response = await axiosPrivate.post(
+                `/complaints/${complaint}`,
+                JSON.stringify({
+                    status: true,
+                    isStatus: "resolved"
+                }),
+                {
+                    headers: { "Content-Type": "application/json" },
+                    withCredentials: true,
+                }
+            );
+            console.log(response?.data);
+            console.log(JSON.stringify(response));
+            setSuccess(true);
+            //clear state and controlled inputs
+            //need value attrib on inputs for this
+        } catch (err) {
+            if (!err?.response) {
+                setErrMsg("No Server Response");
+            } else {
+                setErrMsg("hahah!");
+            }
+        }
+
+        window.location.reload(true);
+    }
+
+    async function rejectComplaint(complaint) {
+        try {
+            const response = await axiosPrivate.post(
+                `/complaints/${complaint}`,
+                JSON.stringify({
+                    status: true,
+                    isStatus: "rejected"
+                }),
+                {
+                    headers: { "Content-Type": "application/json" },
+                    withCredentials: true,
+                }
+            );
+            console.log(response?.data);
+            console.log(JSON.stringify(response));
+            setSuccess(true);
+            //clear state and controlled inputs
+            //need value attrib on inputs for this
+        } catch (err) {
+            if (!err?.response) {
+                setErrMsg("No Server Response");
+            } else {
+                setErrMsg("hahah!");
+            }
+        }
+
+        window.location.reload(true);
+    }
+
+    function formatDate(bsonDate) {
+        const date = new Date(bsonDate);
+        const options = { year: "numeric", month: "long", day: "numeric" };
+        return date.toLocaleString(undefined, options);
+    }
+
     return (
         <div className="flex h-screen overflow-hidden ">
             {/* Sidebar */}
@@ -46,102 +113,81 @@ function ComplaintAdmin() {
                             Complaints
                         </h1>
                     </div>
-                    <table className="min-w-full mt-7 divide-y-2 divide-gray-200 text-sm">
-                        <thead className="ltr:text-left rtl:text-right bg-indigo-500 tracking-widest font-mono-bold">
-                            <tr>
-                                <th className="whitespace-nowrap px-4 py-4 font-medium text-white">
-                                    Username
-                                </th>
-                                <th className="whitespace-nowrap px-4 py-4 font-medium text-white">
-                                    Issue
-                                </th>
-                                <th className="whitespace-nowrap px-4 py-4 font-medium text-white">
-                                    Other Concerns
-                                </th>
-                                <th className="px-4 py-2"></th>
-                            </tr>
-                        </thead>
+                    <div class="relative overflow-x-auto m-7 shadow-md sm:rounded-lg mt-10">
+                        <table className="w-full text-sm text-gray-500">
+                            <thead className="text-xs text-gray-500 uppercase bg-gray-200">
+                                <tr>
+                                    <th className="px-4 py-4">
+                                        Tenant
+                                    </th>
+                                    <th className="px-4 py-4">
+                                        Issue
+                                    </th>
+                                    <th className="px-4 py-4">
+                                        Other Concerns
+                                    </th>
+                                    <th className="px-4 py-4">
+                                        Date
+                                    </th>
+                                    <th className="px-4 py-4">
+                                        Status
+                                    </th>
+                                    <th className="px-4 py-4">
+                                        Action
+                                    </th>
+                                    <th className="px-4 py-2"></th>
+                                </tr>
+                            </thead>
 
-                        <tbody className="divide-y divide-gray-200 text-center">
-                            <tr>
-                                <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                                    John Doe
-                                </td>
-                                <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                                    24/05/1995
-                                </td>
-                                <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                                    Web Developer
-                                </td>
-                                <td className="whitespace-nowrap px-4 py-2">
-                                    <a
-                                        href="#"
-                                        className="inline-block rounded bg-indigo-600 px-4 py-2 text-xs font-medium text-white hover:bg-indigo-700 border-r-8"
-                                    >
-                                        View
-                                    </a>
-                                    <a
-                                        href="#"
-                                        className="inline-block rounded bg-indigo-600 px-4 py-2 text-xs font-medium text-white hover:bg-indigo-700"
-                                    >
-                                        Delete
-                                    </a>
-                                </td>
-                            </tr>
+                            <tbody className="divide-y divide-gray-200 text-center">
+                                {complaints?.length ? (
+                                    <>
+                                        {complaints.map((complaint) => (
+                                            <tr>
+                                                <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-800">
+                                                    {complaint.username}
+                                                </td>
+                                                <td className="whitespace-nowrap px-4 py-2 text-gray-500">
+                                                    {complaint.issue}
+                                                </td>
+                                                <td className="whitespace-nowrap px-4 py-2 text-gray-500">
+                                                    {complaint.other}
+                                                </td>
+                                                <td className="whitespace-nowrap px-4 py-2 text-gray-500">
+                                                    {formatDate(complaint.date)}
+                                                </td>
+                                                {complaint?.isStatus === "resolved" || "rejected" ? (
+                                                    <td className="whitespace-nowrap px-4 py-2">
+                                                        {complaint?.isStatus === "resolved" ?
+                                                            <p className="text-lime-500 font-bold">{complaint?.isStatus}</p> :
+                                                            <p className="text-rose-500 font-bold">{complaint?.isStatus}</p>
+                                                        }
+                                                    </td>
+                                                ) : null}
+                                                {complaint?.isStatus === null ? (
+                                                    <td className="whitespace-nowrap px-4 py-2">
+                                                        <button
+                                                            onClick={() => resolveComplaint(complaint._id)}
+                                                            className="inline-block rounded bg-lime-500 px-4 py-2 text-xs font-medium text-white hover:bg-green-700 mr-2"
+                                                        >
+                                                            Resolve
+                                                        </button>
+                                                        <button
+                                                            onClick={() => rejectComplaint(complaint._id)}
+                                                            className="inline-block rounded bg-rose-600 px-4 py-2 text-xs font-medium text-white hover:bg-red-700"
+                                                        >
+                                                            Reject
+                                                        </button>
+                                                    </td>
+                                                ) : null}
 
-                            <tr class="bg-gray-300">
-                                <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                                    Jane Doe
-                                </td>
-                                <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                                    04/11/1980
-                                </td>
-                                <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                                    Web Designer
-                                </td>
-                                <td className="whitespace-nowrap px-4 py-2">
-                                    <a
-                                        href="#"
-                                        className="inline-block rounded bg-indigo-600 px-4 py-2 text-xs font-medium text-white hover:bg-indigo-700 border-r-8"
-                                    >
-                                        View
-                                    </a>
-                                    <a
-                                        href="#"
-                                        className="inline-block rounded bg-indigo-600 px-4 py-2 text-xs font-medium text-white hover:bg-indigo-700"
-                                    >
-                                        Delete
-                                    </a>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                                    Gary Barlow
-                                </td>
-                                <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                                    24/05/1995
-                                </td>
-                                <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                                    Singer
-                                </td>
-                                <td className="whitespace-nowrap px-4 py-2">
-                                    <a
-                                        href="#"
-                                        className="inline-block rounded bg-indigo-600 px-4 py-2 text-xs font-medium text-white hover:bg-indigo-700 border-r-8"
-                                    >
-                                        View
-                                    </a>
-                                    <a
-                                        href="#"
-                                        className="inline-block rounded bg-indigo-600 px-4 py-2 text-xs font-medium text-white hover:bg-indigo-700"
-                                    >
-                                        Delete
-                                    </a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                            </tr>
+                                        ))}
+                                    </>
+                                ) : null}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

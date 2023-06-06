@@ -1,4 +1,4 @@
-import Header from "../components/Header";
+import Navbar from "../components/Navbar";
 import React, { useState, useRef, useEffect } from "react";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { Link, NavLink, useSearchParams } from "react-router-dom";
@@ -36,9 +36,9 @@ function Unit() {
 
   return (
     <>
-      <Header />
-      <section class="py-1 font-poppins bg-gray-50">
-        <div class="max-w-6xl px-4 mx-auto">
+      <Navbar />
+      <section class="py-1 font-poppins bg-gray-100">
+        <div class="mt-5 max-w-6xl px-4 mx-auto">
           {units ? ( // <li key={i}>{user?.username}</li>
             <div class="flex flex-wrap mb-24 -mx-4">
               <div class="w-full px-4 mb-8 md:w-1/2 md:mb-0">
@@ -55,7 +55,10 @@ function Unit() {
                                        </div>*/}
                   <div className="group relative">
                     <div class="rounded-lg shadow-lg transition-shadow hover:shadow-md m-5">
-                      <a href="#" class="rounded-lg group relative block bg-black">
+                      <a
+                        href="#"
+                        class="rounded-lg group relative block bg-black"
+                      >
                         <img
                           alt="apartment"
                           src={units.imagePath}
@@ -66,17 +69,26 @@ function Unit() {
                           <div class="mt-32 sm:mt-48 lg:mt-64">
                             <div class="mb-10 flex justify-center translate-y-8 transform opacity-0 transition-all group-hover:translate-y-0 group-hover:opacity-100">
                               <div>
-                                <div><p class = "font-semibold text-white flex justify-center mb-5">See an AR view of your apartment</p></div>
+                                <div>
+                                  <p class="font-semibold text-white flex justify-center mb-5">
+                                    See an AR view of your apartment
+                                  </p>
+                                </div>
                                 <div>
                                   <NavLink
-                                   end
-                                   to = "/roomview"
-                                   className = "mr-4 inline-flex items-center justify-center h-16 px-10 py-0 text-xl font-semibold text-center text-gray-200 no-underline align-middle transition-all duration-300 ease-in-out bg-transparent border-2 border-gray-600 border-solid rounded-full cursor-pointer select-none hover:text-white hover:border-white focus:shadow-xs focus:no-underline">
+                                    end
+                                    to={`/roomview?id=${unitid}`}
+                                    className="mr-4 inline-flex items-center justify-center h-16 px-10 py-0 text-xl font-semibold text-center text-gray-200 no-underline align-middle transition-all duration-300 ease-in-out bg-transparent border-2 border-gray-600 border-solid rounded-full cursor-pointer select-none hover:text-white hover:border-white focus:shadow-xs focus:no-underline"
+                                  >
                                     Room View
                                   </NavLink>
-                                  <a href="#_" class="inline-flex items-center justify-center h-16 px-10 py-0 text-xl font-semibold text-center text-gray-200 no-underline align-middle transition-all duration-300 ease-in-out bg-transparent border-2 border-gray-600 border-solid rounded-full cursor-pointer select-none hover:text-white hover:border-white focus:shadow-xs focus:no-underline">
+                                  <NavLink
+                                    end
+                                    to={`/aptview?id=${unitid}`}
+                                    className="inline-flex items-center justify-center h-16 px-10 py-0 text-xl font-semibold text-center text-gray-200 no-underline align-middle transition-all duration-300 ease-in-out bg-transparent border-2 border-gray-600 border-solid rounded-full cursor-pointer select-none hover:text-white hover:border-white focus:shadow-xs focus:no-underline"
+                                  >
                                     Apt View
-                                  </a>
+                                  </NavLink>
                                 </div>
                               </div>
                             </div>

@@ -3,10 +3,9 @@ import UserSidebar from "../partials/UserSidebar";
 import UserHeader from "../partials/UserHeader";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
-const COMP_URL = "/complaints";
+const COMP_URL = "/complaints/add";
 
 function Complaint() {
-
   const axiosPrivate = useAxiosPrivate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const username = localStorage.getItem("user").replace(/['"]+/g, '');
@@ -37,9 +36,7 @@ function Complaint() {
           withCredentials: true,
         }
       );
-      console.log(response?.data);
-      console.log(response?.accessToken);
-      console.log(JSON.stringify(response));
+      setShowModal(true)
       setSuccess(true);
       //clear state and controlled inputs
       setIssue("");
@@ -51,6 +48,7 @@ function Complaint() {
         setErrMsg("Registration Failed");
       }
     }
+    window.location.reload(true)
   };
 
   useEffect(() => {
@@ -118,14 +116,16 @@ function Complaint() {
 
                     <div>
                       <label className="sr-only" htmlFor="others">
-                        Other
+                        Specify briefly (Max. 24 characters)
                       </label>
 
                       <textarea
                         className="w-full rounded-lg border-gray-200 p-3 text-sm"
-                        placeholder="Specify your complaint"
+                        placeholder="Specify briefly (Max. 24 characters)t"
                         rows="4"
                         id="others"
+                        required
+                        maxlength="24"
                         onChange={(e) => setOther(e.target.value)}
                         onFocus={() => setOtherFocus(true)}
                         onBlur={() => setOtherFocus(false)}
@@ -135,7 +135,6 @@ function Complaint() {
                     <button
                       class="inline-block w-full rounded-lg bg-indigo-600 px-5 py-3 font-medium text-white sm:w-auto"
                       type="submit"
-                      onClick={() => setShowModal(true)}
                     >
                       Send
                     </button>
@@ -147,22 +146,59 @@ function Complaint() {
                             <div
                               className="fixed inset-0 w-full h-full bg-black opacity-40"
                               onClick={() => setShowModal(false)}
-                            ></div>
-                            <div className="flex items-start min-h-screen px-8 py-12 ">
-                              <div className="relative w-full max-w-lg p-8 mx-auto bg-white rounded-md shadow-lg">
-                                <div className="sm:flex">
-                                  <p className="sm:flex text-xl leading-relaxed text-gray-500 ">
-                                    Your complaint is submitted!
-                                  </p>
-
-                                  <button
-                                    className="w-full mt-20 p-1 flex-1 bg-gray-400 text-black-8900 rounded-sm outline-none border ring-offset-1 ring-gray-600 focus:ring-1"
-                                    onClick={() =>
+                              ></div>
+                              <div className="flex items-start min-h-screen px-8 py-12 mt-10">
+                                <div className="relative w-full max-w-lg p-8 mx-auto rounded-xl border border-gray-100 bg-white shadow-xl">
+                                  <div className="sm:flex">
+                                    <span class="text-green-600">
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke-width="1.5"
+                                        stroke="currentColor"
+                                        class="h-6 w-6"
+                                      >
+                                        <path
+                                          stroke-linecap="round"
+                                          stroke-linejoin="round"
+                                          d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                        />
+                                      </svg>
+                                    </span>
+            
+                                    <div class="flex-1 ml-3">
+                                      <strong class="block font-medium text-gray-900"> Complaint Submitted! </strong>
+            
+                                      <p class="mt-1 text-sm text-gray-700">
+                                        Your complaint has been submitted.
+                                      </p>
+                                    </div>
+            
+                                    <button
+                                      class="flex align-top text-gray-500 transition hover:text-gray-600"
+                                      onClick={() =>
                                       window.location.reload(true)
                                     }
-                                  >
-                                    Close
+                                    >
+                                    <span class="sr-only">Dismiss popup</span>
+          
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                      stroke-width="1.5"
+                                      stroke="currentColor"
+                                      class="h-6 w-6"
+                                    >
+                                      <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M6 18L18 6M6 6l12 12"
+                                      />
+                                    </svg>
                                   </button>
+          
                                 </div>
                               </div>
                             </div>
