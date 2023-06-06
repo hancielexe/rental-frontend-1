@@ -66,7 +66,6 @@ function Billing() {
         const response = await axiosPrivate.get(`/billing/${user}`, {
           signal: controller.signal,
         });
-        console.log(response.data);
         isMounted && setBilling(response.data);
       } catch (err) {
         console.log(err);
@@ -132,8 +131,6 @@ function Billing() {
           withCredentials: true,
         }
       );
-      console.log(response?.data);
-      console.log(JSON.stringify(response));
       setSuccess(true);
       //clear state and controlled inputs
       //need value attrib on inputs for this
@@ -196,36 +193,33 @@ function Billing() {
                 Billing
               </h1>
             </div>
-            <div className="mx-5 w-full lg:max-w-sm mb-3 ml-12 px-8">
-              {users?.length ? (
-                <>
-                  <select
-                    class="w-full rounded-lg border-gray-200 p-3 text-sm"
-                    required
-                    onChange={(e) => setUser(e.target.value)}
-                  >
-                    {users
-                      .filter((user) => {
-                        if (!user.roles.Admin) return user;
-                      })
-                      .map((filteredUser) => (
-                        <option value={filteredUser._id}>
-                          {filteredUser.username}
-                        </option>
-                      ))}
-                  </select>
-                </>
-              ) : null}
-            </div>
           </div>
           <div class="px-20">
             <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded-lg ">
               <div class="rounded-t mb-0 px-4 py-3 border-0">
                 <div class="w-full mx-auto">
                   <div class="grid grid-cols-2">
-                    <h3 class="font-semibold text-lg tracking-wide flex items-center">
-                      Billing for {}
-                    </h3>
+                    <div className="w-full lg:max-w-sm mb-3 ">
+                      {users?.length ? (
+                        <>
+                          <select
+                            class="w-full rounded-lg border-gray-200 p-3 text-sm"
+                            required
+                            onChange={(e) => setUser(e.target.value)}
+                          >
+                            {users
+                              .filter((user) => {
+                                if (!user.roles.Admin) return user;
+                              })
+                              .map((filteredUser) => (
+                                <option value={filteredUser._id}>
+                                  {filteredUser.username}
+                                </option>
+                              ))}
+                          </select>
+                        </>
+                      ) : null}
+                    </div>
                     <div class="flex justify-end">
                       <button
                         class="px-5 py-2.5 font-medium bg-blue-50 hover:bg-blue-100 hover:text-blue-600 text-blue-500 rounded-lg text-sm"

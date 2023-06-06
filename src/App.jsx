@@ -42,6 +42,7 @@ import TenantOut from "./views/TenantOut";
 import About from "./views/About";
 import Contact from "./views/Contact";
 import AdminInquiry from "./views/AdminInquiry";
+import AcknowledgeAdmin from "./views/ContractAcknowAdmin";
 
 const ROLES = {
   Tenant: 2001,
@@ -93,13 +94,17 @@ function App() {
             <Route path="/billing" element={<Billing />} />
             <Route path="/inquiries" element={<AdminInquiry />} />
             <Route path="/contract" element={<Contract />} />
+            <Route
+              path="/contract/acknowledgement"
+              element={<AcknowledgeAdmin />}
+            />
           </Route>
 
           <Route element={<RequireAuth allowedRoles={[ROLES.Tenant]} />}>
             <Route path="/tenant" element={<Tenant />} />
             <Route exact path="/user" element={<UserDashboard />} />
             <Route exact path="/apartment" element={<UserApartment />} />
-            <Route exact path="/changepass" element={<ChangePass />} />
+            <Route exact path="/settings" element={<ChangePass />} />
             <Route path="/maintenance" element={<Maintenance />} />
             <Route path="/complaint" element={<Complaint />} />
             <Route path="/contract" element={<Contract />} />
