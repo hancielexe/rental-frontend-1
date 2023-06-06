@@ -437,59 +437,53 @@ function Profile() {
               <div>
                 <h3 class="text-lg font-medium sm:text-xl">Tenant In Status</h3>
 
-                {inForm?.length
-                  ? inForm.map((form) => {
-                      for (let key in form) {
-                        if (!form[key]) {
-                          <div class="mt-4 flex items-center gap-2 text-rose-500">
-                            <svg
-                              width="20"
-                              height="20"
-                              fill="currentColor"
-                              id="Icons2"
-                              viewBox="0 0 24 24"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                class="cls-1"
-                                d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm0,22A10,10,0,1,1,22,12,10.011,10.011,0,0,1,12,22Z"
-                              />
-                              <path
-                                class="cls-1"
-                                d="M16.707,7.293a1,1,0,0,0-1.414,0L12,10.586,8.707,7.293A1,1,0,1,0,7.293,8.707L10.586,12,7.293,15.293a1,1,0,1,0,1.414,1.414L12,13.414l3.293,3.293a1,1,0,0,0,1.414-1.414L13.414,12l3.293-3.293A1,1,0,0,0,16.707,7.293Z"
-                              />
-                            </svg>
-                            <p class="text-sm font-medium text-gray-500">
-                              Doorknob
-                            </p>
-                          </div>;
-                        } else {
-                          <div class="mt-4 flex items-center gap-2 text-lime-500">
-                            <svg
-                              width="20"
-                              height="20"
-                              fill="currentColor"
-                              id="Icons"
-                              viewBox="0 0 24 24"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                class="cls-1"
-                                d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm0,22A10,10,0,1,1,22,12,10.011,10.011,0,0,1,12,22Z"
-                              />
-                              <path
-                                class="cls-1"
-                                d="M16.293,8.293,10,14.586,7.707,12.293a1,1,0,0,0-1.414,1.414l3,3a1,1,0,0,0,1.414,0l7-7a1,1,0,0,0-1.414-1.414Z"
-                              />
-                            </svg>
-                            <p class="text-sm font-medium text-gray-500">
-                              All household equipment are in good condition!
-                            </p>
-                          </div>;
-                        }
-                      }
-                    })
-                  : null}
+                {inForm ? (
+                  <div class="mt-4 flex items-center gap-2 text-rose-500">
+                    <svg
+                      width="20"
+                      height="20"
+                      fill="currentColor"
+                      id="Icons2"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        class="cls-1"
+                        d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm0,22A10,10,0,1,1,22,12,10.011,10.011,0,0,1,12,22Z"
+                      />
+                      <path
+                        class="cls-1"
+                        d="M16.707,7.293a1,1,0,0,0-1.414,0L12,10.586,8.707,7.293A1,1,0,1,0,7.293,8.707L10.586,12,7.293,15.293a1,1,0,1,0,1.414,1.414L12,13.414l3.293,3.293a1,1,0,0,0,1.414-1.414L13.414,12l3.293-3.293A1,1,0,0,0,16.707,7.293Z"
+                      />
+                    </svg>
+                    <p class="text-sm font-medium text-gray-500">
+                      Tenant has no existing tenant-in record.
+                    </p>
+                  </div>
+                ) : (
+                  <div class="mt-4 flex items-center gap-2 text-lime-500">
+                    <svg
+                      width="20"
+                      height="20"
+                      fill="currentColor"
+                      id="Icons"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        class="cls-1"
+                        d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm0,22A10,10,0,1,1,22,12,10.011,10.011,0,0,1,12,22Z"
+                      />
+                      <path
+                        class="cls-1"
+                        d="M16.293,8.293,10,14.586,7.707,12.293a1,1,0,0,0-1.414,1.414l3,3a1,1,0,0,0,1.414,0l7-7a1,1,0,0,0-1.414-1.414Z"
+                      />
+                    </svg>
+                    <p class="text-sm font-medium text-gray-500">
+                      All household equipment are in good condition!
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           </section>
@@ -521,48 +515,53 @@ function Profile() {
                 <h3 class="text-lg font-medium sm:text-xl">
                   Tenant Out Status
                 </h3>
-
-                <div class="mt-4 flex items-center gap-2 text-lime-500">
-                  <svg
-                    width="20"
-                    height="20"
-                    fill="currentColor"
-                    id="Icons"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      class="cls-1"
-                      d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm0,22A10,10,0,1,1,22,12,10.011,10.011,0,0,1,12,22Z"
-                    />
-                    <path
-                      class="cls-1"
-                      d="M16.293,8.293,10,14.586,7.707,12.293a1,1,0,0,0-1.414,1.414l3,3a1,1,0,0,0,1.414,0l7-7a1,1,0,0,0-1.414-1.414Z"
-                    />
-                  </svg>
-                  <p class="text-sm font-medium text-gray-500">Doorknob</p>
-                </div>
-
-                <div class="mt-4 flex items-center gap-2 text-rose-500">
-                  <svg
-                    width="20"
-                    height="20"
-                    fill="currentColor"
-                    id="Icons2"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      class="cls-1"
-                      d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm0,22A10,10,0,1,1,22,12,10.011,10.011,0,0,1,12,22Z"
-                    />
-                    <path
-                      class="cls-1"
-                      d="M16.707,7.293a1,1,0,0,0-1.414,0L12,10.586,8.707,7.293A1,1,0,1,0,7.293,8.707L10.586,12,7.293,15.293a1,1,0,1,0,1.414,1.414L12,13.414l3.293,3.293a1,1,0,0,0,1.414-1.414L13.414,12l3.293-3.293A1,1,0,0,0,16.707,7.293Z"
-                    />
-                  </svg>
-                  <p class="text-sm font-medium text-gray-500">Doorknob</p>
-                </div>
+                {inForm ? (
+                  <div class="mt-4 flex items-center gap-2 text-rose-500">
+                    <svg
+                      width="20"
+                      height="20"
+                      fill="currentColor"
+                      id="Icons2"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        class="cls-1"
+                        d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm0,22A10,10,0,1,1,22,12,10.011,10.011,0,0,1,12,22Z"
+                      />
+                      <path
+                        class="cls-1"
+                        d="M16.707,7.293a1,1,0,0,0-1.414,0L12,10.586,8.707,7.293A1,1,0,1,0,7.293,8.707L10.586,12,7.293,15.293a1,1,0,1,0,1.414,1.414L12,13.414l3.293,3.293a1,1,0,0,0,1.414-1.414L13.414,12l3.293-3.293A1,1,0,0,0,16.707,7.293Z"
+                      />
+                    </svg>
+                    <p class="text-sm font-medium text-gray-500">
+                      A household equipment has issues.
+                    </p>
+                  </div>
+                ) : (
+                  <div class="mt-4 flex items-center gap-2 text-lime-500">
+                    <svg
+                      width="20"
+                      height="20"
+                      fill="currentColor"
+                      id="Icons"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        class="cls-1"
+                        d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm0,22A10,10,0,1,1,22,12,10.011,10.011,0,0,1,12,22Z"
+                      />
+                      <path
+                        class="cls-1"
+                        d="M16.293,8.293,10,14.586,7.707,12.293a1,1,0,0,0-1.414,1.414l3,3a1,1,0,0,0,1.414,0l7-7a1,1,0,0,0-1.414-1.414Z"
+                      />
+                    </svg>
+                    <p class="text-sm font-medium text-gray-500">
+                      Tenant is still active!
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           </section>

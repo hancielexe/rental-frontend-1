@@ -43,7 +43,6 @@ function Login() {
           withCredentials: true,
         }
       );
-      console.log(JSON.stringify(response?.data));
       const userId = response?.data?.userId;
       const accessToken = response?.data?.accessToken;
       const roles = response?.data?.roles;
