@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 .bg-landing{
-    background-image: url('./assets/landing-bg.png');
+    background-image: url('landing-bg.png');
 }

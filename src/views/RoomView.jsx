@@ -36,7 +36,7 @@ function RoomView() {
 
   const handleDownload = () => {
     // Logic to generate or fetch the file URL
-    const fileUrl = "http://127.0.0.1:5173/assets/houserental-ar.apk";
+    const fileUrl = "https://marlynshouserental.com/assets/houserental-ar.apk";
     const link = document.createElement("a");
     link.href = fileUrl;
     link.download = "houserental-ar.apk"; // Specify the desired file name
